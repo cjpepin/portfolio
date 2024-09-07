@@ -78,7 +78,7 @@ export default function Home() {
             onClick={e => handleNavigate(e, '/about')}
           >
             <Image
-              src="/ME_2024.png"
+              src="/ME2024.png"
               alt="LinkedIn Logo"
               width={300}
               height={300}
