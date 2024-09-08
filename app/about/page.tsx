@@ -4,7 +4,7 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 import IconButton from "../ui/IconButton";
-import ShiftFromRightAnimation from "../ui/transitions/ShiftFromRightAnimation";
+import ShiftFromRightAnimation from "../ui/transitions/shiftFromRightAnimation";
 
 export default function Home() {
   const router = useRouter();
@@ -27,7 +27,7 @@ export default function Home() {
       <div className={styles.aboutWrapper}>
         <div className={styles.profilePictureWrapper}>
           <Image
-            src="/ME_2024.png"
+            src="/ME2024.png"
             alt="LinkedIn Logo"
             width={250}
             height={250}

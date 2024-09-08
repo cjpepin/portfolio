@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { sourceCodePro } from "./ui/fonts";
 import "./ui/globals.css";
-import PageAnimatePresence from "./ui/transitions/PageAnimatePresence";
+import PageAnimatePresence from "./ui/transitions/pageAnimatePresence";
 
 export const metadata: Metadata = {
   title: "Connor Pepin Portfolio",

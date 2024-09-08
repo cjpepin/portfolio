@@ -1,7 +1,7 @@
 // components/DownloadButton.js
 import React from 'react';
 import styles from './experienceCard.module.css';
-import Chip from './Chip';
+import Chip from './chip';
 import Link from 'next/link';
 
 type ExperienceCardProps = {

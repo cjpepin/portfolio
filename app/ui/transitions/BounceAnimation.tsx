@@ -16,7 +16,7 @@ const BounceAnimation = ({
     // Animation variant for the bounce effect
     const bounceVariant = {
         bounce: {
-            y: [0, -40, 0, -20, 0, -10, 0, -5, 0, -2, 0, -1, 0], // Defines a series of bounces, getting smaller each time
+            y: [0, -30, 0, -15, 0, -7, 0, -3, 0, -1, 0], // Defines a series of bounces, getting smaller each time
             transition: {
                 duration: 1.25, // Duration of the bounce effect
                 ease: [0.0, -0.0, 0.0, 0], // Custom easing for a snappy bounce resembling impact

@@ -5,9 +5,9 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 import IconButton from "./ui/IconButton";
-import ShiftFromLeftAnimation from "./ui/transitions/ShiftFromLeftAnimation";
+import ShiftFromLeftAnimation from "./ui/transitions/shiftFromLeftAnimation";
 
-import BounceAnimation from "./ui/transitions/BounceAnimation";
+import BounceAnimation from "./ui/transitions/bounceAnimation";
 
 export default function Home() {
   const imageDiameter: number = 40;

@@ -2,10 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import style from "./page.module.css";
-import ExperienceCard from "../ui/ExperienceCard";
+import ExperienceCard from "../ui/experienceCard";
 import IconButton from "../ui/IconButton";
 import Image from "next/image";
-import ShiftFromRightAnimation from "../ui/transitions/ShiftFromRightAnimation";
+import ShiftFromRightAnimation from "../ui/transitions/shiftFromRightAnimation";
 
 export default function Home() {
   const router = useRouter();
