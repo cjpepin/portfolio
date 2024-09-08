@@ -3,7 +3,7 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
-import IconButton from "../ui/IconButton";
+import IconButton from "../ui/iconButton";
 import ShiftFromRightAnimation from "../ui/transitions/shiftFromRightAnimation";
 
 export default function Home() {

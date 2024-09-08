@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
-import IconButton from "./ui/IconButton";
+import IconButton from "./ui/iconButton";
 import ShiftFromLeftAnimation from "./ui/transitions/shiftFromLeftAnimation";
 
 import BounceAnimation from "./ui/transitions/bounceAnimation";
