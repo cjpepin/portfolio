@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { sourceCodePro } from "./ui/fonts";
 import "./ui/globals.css";
+import PageAnimatePresence from "./ui/transitions/PageAnimatePresence";
 
 export const metadata: Metadata = {
   title: "Connor Pepin Portfolio",
@@ -15,7 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <link rel="icon" href="/catCrunch.png" />
-      <body className={sourceCodePro.className}>{children}</body>
+      <body className={sourceCodePro.className}>
+        <PageAnimatePresence>{children}</PageAnimatePresence>
+      </body>
     </html>
   );
 }

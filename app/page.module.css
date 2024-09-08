@@ -1,9 +1,13 @@
 .heroSection {
     margin: 4rem;
     height: 100%;
-    width: 80%;
+    width: 90%;
 }
 
+.titleContent {
+    cursor: pointer;
+    width: fit-content;
+}
 .aboutWrapper {
     position: relative;
     border-radius: 1rem;
@@ -50,16 +54,24 @@
 
 .name {
     margin-bottom: 0.25rem;
+    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.15); /* Customize shadow here */
+}
+
+.description {
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15); /* Customize shadow here */
 }
 
 .solutionsWrapper {
     display: inline;
     line-height: 3ch;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15); /* Customize shadow here */
 }
 
 .fancyText {
     display: inline-flex; /* Ensures displayedText and flashingBox are treated as a single unit */
     align-items: center;  /* Adjusts vertical alignment */
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15); /* Customize shadow here */
+
 }
 
 .flashingBox {

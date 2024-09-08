@@ -9,12 +9,14 @@
     border: none;
     background: none;
     cursor: pointer;
+    transition: background-color 0.25s, transform 0.25s;
 }
 
 .iconButton:hover {
     /* add hover transition */
     background-color: whitesmoke;
-    transition: background-color 0.3s;
+    transform: scale(1.1);
+    transition: background-color 0.25s, transform 0.25s;
 }
 
 .styled-button {
@@ -30,3 +32,32 @@
     cursor: pointer;
     transition: background-color 0.2s;
 }
+
+.downloadButton {
+    display: inline-block;
+    text-decoration: none;
+    background-color: white; /* Customize button color */
+    color: black;
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    border: 0.5px solid rgba(0,0,0,0.25);
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.downloadButton:hover {
+    background-color: white;
+    transform: translateY(-2px);
+}
+
+.downloadButton:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.4);
+}
+  

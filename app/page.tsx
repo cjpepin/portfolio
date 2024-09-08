@@ -3,8 +3,11 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
-import { IconButton } from "./ui/iconButton";
 import { useRouter } from "next/navigation";
+import IconButton from "./ui/IconButton";
+import ShiftFromLeftAnimation from "./ui/transitions/ShiftFromLeftAnimation";
+
+import BounceAnimation from "./ui/transitions/BounceAnimation";
 
 export default function Home() {
   const imageDiameter: number = 40;
@@ -35,11 +38,13 @@ export default function Home() {
   const [currentTech, setCurrentTech] = useState<string>(technologies[0]);
   const [displayedText, setDisplayedText] = useState<string>('');
   const [charIndex, setCharIndex] = useState<number>(0);
-  const [activeComponent, setActiveComponent] = useState<string>('');
+  const [isExiting, setIsExiting] = useState<boolean>(false); // New state for handling exit
+  const [showTooltip, setShowTooltip] = useState<boolean>(false); // State to manage tooltip visibility
 
   const handleNavigate = (e: any, location: string) => {
     e.preventDefault();
-    router.push(location);
+    setIsExiting(true);
+    setTimeout(() => router.push(location), 0);
   }
 
   useEffect(() => {
@@ -65,71 +70,86 @@ export default function Home() {
       return () => clearTimeout(typingTimeout);
     }
   }, [charIndex, currentTech]);
-
+  
   return (
-    <main>
-      <div className={styles.heroSection}>
-        <div className={styles.aboutWrapper}>
-          {/* <div className={styles.previewContent}>
-            More about me
-          </div> */}
-          <div 
-            className={`${styles.expandableComponent}`}
-            onClick={e => handleNavigate(e, '/about')}
-          >
-            <Image
-              src="/ME2024.png"
-              alt="LinkedIn Logo"
-              width={300}
-              height={300}
-              className={styles.profilePic}
-            />
-            <h1 className={styles.name}>Connor Pepin</h1>
+    <ShiftFromLeftAnimation>
+      <main>
+        <div className={styles.heroSection}>
+          <div className={styles.aboutWrapper}>
+            {/* <div className={styles.previewContent}>
+              More about me
+  </div> */}
+            <div 
+              className={styles.titleContent}
+              onClick={e => handleNavigate(e, '/about')}
+            >
+              <BounceAnimation className={styles.aboutWrapper}>
+                <Image
+                  src="/ME2024.png"
+                  alt="LinkedIn Logo"
+                  width={300}
+                  height={300}
+                  className={styles.profilePic}
+                />
+                <h1 className={styles.name}>Connor Pepin</h1>
+              </BounceAnimation>
+            </div>
+          </div>
+          <BounceAnimation>
+            <div 
+              className={styles.expandableComponent}
+              onClick={e => handleNavigate(e, '/experience')}
+              >
+              <h3 className={styles.description}>Full Stack Developer</h3>
+              <h3 className={styles.solutionsWrapper}>
+                Building scalable web applications with&nbsp;
+                <div className={styles.fancyText}>
+                  {displayedText}
+                  <div className={styles.flashingBox} />
+                </div>
+              </h3>
+            </div>
+          </BounceAnimation>
+          <div className={`${styles.cta}`}>
+            <IconButton>
+              <Image
+                src="/linkedIn.png"
+                alt="LinkedIn Logo"
+                width={imageDiameter}
+                height={imageDiameter}
+                onClick={() => window.open("https://www.linkedin.com/in/connor-pepin-10954b192/")}
+              />
+            </IconButton>
+            <IconButton>
+              <Image
+                src="/github.png"
+                alt="GitHub Logo"
+                width={imageDiameter}
+                height={imageDiameter}
+                onClick={() => window.open("https://github.com/cjpepin")}
+              />
+            </IconButton>
+            <IconButton>
+              <Image
+                src="/x.png"
+                alt="X Logo"
+                width={imageDiameter}
+                height={imageDiameter}
+                onClick={() => window.open("https://x.com/iCodeAThing")}
+              />
+            </IconButton>
+            <IconButton>
+              <Image
+                src="/email.png"
+                alt="Email icon"
+                width={imageDiameter}
+                height={imageDiameter}
+                onClick={() => window.open('mailto:cjpepin@wustl.edu?subject=Contact%20Me&body=Hello%2C%20I%20would%20like%20to%20discuss%20...') }
+              />
+            </IconButton>
           </div>
         </div>
-        <div 
-          className={styles.expandableComponent}
-          onClick={e => handleNavigate(e, '/skills')}
-          >
-          <h3>Full Stack Developer</h3>
-          <h3 className={styles.solutionsWrapper}>
-            Building scalable web applications with&nbsp;
-            <div className={styles.fancyText}>
-              {displayedText}
-              <div className={styles.flashingBox} />
-            </div>
-          </h3>
-        </div>
-        <div className={`${styles.cta}`}>
-          <IconButton>
-            <Image
-              src="/linkedIn.png"
-              alt="LinkedIn Logo"
-              width={imageDiameter}
-              height={imageDiameter}
-              onClick={() => window.open("https://www.linkedin.com/in/connor-pepin-10954b192/")}
-            />
-          </IconButton>
-          <IconButton>
-            <Image
-              src="/github.png"
-              alt="GitHub Logo"
-              width={imageDiameter}
-              height={imageDiameter}
-              onClick={() => window.open("https://github.com/cjpepin")}
-            />
-          </IconButton>
-          <IconButton>
-            <Image
-              src="/x.png"
-              alt="X Logo"
-              width={imageDiameter}
-              height={imageDiameter}
-              onClick={() => window.open("https://x.com/iCodeAThing")}
-            />
-          </IconButton>
-        </div>
-      </div>
-    </main>
+      </main>
+    </ShiftFromLeftAnimation>
   );
 }

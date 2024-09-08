@@ -1,0 +1,15 @@
+.experienceCardWrapper {
+    width: 40rem;
+    height: fit-content;
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    padding: 1rem;
+    margin: 1rem;
+}
+
+.headerSplit {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}

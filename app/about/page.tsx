@@ -3,7 +3,8 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
-import { IconButton } from "../ui/iconButton";
+import IconButton from "../ui/IconButton";
+import ShiftFromRightAnimation from "../ui/transitions/ShiftFromRightAnimation";
 
 export default function Home() {
   const router = useRouter();
@@ -14,16 +15,16 @@ export default function Home() {
   }
 
   return (
-    <>
-      <IconButton onClick={handleNavigateHome} style={{position: "absolute", margin: "0.25rem"}}>
+    <ShiftFromRightAnimation>
+      <IconButton onClick={handleNavigateHome} style={{position: "absolute", margin: "0.25rem", top: "0.5rem", left: "0.5rem"}}>
         <Image
           src="/image.png"
           alt="Back arrow"
-          width={35}
-          height={35}
+          width={25}
+          height={25}
         />
       </IconButton>
-      <main className={styles.aboutWrapper}>
+      <div className={styles.aboutWrapper}>
         <div className={styles.profilePictureWrapper}>
           <Image
             src="/ME_2024.png"
@@ -43,7 +44,7 @@ export default function Home() {
           variety of projects, from game development in Unity to full stack web applications. I am always looking to
           learn new skills and expand my knowledge of software engineering.
         </div>
-      </main>
-    </>
+      </div>
+    </ShiftFromRightAnimation>
   );
 }
