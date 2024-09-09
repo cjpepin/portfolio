@@ -11,30 +11,16 @@ const BounceAnimation = ({
     children: React.ReactNode;
     className?: string;
 }) => {
-    const [isBouncing, setIsBouncing] = useState<boolean>(false); // State to manage bounce effect
+    const [isBouncing, setIsBouncing] = useState<boolean>(false);
 
-    // Animation variant for the bounce effect
     const bounceVariant = {
         bounce: {
-            y: [0, -30, 0, -15, 0, -7, 0, -3, 0, -1, 0], // Defines a series of bounces, getting smaller each time
+            y: [0, -25, 0], 
             transition: {
-                duration: 1.25, // Duration of the bounce effect
-                ease: [0.0, -0.0, 0.0, 0], // Custom easing for a snappy bounce resembling impact
-                times: [0, 0.3, 0.5, 0.8, 1], // Adjust timing to emphasize the first impact
+                duration: 0.4,
             },
         }
     };
-
-    // const bounceVariant = {
-    //     hover: {
-    //         y: [0, -40, 0, -20, 0, -10, 0, -5, 0, -2, 0, -1, 0], // Defines a series of bounces, getting smaller each time
-    //     transition: {
-    //         duration: 1.25, // Shorter duration for a sharper, more immediate bounce effect
-    //         ease: [0.0, -0.0, 0.0, 0], // Custom easing for a snappy bounce resembling impact
-    //         times: [0, 0.3, 0.5, 0.8, 1], // Adjust timing to emphasize the first impact
-    //         }
-    //     }
-    // };
 
     return (
         <motion.div
