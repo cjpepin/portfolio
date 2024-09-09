@@ -77,7 +77,7 @@ export default function Home() {
         setTimeout(() => {
           setIsSecondBouncing(true);
         }, 350); // 0.5-second delay after the first bounce
-      }, 8000); // 5-second interval for the first bounce
+      }, 5000); // 5-second interval for the first bounce
 
       return () => clearInterval(firstBounceInterval);
     }
