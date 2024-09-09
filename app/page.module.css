@@ -1,7 +1,11 @@
 .heroSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     margin: 4rem;
     height: 100%;
     width: 90%;
+    margin-left: 12%;
 }
 
 .titleContent {
@@ -13,34 +17,8 @@
     border-radius: 1rem;
 }
 
-/* .previewContent {
-    position: absolute;
-    width: 7rem;
-    height: 100%;
-    border-top-left-radius: 1rem;
-    border-bottom-left-radius: 1rem;
-    margin-left: 0.5rem;
-    padding: 0.5rem;
-    background-color: rgba(0, 0, 0, 0.05);
-} */
-
-.expandableComponent {
-    border-radius: 1rem;
-    z-index: 2; /* Keeps the component above the text content */
-    width: fit-content;
-    transform: translateX(0rem);
-    transition: transform 0.5s;
+.experienceWrapper {
     cursor: pointer;
-    background-color: white;
-}
-
-/* .expandableComponent:hover {
-    transform: translateX(6rem);
-    transition: transform 0.5s;
-} */
-
-.hiddenAboutContent {
-    display: none;
 }
 
 .about {
@@ -49,28 +27,28 @@
 
 .profilePic {
     border-radius: 50%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Customize shadow here */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); 
 }
 
 .name {
     margin-bottom: 0.25rem;
-    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.15); /* Customize shadow here */
+    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.15); 
 }
 
 .description {
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15); /* Customize shadow here */
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15); 
 }
 
 .solutionsWrapper {
     display: inline;
     line-height: 3ch;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15); /* Customize shadow here */
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15); 
 }
 
 .fancyText {
-    display: inline-flex; /* Ensures displayedText and flashingBox are treated as a single unit */
-    align-items: center;  /* Adjusts vertical alignment */
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15); /* Customize shadow here */
+    display: inline-flex;
+    align-items: center; 
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
 
 }
 
@@ -82,7 +60,7 @@
     animation-name: flashingBoxAnimation;
     animation-duration: 1s;
     animation-iteration-count: infinite;
-    animation-timing-function: steps(1); /* Instant change with no fade */
+    animation-timing-function: steps(1);
 }
 
 @keyframes flashingBoxAnimation {

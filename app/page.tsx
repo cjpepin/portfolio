@@ -38,12 +38,9 @@ export default function Home() {
   const [currentTech, setCurrentTech] = useState<string>(technologies[0]);
   const [displayedText, setDisplayedText] = useState<string>('');
   const [charIndex, setCharIndex] = useState<number>(0);
-  const [isExiting, setIsExiting] = useState<boolean>(false); // New state for handling exit
-  const [showTooltip, setShowTooltip] = useState<boolean>(false); // State to manage tooltip visibility
 
   const handleNavigate = (e: any, location: string) => {
     e.preventDefault();
-    setIsExiting(true);
     setTimeout(() => router.push(location), 0);
   }
 
@@ -73,7 +70,6 @@ export default function Home() {
   
   return (
     <ShiftFromLeftAnimation>
-      <main>
         <div className={styles.heroSection}>
           <div className={styles.aboutWrapper}>
             {/* <div className={styles.previewContent}>
@@ -95,11 +91,8 @@ export default function Home() {
               </BounceAnimation>
             </div>
           </div>
-          <BounceAnimation>
-            <div 
-              className={styles.expandableComponent}
-              onClick={e => handleNavigate(e, '/experience')}
-              >
+          <BounceAnimation className={styles.experienceWrapper}>
+            <div onClick={e => handleNavigate(e, '/experience')}>
               <h3 className={styles.description}>Full Stack Developer</h3>
               <h3 className={styles.solutionsWrapper}>
                 Building scalable web applications with&nbsp;
@@ -149,7 +142,6 @@ export default function Home() {
             </IconButton>
           </div>
         </div>
-      </main>
     </ShiftFromLeftAnimation>
   );
 }

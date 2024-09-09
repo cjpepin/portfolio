@@ -27,7 +27,7 @@ export default function Home() {
         </IconButton>
         <br />
         <br />
-        <h1>Experience</h1>
+        <h1 className={style.title}>Experience</h1>
         <div className={style.experiencesWrapper}>
         <ExperienceCard 
           fromDate="August 2021" 
@@ -91,31 +91,6 @@ export default function Home() {
           ]}
           linkLabel="Ungerbot UI"
           linkUrl="https://cjpepin.github.io/ungerbot-frontend/"
-        />
-      </div>
-      <h1>Projects</h1>
-      <div className={style.experiencesWrapper}>
-        <ExperienceCard 
-          fromDate="January 2021" 
-          toDate="Present" 
-          company="Personal" 
-          position="Full Stack Developer" 
-          experiences={[
-            "Developed a full stack web application using React, Node.js, and MySQL to track personal finances.",
-            "Built a game using Unity and C# to learn the basics of game development.",
-            "Created a personal website using React, Next.js, and Tailwind CSS to showcase my portfolio.",
-          ]}
-          skills={[
-            "React",
-            "Node.js",
-            "MySQL",
-            "Unity",
-            "C#",
-            "Next.js",
-            "Tailwind CSS",
-          ]}
-          linkLabel="Personal Finance Tracker"
-          linkUrl="idk"
         />
       </div>
     </ShiftFromRightAnimation>

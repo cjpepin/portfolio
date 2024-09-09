@@ -2,7 +2,10 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-top: 4rem;
+    justify-content: center;
+    height: calc(100vh - 2rem);
+    width: 80%;
+    margin-left: 10%;
 }
 
 .profilePictureWrapper {
@@ -14,10 +17,12 @@
 
 .profilePic {
     border-radius: 50%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Customize shadow here */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 .aboutContent {
     margin: 0rem 2rem;
+    font-size: 1.25rem;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
 }
   

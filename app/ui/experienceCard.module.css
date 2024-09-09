@@ -2,7 +2,8 @@
     width: 40rem;
     height: fit-content;
     border-radius: 1rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    border: 0.5px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     padding: 1rem;
     margin: 1rem;
 }

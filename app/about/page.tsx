@@ -29,20 +29,19 @@ export default function Home() {
           <Image
             src="/ME2024.png"
             alt="LinkedIn Logo"
-            width={250}
-            height={250}
+            width={300}
+            height={300}
             className={styles.profilePic}
           />
         </div>
         <div className={styles.aboutContent}>
-          Hello! My name is Connor, I&apos;m a full stack developer with a diverse background in software engineering.
+          Hi, I’m Connor, a full stack developer with a solid foundation in software engineering.
           <br />
           <br />
-          I have a degree from WashU in Computer Science and Mathematics. During school I spent time focusing on 
-          data science and machine learning, but I have since transitioned to full stack development. I have experience
-          with a wide range of technologies, including React, Angular, Java, Python, C# and more. I have worked on a
-          variety of projects, from game development in Unity to full stack web applications. I am always looking to
-          learn new skills and expand my knowledge of software engineering.
+          I recently graduated from WashU with a degree in Computer Science and Mathematics. My studies focused on data science and machine learning, 
+          but I later found my passion in full stack development. I've worked with a range of technologies, including React, Angular, Java, 
+          Python, C#, and more. My experience spans from game development in Unity to building full stack web applications. I'm always eager to 
+          learn new skills and deepen my understanding of software engineering.
         </div>
       </div>
     </ShiftFromRightAnimation>
