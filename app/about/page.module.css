@@ -17,7 +17,7 @@
 
 .profilePic {
     border-radius: 50%;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .aboutContent {
@@ -25,4 +25,25 @@
     font-size: 1.25rem;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
 }
-  
+
+@media (max-width: 768px) {
+    .aboutWrapper {
+        flex-direction: column;
+        height: fit-content;
+        margin-top: 5rem;
+    }
+
+    .profilePictureWrapper {
+        margin-bottom: 3rem;
+    }
+
+    .profilePic {
+        width: 10rem;
+        height: 10rem;
+    }
+
+    .aboutContent {
+        margin: 0rem 1rem;
+        margin-bottom: 4rem;
+    }
+}

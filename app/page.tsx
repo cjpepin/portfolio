@@ -38,6 +38,8 @@ export default function Home() {
   const [currentTech, setCurrentTech] = useState<string>(technologies[0]);
   const [displayedText, setDisplayedText] = useState<string>('');
   const [charIndex, setCharIndex] = useState<number>(0);
+  const [isFirstBouncing, setIsFirstBouncing] = useState<boolean>(false); // State to control second bounce
+  const [isSecondBouncing, setIsSecondBouncing] = useState<boolean>(false); // State to control second bounce
 
   const handleNavigate = (e: any, location: string) => {
     e.preventDefault();
@@ -67,6 +69,19 @@ export default function Home() {
       return () => clearTimeout(typingTimeout);
     }
   }, [charIndex, currentTech]);
+
+  useEffect(() => {
+    if (window.innerWidth <= 475) {
+      const firstBounceInterval = setInterval(() => {
+        setIsFirstBouncing(true);
+        setTimeout(() => {
+          setIsSecondBouncing(true);
+        }, 350); // 0.5-second delay after the first bounce
+      }, 8000); // 5-second interval for the first bounce
+
+      return () => clearInterval(firstBounceInterval);
+    }
+  }, []);
   
   return (
     <ShiftFromLeftAnimation>
@@ -79,7 +94,11 @@ export default function Home() {
               className={styles.titleContent}
               onClick={e => handleNavigate(e, '/about')}
             >
-              <BounceAnimation className={styles.aboutWrapper}>
+              <BounceAnimation 
+                className={styles.aboutWrapper} 
+                isBouncing={isFirstBouncing}
+                setIsBouncing={setIsFirstBouncing}
+              >
                 <Image
                   src="/ME2024.png"
                   alt="LinkedIn Logo"
@@ -91,7 +110,11 @@ export default function Home() {
               </BounceAnimation>
             </div>
           </div>
-          <BounceAnimation className={styles.experienceWrapper}>
+          <BounceAnimation 
+            className={styles.experienceWrapper} 
+            isBouncing={isSecondBouncing}
+            setIsBouncing={setIsSecondBouncing}
+          >
             <div onClick={e => handleNavigate(e, '/experience')}>
               <h3 className={styles.description}>Full Stack Developer</h3>
               <h3 className={styles.solutionsWrapper}>

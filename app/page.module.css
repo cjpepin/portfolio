@@ -77,3 +77,31 @@
     gap: 1rem;
     margin-top: 1rem;
 }
+
+@media (max-width: 475px) {
+    .heroSection {
+        margin: 2rem;
+        margin-left: 10%;
+    }
+
+    .aboutWrapper {
+        margin: 0;
+    }
+
+    .profilePic {
+        width: 10rem;
+        height: 10rem;
+    }
+
+    .name {
+        font-size: 1.5em;
+    }
+
+    .description {
+        font-size: 1em;
+    }
+
+    .solutionsWrapper {
+        font-size: 1em;
+    }
+}

@@ -7,12 +7,14 @@ import { motion } from "framer-motion";
 const BounceAnimation = ({
     children,
     className,
+    isBouncing,
+    setIsBouncing,
 }: {
     children: React.ReactNode;
     className?: string;
+    isBouncing: boolean;
+    setIsBouncing: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-    const [isBouncing, setIsBouncing] = useState<boolean>(false);
-
     const bounceVariant = {
         bounce: {
             y: [0, -25, 0], 
