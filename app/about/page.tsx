@@ -35,12 +35,12 @@ export default function Home() {
           />
         </div>
         <div className={styles.aboutContent}>
-          Hi, I’m Connor, a full stack developer with a solid foundation in software engineering.
+          Hi, I&apos;m Connor, a full stack developer with a solid foundation in software engineering.
           <br />
           <br />
           I recently graduated from WashU with a degree in Computer Science and Mathematics. My studies focused on data science and machine learning, 
-          but I later found my passion in full stack development. I've worked with a range of technologies, including React, Angular, Java, 
-          Python, C#, and more. My experience spans from game development in Unity to building full stack web applications. I'm always eager to 
+          but I later found my passion in full stack development. I&apos;ve worked with a range of technologies, including React, Angular, Java, 
+          Python, C#, and more. My experience spans from game development in Unity to building full stack web applications. I&apos;m always eager to 
           learn new skills and deepen my understanding of software engineering.
         </div>
       </div>
