@@ -115,7 +115,7 @@ export default function Home() {
             "Tailwind CSS",
           ]}
           linkLabel="Personal Finance Tracker"
-          linkUrl="test"
+          linkUrl="idk"
         />
       </div>
     </ShiftFromRightAnimation>
