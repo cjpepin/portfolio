@@ -52,7 +52,7 @@ export default function Home() {
         />
         <ExperienceCard 
           fromDate="November 2022" 
-          toDate="May 2024" 
+          toDate="September 2023" 
           company="Caralyst Health" 
           position="Lead Engineer" 
           experiences={[
