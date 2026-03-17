@@ -2,10 +2,45 @@
     width: 40rem;
     height: fit-content;
     border-radius: 1rem;
-    border: 0.5px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    padding: 1rem;
+    border: 0.5px solid rgba(0, 0, 0, 0.12);
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+    padding: 1.25rem;
     margin: 1rem;
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.titleBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.dateLabel {
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.55);
+}
+
+.roleLine {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.contextLabel {
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background-color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    white-space: nowrap;
 }
 
 .headerSplit {
@@ -13,4 +48,42 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.5rem;
+    min-height: 1.5rem;
+}
+
+.link {
+    color: inherit;
+    text-underline-offset: 0.15rem;
+}
+
+.experienceList {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    padding-left: 1.2rem;
+    line-height: 1.65;
+}
+
+.experienceList li {
+    margin-bottom: 0.6rem;
+}
+
+.skillsWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+@media (max-width: 768px) {
+    .experienceCardWrapper {
+        width: auto;
+        margin: 0.75rem 0;
+    }
+
+    .cardHeader {
+        flex-direction: column;
+    }
+
+    .contextLabel {
+        white-space: normal;
+    }
 }

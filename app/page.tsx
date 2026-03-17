@@ -10,27 +10,17 @@ import ShiftFromLeftAnimation from "./ui/transitions/shiftFromLeftAnimation";
 import BounceAnimation from "./ui/transitions/bounceAnimation";
 
 export default function Home() {
-  const imageDiameter: number = 40;
+  const imageDiameter: number = 48;
   const technologies: string[] = useMemo(() => [
     "React",
-    "Angular",
-    "Node.js",
-    "Javascript",
+    "React Native",
     "TypeScript",
-    "HTML",
-    "CSS",
-    "Python",
-    "Java",
-    "C#",
-    "Java",
-    "Maven",
-    "Spring Boot",
-    "MySQL",
-    "GraphQL",
+    "Expo",
+    "Next.js",
+    "Node.js",
+    "APIs",
     "PostgreSQL",
-    "MongoDB",
-    "Cloud Foundry/cfCLI",
-    "Jenkins",
+    "MySQL",
     "AWS"
   ], []);
   const router = useRouter();
@@ -40,6 +30,10 @@ export default function Home() {
   const [charIndex, setCharIndex] = useState<number>(0);
   const [isFirstBouncing, setIsFirstBouncing] = useState<boolean>(false); // State to control second bounce
   const [isSecondBouncing, setIsSecondBouncing] = useState<boolean>(false); // State to control second bounce
+  const [isLinkedInBouncing, setIsLinkedInBouncing] = useState<boolean>(false);
+  const [isGitHubBouncing, setIsGitHubBouncing] = useState<boolean>(false);
+  const [isXBouncing, setIsXBouncing] = useState<boolean>(false);
+  const [isEmailBouncing, setIsEmailBouncing] = useState<boolean>(false);
 
   const handleNavigate = (e: any, location: string) => {
     e.preventDefault();
@@ -86,83 +80,115 @@ export default function Home() {
   return (
     <ShiftFromLeftAnimation>
         <div className={styles.heroSection}>
-          <div className={styles.aboutWrapper}>
-            {/* <div className={styles.previewContent}>
-              More about me
-  </div> */}
-            <div 
-              className={styles.titleContent}
-              onClick={e => handleNavigate(e, '/about')}
-            >
-              <BounceAnimation 
-                className={styles.aboutWrapper} 
-                isBouncing={isFirstBouncing}
-                setIsBouncing={setIsFirstBouncing}
+          <div className={styles.cardsRow}>
+            <div>
+              {/* <div className={styles.previewContent}>
+                More about me
+    </div> */}
+              <div 
+                className={styles.titleContent}
+                onClick={e => handleNavigate(e, '/about')}
               >
-                <Image
-                  src="/ME2024.png"
-                  alt="LinkedIn Logo"
-                  width={300}
-                  height={300}
-                  className={styles.profilePic}
-                />
-                <h1 className={styles.name}>Connor Pepin</h1>
-              </BounceAnimation>
+                <BounceAnimation 
+                  className={styles.aboutWrapper} 
+                  isBouncing={isFirstBouncing}
+                  setIsBouncing={setIsFirstBouncing}
+                >
+                  <Image
+                    src="/ME2024.png"
+                    alt="Portrait of Connor Pepin"
+                    width={300}
+                    height={300}
+                    className={styles.profilePic}
+                  />
+                  <div className={styles.previewLabel}>About me</div>
+                  <h1 className={styles.name}>Connor Pepin</h1>
+                  <p className={styles.roleLine}>Startup-focused software engineer</p>
+                </BounceAnimation>
+              </div>
             </div>
-          </div>
-          <BounceAnimation 
-            className={styles.experienceWrapper} 
-            isBouncing={isSecondBouncing}
-            setIsBouncing={setIsSecondBouncing}
-          >
-            <div onClick={e => handleNavigate(e, '/experience')}>
-              <h3 className={styles.description}>Full Stack Developer</h3>
-              <h3 className={styles.solutionsWrapper}>
-                Building scalable web applications with&nbsp;
-                <div className={styles.fancyText}>
-                  {displayedText}
-                  <div className={styles.flashingBox} />
+            <div className={styles.rightColumn}>
+              <BounceAnimation 
+                className={styles.experienceWrapper} 
+                isBouncing={isSecondBouncing}
+                setIsBouncing={setIsSecondBouncing}
+              >
+                <div onClick={e => handleNavigate(e, '/experience')}>
+                  <div className={styles.previewLabel}>Experience + projects</div>
+                  <h3 className={styles.description}>Software Engineer</h3>
+                  <h3 className={styles.solutionsWrapper}>
+                    Building polished, product-minded software with&nbsp;
+                    <div className={styles.fancyText}>
+                      {displayedText}
+                      <div className={styles.flashingBox} />
+                    </div>
+                  </h3>
+                  <p className={styles.supportingText}>
+                    I do my best work in startup environments where ownership is high,
+                    feedback loops are fast, and quality matters.
+                  </p>
+                  <div className={styles.traitRow}>
+                    <span className={styles.trait}>Ownership</span>
+                    <span className={styles.trait}>Product thinking</span>
+                    <span className={styles.trait}>Fast execution</span>
+                  </div>
                 </div>
-              </h3>
+              </BounceAnimation>
+              <div className={styles.cta}>
+                <BounceAnimation
+                  isBouncing={isLinkedInBouncing}
+                  setIsBouncing={setIsLinkedInBouncing}
+                >
+                  <IconButton onClick={() => window.open("https://www.linkedin.com/in/connor-pepin-10954b192/")}>
+                    <Image
+                      src="/linkedIn.png"
+                      alt="LinkedIn Logo"
+                      width={imageDiameter}
+                      height={imageDiameter}
+                    />
+                  </IconButton>
+                </BounceAnimation>
+                <BounceAnimation
+                  isBouncing={isGitHubBouncing}
+                  setIsBouncing={setIsGitHubBouncing}
+                >
+                  <IconButton onClick={() => window.open("https://github.com/cjpepin")}>
+                    <Image
+                      src="/github.png"
+                      alt="GitHub Logo"
+                      width={imageDiameter}
+                      height={imageDiameter}
+                    />
+                  </IconButton>
+                </BounceAnimation>
+                <BounceAnimation
+                  isBouncing={isXBouncing}
+                  setIsBouncing={setIsXBouncing}
+                >
+                  <IconButton onClick={() => window.open("https://x.com/iCodeAThing")}>
+                    <Image
+                      src="/x.png"
+                      alt="X Logo"
+                      width={imageDiameter}
+                      height={imageDiameter}
+                    />
+                  </IconButton>
+                </BounceAnimation>
+                <BounceAnimation
+                  isBouncing={isEmailBouncing}
+                  setIsBouncing={setIsEmailBouncing}
+                >
+                  <IconButton onClick={() => window.open('mailto:cjpepin@wustl.edu?subject=Contact%20Me&body=Hello%2C%20I%20would%20like%20to%20discuss%20...')}>
+                    <Image
+                      src="/email.png"
+                      alt="Email icon"
+                      width={imageDiameter}
+                      height={imageDiameter}
+                    />
+                  </IconButton>
+                </BounceAnimation>
+              </div>
             </div>
-          </BounceAnimation>
-          <div className={`${styles.cta}`}>
-            <IconButton>
-              <Image
-                src="/linkedIn.png"
-                alt="LinkedIn Logo"
-                width={imageDiameter}
-                height={imageDiameter}
-                onClick={() => window.open("https://www.linkedin.com/in/connor-pepin-10954b192/")}
-              />
-            </IconButton>
-            <IconButton>
-              <Image
-                src="/github.png"
-                alt="GitHub Logo"
-                width={imageDiameter}
-                height={imageDiameter}
-                onClick={() => window.open("https://github.com/cjpepin")}
-              />
-            </IconButton>
-            <IconButton>
-              <Image
-                src="/x.png"
-                alt="X Logo"
-                width={imageDiameter}
-                height={imageDiameter}
-                onClick={() => window.open("https://x.com/iCodeAThing")}
-              />
-            </IconButton>
-            <IconButton>
-              <Image
-                src="/email.png"
-                alt="Email icon"
-                width={imageDiameter}
-                height={imageDiameter}
-                onClick={() => window.open('mailto:cjpepin@wustl.edu?subject=Contact%20Me&body=Hello%2C%20I%20would%20like%20to%20discuss%20...') }
-              />
-            </IconButton>
           </div>
         </div>
     </ShiftFromLeftAnimation>

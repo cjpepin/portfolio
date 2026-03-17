@@ -3,9 +3,10 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    height: calc(100vh - 2rem);
+    min-height: calc(100vh - 2rem);
     width: 80%;
     margin-left: 10%;
+    gap: 2rem;
 }
 
 .profilePictureWrapper {
@@ -21,9 +22,51 @@
 }
 
 .aboutContent {
+    max-width: 42rem;
     margin: 0rem 2rem;
-    font-size: 1.25rem;
+    padding: 1.75rem 2rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    font-size: 1.1rem;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    line-height: 1.8;
+}
+
+.sectionLabel {
+    margin-bottom: 0.35rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.55);
+}
+
+.title {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.aboutContent p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.highlightsWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-top: 1.2rem;
+}
+
+.highlight {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background-color: rgba(255, 255, 255, 0.65);
+    font-size: 0.92rem;
 }
 
 @media (max-width: 768px) {
@@ -31,10 +74,11 @@
         flex-direction: column;
         height: fit-content;
         margin-top: 5rem;
+        gap: 1rem;
     }
 
     .profilePictureWrapper {
-        margin-bottom: 3rem;
+        margin-bottom: 1rem;
     }
 
     .profilePic {
@@ -45,5 +89,7 @@
     .aboutContent {
         margin: 0rem 1rem;
         margin-bottom: 4rem;
+        padding: 1.25rem;
+        font-size: 1rem;
     }
 }

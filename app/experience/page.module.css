@@ -1,11 +1,108 @@
 .title {
     margin: 2rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
 }
+
+.intro {
+    max-width: 46rem;
+    margin: 0 2rem 1rem;
+    line-height: 1.7;
+    color: rgba(0, 0, 0, 0.75);
+}
+
 .experiencesWrapper {
     display: flex;
     flex-direction: row;
     justify-content: center;
     flex-wrap: wrap;
+}
+
+.projectsSection {
+    width: min(42rem, calc(100vw - 4rem));
+    margin: 0 auto 3rem;
+}
+
+.sectionTitle {
+    margin: 1.5rem 0 1rem;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+}
+
+.projectCard {
+    border-radius: 1rem;
+    border: 0.5px solid rgba(0, 0, 0, 0.12);
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+    padding: 1.25rem;
+}
+
+.projectHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.projectLabel {
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.55);
+}
+
+.projectName {
+    margin-top: 0.35rem;
+    margin-bottom: 0.5rem;
+}
+
+.projectType {
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background-color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.projectDescription {
+    line-height: 1.7;
+    color: rgba(0, 0, 0, 0.78);
+}
+
+.projectSkills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.projectSkills span {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background-color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .title,
+    .intro {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
+    .projectsSection {
+        width: auto;
+        margin: 0 1rem 3rem;
+    }
+
+    .projectHeader {
+        flex-direction: column;
+    }
+
+    .projectType {
+        white-space: normal;
+    }
 }

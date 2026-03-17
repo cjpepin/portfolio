@@ -1,3 +1,8 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
 main {
   display: flex;
   flex-direction: column;
@@ -6,4 +11,8 @@ main {
   height: 98vh;
   font-size: 1.5rem;
   color: #333;
+}
+
+body {
+  background: #fafaf8;
 }

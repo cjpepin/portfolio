@@ -3,10 +3,10 @@
 .chip {
   display: inline-block;
   padding: 0.25rem 0.5rem;
-  margin-right: 0.5rem;
   border-radius: 1rem;
-  border: 0.5px solid rgba(0, 0, 0, 0.5);
-  color: var(--color-white);
+  border: 0.5px solid rgba(0, 0, 0, 0.2);
+  color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(255, 255, 255, 0.7);
   font-size: 0.85em;
   font-weight: bold;
 }
