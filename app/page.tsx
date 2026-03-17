@@ -18,10 +18,13 @@ export default function Home() {
     "Expo",
     "Next.js",
     "Node.js",
-    "APIs",
+    "Java",
+    "Spring Boot",
     "PostgreSQL",
     "MySQL",
-    "AWS"
+    "AWS",
+    "Jenkins",
+    "GraphQL",
   ], []);
   const router = useRouter();
 
