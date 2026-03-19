@@ -1,8 +1,8 @@
-// components/DownloadButton.js
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './experienceCard.module.css';
 import Chip from './chip';
-import Link from 'next/link';
+import Image from 'next/image';
+import BounceAnimation from './transitions/bounceAnimation';
 
 type ExperienceCardProps = {
     fromDate: string,
@@ -13,7 +13,9 @@ type ExperienceCardProps = {
     skills?: string[],
     context?: string,
     linkLabel?: string,
-    linkUrl?: string
+    linkUrl?: string,
+    linkIconSrc?: string,
+    linkIconAlt?: string,
 }
 
 const ExperienceCard: React.FC<ExperienceCardProps> = ({ 
@@ -25,8 +27,12 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
     skills,
     context,
     linkLabel,
-    linkUrl
+    linkUrl,
+    linkIconSrc,
+    linkIconAlt,
 }) => {
+  const [isLinkBouncing, setIsLinkBouncing] = useState(false);
+
   return (
     <div className={styles.experienceCardWrapper}>
         <div className={styles.cardHeader}>
@@ -36,15 +42,52 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
           </div>
           {context && <div className={styles.contextLabel}>{context}</div>}
         </div>
-        <div className={styles.headerSplit}>
-            <div />
-            {linkLabel && linkUrl && <Link href={linkUrl} className={styles.link}>{linkLabel}</Link>}
-        </div>
         <ul className={styles.experienceList}>
             {experiences.map((experience, index) => (
             <li key={index}>{experience}</li>
             ))}
         </ul>
+
+        {linkLabel && linkUrl && (
+          <>
+            {!linkIconSrc && (
+              <a
+                href={linkUrl}
+                target="_blank"
+                rel="noreferrer noopener"
+                className={styles.link}
+              >
+                {linkLabel}
+              </a>
+            )}
+            {linkIconSrc && (
+              <a
+                href={linkUrl}
+                target="_blank"
+                rel="noreferrer noopener"
+                className={styles.iconLink}
+                aria-label={linkLabel}
+                title={linkLabel}
+              >
+                <BounceAnimation
+                  isBouncing={isLinkBouncing}
+                  setIsBouncing={setIsLinkBouncing}
+                >
+                  <div className={styles.appIconButton}>
+                    <Image
+                      src={linkIconSrc}
+                      alt={linkIconAlt ?? linkLabel}
+                      fill
+                      sizes="52px"
+                      className={styles.appIconImage}
+                    />
+                  </div>
+                </BounceAnimation>
+              </a>
+            )}
+          </>
+        )}
+
         {skills && (
           <div className={styles.skillsWrapper}>
             {skills.map((skill, index) => (

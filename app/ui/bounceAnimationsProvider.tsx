@@ -24,7 +24,7 @@ export function BounceAnimationsProvider({
   return (
     <BounceAnimationsContext.Provider value={value}>
       {children}
-      {pathname === "/" && (
+      {(pathname === "/" || pathname === "/experience") && (
         <button
           type="button"
           className={`${styles.switch} ${enabled ? styles.switchOn : styles.switchOff}`}

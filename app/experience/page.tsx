@@ -1,14 +1,17 @@
 'use client';
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import style from "./page.module.css";
 import ExperienceCard from "../ui/experienceCard";
 import IconButton from "../ui/iconButton";
 import Image from "next/image";
 import ShiftFromRightAnimation from "../ui/transitions/shiftFromRightAnimation";
+import BounceAnimation from "../ui/transitions/bounceAnimation";
 
 export default function Home() {
   const router = useRouter();
+  const [isLingoLeafBouncing, setIsLingoLeafBouncing] = useState(false);
 
   const handleNavigateHome = (e: any) => {
     e.preventDefault();
@@ -53,6 +56,8 @@ export default function Home() {
           ]}
           linkLabel="Mastercard Redemptions Services"
           linkUrl="https://developer.mastercard.com/product/mastercard-redemption-services/"
+          linkIconSrc="/mastercard.png"
+          linkIconAlt="Mastercard logo"
         />
         <ExperienceCard 
           fromDate="May 2025" 
@@ -91,7 +96,9 @@ export default function Home() {
             "AWS",
           ]}
           linkLabel="Caralyst Health"
-          linkUrl="https://my.caralyst.io/"
+          linkUrl="https://caralyst.io/"
+          linkIconSrc="/caralyst.png"
+          linkIconAlt="Caralyst logo"
         />
         <ExperienceCard 
           fromDate="May 2022" 
@@ -133,12 +140,27 @@ export default function Home() {
             that make a learning experience feel usable over time.
           </p>
           <a
-            className={style.projectLink}
+            className={style.projectIconLink}
             href="https://lingoleaf.app"
             target="_blank"
             rel="noreferrer noopener"
+            aria-label="LingoLeaf"
+            title="LingoLeaf"
           >
-            Visit lingoleaf.app
+            <BounceAnimation
+              isBouncing={isLingoLeafBouncing}
+              setIsBouncing={setIsLingoLeafBouncing}
+            >
+              <div className={style.projectAppIconButton}>
+                <Image
+                  src="/lingoleaf.png"
+                  alt="LingoLeaf app icon"
+                  fill
+                  sizes="52px"
+                  className={style.projectAppIconImage}
+                />
+              </div>
+            </BounceAnimation>
           </a>
           <div className={style.projectSkills}>
             <span>Expo</span>

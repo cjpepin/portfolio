@@ -96,7 +96,7 @@ export default function Home() {
                   setIsBouncing={setIsFirstBouncing}
                 >
                   <Image
-                    src="/ME2024.png"
+                    src="/ME_NEWER.JPG"
                     alt="Portrait of Connor Pepin"
                     width={300}
                     height={300}
