@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import IconButton from "./ui/iconButton";
 import ShiftFromLeftAnimation from "./ui/transitions/shiftFromLeftAnimation";
@@ -38,10 +39,10 @@ export default function Home() {
   const [isXBouncing, setIsXBouncing] = useState<boolean>(false);
   const [isEmailBouncing, setIsEmailBouncing] = useState<boolean>(false);
 
-  const handleNavigate = (e: any, location: string) => {
-    e.preventDefault();
-    setTimeout(() => router.push(location), 0);
-  }
+  useEffect(() => {
+    router.prefetch("/about");
+    router.prefetch("/experience");
+  }, [router]);
 
   useEffect(() => {
     const techInterval = setInterval(() => {
@@ -88,10 +89,7 @@ export default function Home() {
               {/* <div className={styles.previewContent}>
                 More about me
     </div> */}
-              <div 
-                className={styles.titleContent}
-                onClick={e => handleNavigate(e, '/about')}
-              >
+              <Link className={styles.titleContent} href="/about">
                 <BounceAnimation 
                   className={styles.aboutWrapper} 
                   isBouncing={isFirstBouncing}
@@ -104,11 +102,10 @@ export default function Home() {
                     height={300}
                     className={styles.profilePic}
                   />
-                  <div className={styles.previewLabel}>About me</div>
                   <h1 className={styles.name}>Connor Pepin</h1>
                   <p className={styles.roleLine}>Startup-focused software engineer</p>
                 </BounceAnimation>
-              </div>
+              </Link>
             </div>
             <div className={styles.rightColumn}>
               <BounceAnimation 
@@ -116,7 +113,7 @@ export default function Home() {
                 isBouncing={isSecondBouncing}
                 setIsBouncing={setIsSecondBouncing}
               >
-                <div onClick={e => handleNavigate(e, '/experience')}>
+                <Link className={styles.experienceLink} href="/experience">
                   <div className={styles.previewLabel}>Experience + projects</div>
                   <h3 className={styles.description}>Software Engineer</h3>
                   <h3 className={styles.solutionsWrapper}>
@@ -135,7 +132,7 @@ export default function Home() {
                     <span className={styles.trait}>Product thinking</span>
                     <span className={styles.trait}>Fast execution</span>
                   </div>
-                </div>
+                </Link>
               </BounceAnimation>
               <div className={styles.cta}>
                 <BounceAnimation

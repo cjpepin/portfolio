@@ -1,0 +1,83 @@
+.switch {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.9rem;
+  height: 1.7rem;
+  padding: 0;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  color: #111827;
+  cursor: pointer;
+  backdrop-filter: blur(14px);
+}
+
+.switch:hover {
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.1);
+}
+
+.track {
+  position: relative;
+  width: 1.85rem;
+  height: 1.05rem;
+  border-radius: 999px;
+  background: rgba(17, 24, 39, 0.12);
+  transition: background 0.2s ease;
+}
+
+.thumb {
+  position: absolute;
+  top: 0.1rem;
+  left: 0.1rem;
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 999px;
+  background: #111827;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.tooltip {
+  position: absolute;
+  top: 115%;
+  right: 0;
+  transform: translateY(-4px);
+  opacity: 0;
+  pointer-events: none;
+  padding: 0.35rem 0.55rem;
+  border-radius: 0.55rem;
+  background: rgba(17, 24, 39, 0.92);
+  color: #f8fafc;
+  font-size: 0.72rem;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+
+.switchOff .track {
+  background: rgba(17, 24, 39, 0.08);
+}
+
+.switchOff .thumb {
+  transform: translateX(0.8rem);
+  background: rgba(17, 24, 39, 0.55);
+}
+
+.switch:hover .tooltip,
+.switch:focus-visible .tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 640px) {
+  .switch {
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+}

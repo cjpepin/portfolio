@@ -16,12 +16,13 @@ export default function Home() {
 
   return (
     <ShiftFromRightAnimation>
-      <IconButton onClick={handleNavigateHome} style={{position: "absolute", margin: "0.25rem", top: "0.5rem", left: "0.5rem"}}>
+      <IconButton className={styles.backButton} onClick={handleNavigateHome}>
         <Image
           src="/image.png"
           alt="Back arrow"
-          width={25}
-          height={25}
+          width={20}
+          height={20}
+          className={styles.backIcon}
         />
       </IconButton>
       <div className={styles.aboutWrapper}>
@@ -39,28 +40,30 @@ export default function Home() {
           <h1 className={styles.title}>Hi, I&apos;m Connor.</h1>
           <p>
             I&apos;m a software engineer who thrives in startup environments where
-            ownership is high, the pace is fast, and the work has a visible impact
-            on the product. I enjoy building software that feels thoughtful in the
-            details while still moving quickly enough to keep momentum.
+            ownership is high, pace matters, and impact is visible. I care about
+            shipping quickly without letting quality slip.
           </p>
           <p>
-            My background is full-stack with a frontend-heavy lean. I&apos;ve worked
-            across React, React Native, Expo, TypeScript, APIs, and cloud-backed
-            applications, and I&apos;m especially motivated by products where I can
-            contribute to both the implementation and the shape of the user
-            experience.
+            I&apos;m full-stack with a frontend-heavy lean. Recently at Mastercard,
+            most of my work has been building RESTful Spring Boot APIs and working
+            on React and Angular UIs that consume them.
           </p>
           <p>
-            I studied Computer Science and Mathematics at WashU, but most of what
-            I value as an engineer has come from building real software, learning
-            how to ship under constraints, and caring about quality without losing
-            speed.
+            I also invest in my workflow. Tools like GitHub Copilot (and more
+            recently, agentic AI workflows) help me iterate faster while keeping
+            code readable, tested, and maintainable.
           </p>
+          <div className={styles.focusBlock}>
+            <div className={styles.focusLabel}>Current focus</div>
+            <p className={styles.focusCopy}>
+              Creating and optimizing agentic AI workflows that tighten feedback
+              loops and improve throughput without sacrificing quality.
+            </p>
+          </div>
           <div className={styles.highlightsWrapper}>
-            <span className={styles.highlight}>Startup environments</span>
-            <span className={styles.highlight}>React / React Native</span>
-            <span className={styles.highlight}>Expo + TypeScript</span>
-            <span className={styles.highlight}>Product-minded engineering</span>
+            <span className={styles.highlight}>Agentic AI workflows</span>
+            <span className={styles.highlight}>Spring Boot APIs</span>
+            <span className={styles.highlight}>React + TypeScript</span>
           </div>
         </div>
       </div>

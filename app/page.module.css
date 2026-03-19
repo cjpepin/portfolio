@@ -28,9 +28,14 @@
 .titleContent {
     cursor: pointer;
     width: fit-content;
+    text-decoration: none;
+    color: inherit;
 }
 .aboutWrapper {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     border-radius: 1rem;
     width: fit-content;
     padding: 1.25rem 1.5rem 1rem;
@@ -50,11 +55,19 @@
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
+.experienceLink {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
 .about {
     transform: translate(50vw)
 }
 
 .profilePic {
+    display: block;
+    margin: 0 auto;
     border-radius: 50%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); 
 }

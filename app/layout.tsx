@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { sourceCodePro } from "./ui/fonts";
 import "./ui/globals.css";
 import PageAnimatePresence from "./ui/transitions/pageAnimatePresence";
+import { BounceAnimationsProvider } from "./ui/bounceAnimationsProvider";
 
 export const metadata: Metadata = {
   title: "Connor Pepin Portfolio",
@@ -17,7 +18,9 @@ export default function RootLayout({
     <html lang="en">
       <link rel="icon" href="/catCrunch.png" />
       <body className={sourceCodePro.className}>
-        <PageAnimatePresence>{children}</PageAnimatePresence>
+        <BounceAnimationsProvider>
+          <PageAnimatePresence>{children}</PageAnimatePresence>
+        </BounceAnimationsProvider>
       </body>
     </html>
   );

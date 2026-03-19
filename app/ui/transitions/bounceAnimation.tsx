@@ -3,6 +3,7 @@
 
 import React, { useCallback, useEffect, useRef } from "react";
 import { motion, useAnimationControls } from "framer-motion";
+import { useBounceAnimations } from "../bounceAnimationsProvider";
 
 const BounceAnimation = ({
     children,
@@ -15,6 +16,12 @@ const BounceAnimation = ({
     isBouncing: boolean;
     setIsBouncing: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+    const { enabled } = useBounceAnimations();
+
+    if (!enabled) {
+        return <div className={className}>{children}</div>;
+    }
+
     const controls = useAnimationControls();
     const isMounted = useRef(false);
     const previousIsBouncing = useRef(isBouncing);

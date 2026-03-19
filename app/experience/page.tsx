@@ -17,16 +17,15 @@ export default function Home() {
 
   return (
     <ShiftFromRightAnimation>
-        <IconButton onClick={handleNavigateHome} style={{position: "absolute", margin: "0.25rem"}}>
+      <IconButton className={style.backButton} onClick={handleNavigateHome}>
           <Image
             src="/image.png"
             alt="Back arrow"
-            width={25}
-            height={25}
+          width={20}
+          height={20}
+          className={style.backIcon}
           />
         </IconButton>
-        <br />
-        <br />
         <h1 className={style.title}>Experience</h1>
         <p className={style.intro}>
           I enjoy roles where I can move quickly, own meaningful parts of the
@@ -34,6 +33,27 @@ export default function Home() {
           use.
         </p>
         <div className={style.experiencesWrapper}>
+        <ExperienceCard 
+          fromDate="August 2021" 
+          toDate="Present" 
+          company="Mastercard" 
+          position="Software Engineer" 
+          context="Backend Development"
+          experiences={[
+            "Delivered features for Spring Boot APIs supporting digital redemption services as part of a collaborative engineering team.",
+            "Built improvements for a continuous delivery platform that reduced deployment lead time by 86%.",
+            "Developed and presented proof-of-concept applications to senior leadership while also strengthening integration and unit testing.",
+          ]}
+          skills={[
+            "Java",
+            "Spring Boot",
+            "Jenkins",
+            "PostgreSQL",
+            "GraphQL",
+          ]}
+          linkLabel="Mastercard Redemptions Services"
+          linkUrl="https://developer.mastercard.com/product/mastercard-redemption-services/"
+        />
         <ExperienceCard 
           fromDate="May 2025" 
           toDate="December 2025" 
@@ -74,27 +94,6 @@ export default function Home() {
           linkUrl="https://my.caralyst.io/"
         />
         <ExperienceCard 
-          fromDate="August 2021" 
-          toDate="May 2022" 
-          company="Mastercard" 
-          position="Software Engineer" 
-          context="Platform engineering"
-          experiences={[
-            "Delivered features for Spring Boot APIs supporting digital redemption services as part of a collaborative engineering team.",
-            "Built improvements for a continuous delivery platform that reduced deployment lead time by 86%.",
-            "Developed and presented proof-of-concept applications to senior leadership while also strengthening integration and unit testing.",
-          ]}
-          skills={[
-            "Java",
-            "Spring Boot",
-            "Jenkins",
-            "PostgreSQL",
-            "GraphQL",
-          ]}
-          linkLabel="Mastercard Redemptions Services"
-          linkUrl="https://developer.mastercard.com/product/mastercard-redemption-services/"
-        />
-        <ExperienceCard 
           fromDate="May 2022" 
           toDate="December 2022" 
           company="Momentus Technologies" 
@@ -133,11 +132,14 @@ export default function Home() {
             it as a way to explore product direction, mobile UX, and the details
             that make a learning experience feel usable over time.
           </p>
-          <p className={style.projectDescription}>
-            The section is intentionally lightweight for now, but it is structured
-            to grow into a fuller project write-up later with product decisions,
-            screenshots, and implementation notes.
-          </p>
+          <a
+            className={style.projectLink}
+            href="https://lingoleaf.app"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            Visit lingoleaf.app
+          </a>
           <div className={style.projectSkills}>
             <span>Expo</span>
             <span>React Native</span>
