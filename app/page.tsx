@@ -126,11 +126,13 @@ export default function Home() {
                   <div className={styles.previewLabel}>Experience + projects</div>
                   <h3 className={styles.description}>Software Engineer</h3>
                   <h3 className={styles.solutionsWrapper}>
-                    Building polished, product-minded software with&nbsp;
-                    <div className={styles.fancyText}>
+                    <span className={styles.solutionsLead}>
+                      Building polished, product-minded software with
+                    </span>
+                    <span className={styles.fancyText}>
                       {displayedText}
-                      <div className={styles.flashingBox} />
-                    </div>
+                      <span className={styles.flashingBox} />
+                    </span>
                   </h3>
                   <p className={styles.supportingText}>
                     I do my best work in startup environments where ownership is high,

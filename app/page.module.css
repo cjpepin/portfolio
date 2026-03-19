@@ -113,24 +113,32 @@
 }
 
 .solutionsWrapper {
-    display: block;
+    display: grid;
+    grid-template-rows: auto 1.6em;
+    row-gap: 0.35rem;
     line-height: 1.5;
-    min-height: 3.2em;
+    min-height: 0;
     margin: 0;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15); 
 }
 
+.solutionsLead {
+    display: block;
+}
+
 .fancyText {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    min-width: 13ch;
+    min-width: 14ch;
+    width: 14ch;
+    height: 1.2em;
     white-space: nowrap;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
 
 }
 
 .supportingText {
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     margin-bottom: 0;
     max-width: 34rem;
     font-size: 1rem;
@@ -156,8 +164,10 @@
 }
 
 .flashingBox {
-    width: 1ch;
-    height: 2ch;
+    width: 0.9ch;
+    height: 1.2em;
+    margin-left: 0.12ch;
+    flex-shrink: 0;
     background-color: black;
     color: white;
     animation-name: flashingBoxAnimation;
@@ -249,7 +259,8 @@
     .solutionsWrapper {
         font-size: 1em;
         line-height: 1.6;
-        min-height: 3.4em;
+        grid-template-rows: auto 1.65em;
+        row-gap: 0.3rem;
     }
 
     .experienceWrapper {
