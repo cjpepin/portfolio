@@ -28,11 +28,10 @@
 }
 
 .experiencesWrapper {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
-    width: min(70rem, calc(100vw - 3rem));
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    width: min(84rem, calc(100vw - 3rem));
     margin: 0 auto;
 }
 
@@ -156,6 +155,7 @@
     }
 
     .experiencesWrapper {
+        grid-template-columns: 1fr;
         width: calc(100vw - 2rem);
     }
 
