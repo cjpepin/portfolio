@@ -118,8 +118,6 @@ export default function Home() {
             "MongoDB",
             "ThreeJS",
           ]}
-          linkLabel="Ungerbot UI"
-          linkUrl="https://cjpepin.github.io/ungerbot-frontend/"
         />
       </div>
       <div className={style.projectsSection}>
