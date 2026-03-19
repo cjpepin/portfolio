@@ -21,8 +21,8 @@
     justify-content: center;
     padding-top: 2rem;
     min-height: calc(100vh - 2rem);
-    width: 80%;
-    margin-left: 10%;
+    width: min(70rem, calc(100vw - 3rem));
+    margin: 0 auto;
     gap: 2rem;
 }
 
@@ -118,6 +118,7 @@
         height: fit-content;
         padding-top: 4.25rem;
         gap: 1rem;
+        width: calc(100vw - 2rem);
     }
 
     .profilePictureWrapper {

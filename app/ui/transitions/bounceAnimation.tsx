@@ -1,7 +1,7 @@
 // BounceAnimation.tsx
 'use client';
 
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { motion, useAnimationControls } from "framer-motion";
 import { useBounceAnimations } from "../bounceAnimationsProvider";
 
@@ -18,16 +18,12 @@ const BounceAnimation = ({
 }) => {
     const { enabled } = useBounceAnimations();
 
-    if (!enabled) {
-        return <div className={className}>{children}</div>;
-    }
-
     const controls = useAnimationControls();
     const isMounted = useRef(false);
     const previousIsBouncing = useRef(isBouncing);
     const runId = useRef(0);
 
-    const bounceAnimation = {
+    const bounceAnimation = useMemo(() => ({
         y: [0, -32, 0, -16, 0, -8, 0, -4, 0, -2, 0],
         transition: {
             duration: 0.95,
@@ -45,10 +41,17 @@ const BounceAnimation = ({
                 "easeIn",
             ],
         },
-    };
+    }), []);
 
     const playBounce = useCallback(async (shouldResetExternalState: boolean) => {
         if (!isMounted.current) {
+            return;
+        }
+
+        if (!enabled) {
+            if (shouldResetExternalState) {
+                setIsBouncing(false);
+            }
             return;
         }
 
@@ -61,7 +64,7 @@ const BounceAnimation = ({
         if (runId.current === currentRunId && shouldResetExternalState) {
             setIsBouncing(false);
         }
-    }, [bounceAnimation, controls, setIsBouncing]);
+    }, [bounceAnimation, controls, enabled, setIsBouncing]);
 
     useEffect(() => {
         isMounted.current = true;
@@ -78,6 +81,10 @@ const BounceAnimation = ({
 
         previousIsBouncing.current = isBouncing;
     }, [isBouncing, playBounce]);
+
+    if (!enabled) {
+        return <div className={className}>{children}</div>;
+    }
 
     return (
         <motion.div

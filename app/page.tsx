@@ -70,14 +70,23 @@ export default function Home() {
 
   useEffect(() => {
     if (window.innerWidth <= 475) {
-      const firstBounceInterval = setInterval(() => {
-        setIsFirstBouncing(true);
-        setTimeout(() => {
-          setIsSecondBouncing(true);
-        }, 350); // 0.5-second delay after the first bounce
-      }, 5000); // 5-second interval for the first bounce
+      const t1 = window.setTimeout(() => setIsFirstBouncing(true), 650);
+      const t2 = window.setTimeout(() => setIsSecondBouncing(true), 950);
 
-      return () => clearInterval(firstBounceInterval);
+      // Social ripple (once)
+      const t3 = window.setTimeout(() => setIsLinkedInBouncing(true), 1250);
+      const t4 = window.setTimeout(() => setIsGitHubBouncing(true), 1425);
+      const t5 = window.setTimeout(() => setIsXBouncing(true), 1600);
+      const t6 = window.setTimeout(() => setIsEmailBouncing(true), 1775);
+
+      return () => {
+        window.clearTimeout(t1);
+        window.clearTimeout(t2);
+        window.clearTimeout(t3);
+        window.clearTimeout(t4);
+        window.clearTimeout(t5);
+        window.clearTimeout(t6);
+      };
     }
   }, []);
   
@@ -85,7 +94,7 @@ export default function Home() {
     <ShiftFromLeftAnimation>
         <div className={styles.heroSection}>
           <div className={styles.cardsRow}>
-            <div>
+            <div className={styles.leftColumn}>
               {/* <div className={styles.previewContent}>
                 More about me
     </div> */}

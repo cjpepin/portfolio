@@ -106,6 +106,7 @@
     .experienceCardWrapper {
         width: auto;
         margin: 0.75rem 0;
+        min-height: 0;
     }
 
     .cardHeader {

@@ -32,6 +32,8 @@
     flex-direction: row;
     justify-content: center;
     flex-wrap: wrap;
+    width: min(70rem, calc(100vw - 3rem));
+    margin: 0 auto;
 }
 
 .projectsSection {
@@ -151,6 +153,10 @@
     .intro {
         margin-left: 1rem;
         margin-right: 1rem;
+    }
+
+    .experiencesWrapper {
+        width: calc(100vw - 2rem);
     }
 
     .projectsSection {

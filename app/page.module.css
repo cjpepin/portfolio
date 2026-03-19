@@ -2,10 +2,10 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin: 4rem;
+    align-items: center;
+    margin: 4rem auto;
     height: 100%;
-    width: 90%;
-    margin-left: 12%;
+    width: min(64rem, calc(100vw - 3rem));
     gap: 1.5rem;
 }
 
@@ -13,23 +13,31 @@
     display: flex;
     flex-direction: row;
     align-items: flex-start;
+    justify-content: center;
     gap: 1.5rem;
     flex-wrap: nowrap;
+    width: 100%;
+    min-width: 0;
 }
 
+.leftColumn,
 .rightColumn {
     display: flex;
     flex: 1;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 1rem;
+    min-width: 0;
+    max-width: 42rem;
+    width: 100%;
 }
 
 .titleContent {
     cursor: pointer;
-    width: fit-content;
+    width: 100%;
     text-decoration: none;
     color: inherit;
+    min-width: 0;
 }
 .aboutWrapper {
     position: relative;
@@ -37,11 +45,12 @@
     flex-direction: column;
     align-items: center;
     border-radius: 1rem;
-    width: fit-content;
+    width: 100%;
     padding: 1.25rem 1.5rem 1rem;
     background: rgba(255, 255, 255, 0.5);
     border: 1px solid rgba(0, 0, 0, 0.08);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    min-width: 0;
 }
 
 .experienceWrapper {
@@ -53,12 +62,15 @@
     background: rgba(255, 255, 255, 0.5);
     border: 1px solid rgba(0, 0, 0, 0.08);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    min-width: 0;
 }
 
 .experienceLink {
     display: block;
     text-decoration: none;
     color: inherit;
+    min-width: 0;
 }
 
 .about {
@@ -162,28 +174,41 @@
     justify-content: flex-start;
     gap: 1rem;
     margin-top: 1rem;
+    width: 100%;
 }
 
 @media (max-width: 900px) {
     .cardsRow {
         flex-direction: column;
+        align-items: center;
     }
 
+    .leftColumn,
     .rightColumn {
+        width: 100%;
+        max-width: 42rem;
+    }
+
+    .titleContent {
+        width: 100%;
+    }
+
+    .aboutWrapper {
         width: 100%;
     }
 }
 
 @media (max-width: 475px) {
     .heroSection {
-        margin: 2rem;
-        margin-left: 10%;
+        margin: 1.5rem auto;
+        width: calc(100vw - 2rem);
         gap: 1rem;
     }
 
     .aboutWrapper {
         margin: 0;
         padding: 1rem;
+        width: 100%;
     }
 
     .profilePic {
@@ -206,6 +231,12 @@
     .experienceWrapper {
         padding: 1rem;
         width: 100%;
+        max-width: 100%;
+    }
+
+    .cta {
+        justify-content: center;
+        flex-wrap: wrap;
     }
 
     .supportingText {
