@@ -1,0 +1,3 @@
+# Cloudflare Pages (Git-connected builds from monorepo root)
+name = "portfolio"
+pages_build_output_dir = "apps/portfolio/dist"
