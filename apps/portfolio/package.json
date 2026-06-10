@@ -7,7 +7,7 @@
     "dev": "astro dev",
     "dev:all": "./scripts/dev-with-lingoleaf-web.sh",
     "build": "astro check && astro build",
-    "deploy": "wrangler pages deploy dist",
+    "deploy": "npx wrangler@4 pages deploy dist",
     "preview": "astro preview",
     "check": "astro check",
     "sync:lingoleaf-demo": "./scripts/sync-lingoleaf-demo.sh",
@@ -27,7 +27,6 @@
   "devDependencies": {
     "@types/node": "^22.16.5",
     "@types/react": "^19.1.2",
-    "@types/react-dom": "^19.1.2",
-    "wrangler": "^4.99.0"
+    "@types/react-dom": "^19.1.2"
   }
 }
