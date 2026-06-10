@@ -4,6 +4,7 @@
  * Must run wrangler from apps/portfolio (not the monorepo root).
  */
 import { spawnSync } from "node:child_process";
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -34,15 +35,21 @@ if (!projectName) {
   process.exit(1);
 }
 
-const args = [
-  "--yes",
-  "wrangler@4",
-  "pages",
-  "deploy",
-  "dist",
-  "--project-name",
-  projectName
-];
+const wranglerTomlPath = path.join(portfolioDir, "wrangler.toml");
+const escapedName = projectName.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+
+fs.writeFileSync(
+  wranglerTomlPath,
+  [
+    "# Written at deploy time by scripts/cloudflare-pages-deploy.mjs",
+    `name = "${escapedName}"`,
+    'pages_build_output_dir = "dist"',
+    'compatibility_date = "2024-09-23"',
+    ""
+  ].join("\n")
+);
+
+const args = ["--yes", "wrangler@4", "pages", "deploy", "dist"];
 
 const result = spawnSync("npx", args, {
   cwd: portfolioDir,
