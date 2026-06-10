@@ -7,6 +7,7 @@
     "dev": "astro dev",
     "dev:all": "./scripts/dev-with-lingoleaf-web.sh",
     "build": "astro check && astro build",
+    "build:pages": "npm run sync:lingoleaf-web && npm run sync:lingoleaf-demo && npm run build",
     "deploy": "node ../../scripts/cloudflare-pages-deploy.mjs",
     "preview": "astro preview",
     "check": "astro check",

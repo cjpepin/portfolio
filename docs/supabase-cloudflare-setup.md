@@ -287,35 +287,192 @@ Use `.dev.vars` at `apps/portfolio/.dev.vars` for local secrets (same keys as Cl
 
 ### Option B — Separate Cloudflare Pages projects per repo
 
-Use this if subprojects stay in **separate GitHub repositories** but should appear on one domain.
+Use this when **portfolio** and **lingoleaf-web** are separate Git repos with separate Cloudflare Pages projects, but visitors should still see one domain (`connorjpepin.com`).
 
-#### Portfolio repo (`apps/portfolio`)
+**Compared to Option A:** two builds, two env-var surfaces, and you must route by path at the edge. Option A (monorepo sync) avoids that by copying lingoleaf-web `dist/` and `functions/` into the portfolio build before `astro build`.
+
+#### Why you cannot attach both projects to `connorjpepin.com`
+
+Cloudflare Pages allows **one custom hostname per path on the zone** in the simple case: only one Pages project can own `connorjpepin.com`. A second project (`lingoleaf-web`) must stay on its default hostname (`lingoleaf-web.pages.dev`) and be reached via **path-based routing** in front of the portfolio project.
+
+#### Deploy each repo independently
+
+**Portfolio Pages project** (repo: portfolio)
 
 | Setting | Value |
 |---------|-------|
-| Root directory | `apps/portfolio` |
-| Build command | `npm run build` |
-| Output | `dist` |
-| Custom domain | `connorjpepin.com` |
+| Root directory | `apps/portfolio` (monorepo) or `/` (portfolio-only repo) |
+| Build command | `npm install && npm run build` |
+| Build output | `dist` |
+| Deploy command | *(empty — do not use `npx wrangler deploy`)* |
+| Custom domain | `connorjpepin.com`, `www.connorjpepin.com` |
+| Env vars | `RESEND_API_KEY`, contact defaults — see `apps/portfolio/.env.example` |
 
-#### LingoLeaf web repo (`projects/lingoleaf-web` as its own repo)
+**LingoLeaf web Pages project** (repo: lingoleaf-web)
 
 | Setting | Value |
 |---------|-------|
-| Root directory | `/` (repo root) |
+| Root directory | `/` |
 | Build command | `npm ci && npm run build` |
-| Output | `dist` |
-| Custom domain | Use a **Cloudflare route** or **Workers route** — not a second apex domain |
+| Build output | `dist` |
+| Deploy command | *(empty)* |
+| Custom domain | **None** — use only `lingoleaf-web.pages.dev` |
+| Env vars | All `VITE_*` build vars + encrypted server vars — see `projects/lingoleaf-web/docs/DEPLOY.md` |
 
-**Path routing on one domain:**
+LingoLeaf web is built with `base: "/lingoleaf/"` in `vite.config.ts`, so assets and the router already expect to live under `/lingoleaf/*` on the **public** hostname (`connorjpepin.com`), not on `lingoleaf-web.pages.dev` alone. That is correct as long as the browser URL stays on `connorjpepin.com` (Worker or origin rule below).
 
-1. Deploy lingoleaf-web to Pages project `lingoleaf-web` (gets `lingoleaf-web.pages.dev`)
-2. In the **portfolio zone** → **Rules** → **Transform Rules** or use a **Worker** in front:
+Supabase Auth redirect URLs stay on the apex domain, e.g. `https://connorjpepin.com/lingoleaf/**` — no change from Option A.
 
-   - `/lingoleaf/*` → origin `lingoleaf-web.pages.dev`
-   - `/` and everything else → portfolio Pages project
+#### Path routing on one domain (overview)
 
-Alternatively, use **Cloudflare for SaaS** or a single Worker that proxies by path. The monorepo avoids this by syncing static assets into one build (Option A).
+```text
+Browser                    Cloudflare edge                         Origins
+───────                    ───────────────                         ───────
+
+connorjpepin.com/     ──►  portfolio Pages (custom domain)   ──►  portfolio-*.pages.dev
+connorjpepin.com/contact
+connorjpepin.com/lingoleaf/demo*   ──►  portfolio Pages (static embed)
+
+connorjpepin.com/lingoleaf/*  ──►  Worker or Origin Rule        ──►  lingoleaf-web.pages.dev
+  (except /demo*)                  (path match + proxy)
+```
+
+| Path | Served by | Notes |
+|------|-----------|-------|
+| `/`, `/contact`, portfolio routes | Portfolio Pages | Custom domain attached here |
+| `/lingoleaf/demo`, `/lingoleaf/demo/*` | Portfolio Pages | Expo embed lives in portfolio `public/lingoleaf/demo/` — **not** in lingoleaf-web |
+| `/lingoleaf/*` (SPA + APIs) | LingoLeaf web Pages | Includes `/lingoleaf/api/*` Pages Functions |
+
+Route **demo first**, then the broader `/lingoleaf` prefix, so the mobile embed is not sent to the lingoleaf-web project.
+
+---
+
+#### Approach 1 — Worker reverse proxy (recommended)
+
+Works on all Cloudflare plans. Create a Worker in the **same zone** as `connorjpepin.com`.
+
+1. **Workers & Pages → Create → Worker** (e.g. `path-router`)
+2. **Workers → path-router → Settings → Domains & Routes → Add route:**
+   - `connorjpepin.com/lingoleaf*` (and `www.connorjpepin.com/lingoleaf*` if you use `www`)
+3. Leave the **portfolio** Pages custom domain as-is; it continues to serve `/` and paths the Worker does not match.
+4. Deploy Worker code similar to:
+
+```js
+const LINGOLEAF_HOST = "lingoleaf-web.pages.dev";
+
+export default {
+  async fetch(request) {
+    const url = new URL(request.url);
+
+    // Portfolio owns the Expo demo; do not proxy these to lingoleaf-web.
+    if (url.pathname.startsWith("/lingoleaf/demo")) {
+      return fetch(request);
+    }
+
+    if (!url.pathname.startsWith("/lingoleaf")) {
+      return fetch(request);
+    }
+
+    const upstream = new URL(request.url);
+    upstream.hostname = LINGOLEAF_HOST;
+
+    const headers = new Headers(request.headers);
+    headers.set("Host", LINGOLEAF_HOST);
+
+    return fetch(
+      new Request(upstream, {
+        method: request.method,
+        headers,
+        body: request.body,
+        redirect: "manual",
+      })
+    );
+  },
+};
+```
+
+5. **Smoke-test** after deploy:
+
+| URL | Expected origin |
+|-----|-----------------|
+| `https://connorjpepin.com/` | Portfolio |
+| `https://connorjpepin.com/lingoleaf/` | LingoLeaf web (via Worker) |
+| `https://connorjpepin.com/lingoleaf/features` | LingoLeaf SPA deep link |
+| `https://connorjpepin.com/lingoleaf/api/turnstile-verify` | LingoLeaf Pages Function |
+| `https://connorjpepin.com/lingoleaf/demo` | Portfolio embed |
+
+**Worker caveats**
+
+- **Cookies / auth:** Supabase session cookies are scoped to `connorjpepin.com`; proxying preserves that. Do not redirect users to `lingoleaf-web.pages.dev` in links or OAuth callbacks.
+- **Preview deployments:** Worker routes target production hostnames. Preview URLs (`*.pages.dev` deployment branches) do not automatically get the same path split unless you add branch-specific Workers or test lingoleaf-web on its own `*.pages.dev` URL.
+- **Caching:** LingoLeaf HTML and hashed assets cache like any proxied origin; purge both Pages projects if you ship a bad bundle.
+- **`/lingoleaf` without trailing slash:** Ensure lingoleaf-web or portfolio redirects `/lingoleaf` → `/lingoleaf/` (Vite `base` uses a trailing slash).
+
+---
+
+#### Approach 2 — Origin Rules (zone Rules)
+
+If your zone has **Origin Rules** (Business / Enterprise), you can override the origin hostname for a path prefix without maintaining Worker code:
+
+1. **Rules → Origin Rules → Create rule**
+2. **When:** URI Path starts with `/lingoleaf` **and** does not start with `/lingoleaf/demo`
+3. **Then:** Override origin host to `lingoleaf-web.pages.dev` (and SNI to the same host if offered)
+
+Portfolio Pages still owns the custom domain; matching requests are fetched from the lingoleaf-web Pages hostname while the browser bar stays on `connorjpepin.com`.
+
+Prefer the Worker if you need redirect rewriting, custom headers, or A/B logic; Origin Rules are enough for a straight reverse proxy.
+
+**Transform Rules alone** (URL rewrite only) do not replace origin selection — you need either an origin override or a Worker `fetch()` to a different Pages project.
+
+---
+
+#### Approach 3 — Cloudflare for SaaS (usually not worth it here)
+
+[Cloudflare for SaaS](https://developers.cloudflare.com/cloudflare-for-platforms/cloudflare-for-saas/) (custom hostnames, SSL for SaaS) targets multi-tenant products that map **many customer domains** to your stack. For one personal domain with two Pages projects, a path Worker is simpler and cheaper.
+
+---
+
+#### Split-repo checklist (lingoleaf-web project)
+
+Set on the **lingoleaf-web** Pages project (not portfolio):
+
+| Variable | Encrypted | Purpose |
+|----------|-----------|---------|
+| `VITE_SUPABASE_URL` | No | Client bundle |
+| `VITE_SUPABASE_ANON_KEY` | No | Client bundle |
+| `VITE_SUPABASE_DB_SCHEMA` | No | `lingoleaf` |
+| `VITE_TURNSTILE_SITE_KEY` | No | Forum widget |
+| `SUPABASE_URL` | Yes | Pages Functions |
+| `SUPABASE_ANON_KEY` | Yes | Pages Functions |
+| `SUPABASE_SERVICE_ROLE_KEY` | Yes | Turnstile verify writes |
+| `TURNSTILE_SECRET_KEY` | Yes | Turnstile server |
+| `RESEND_API_KEY` | Yes | `/lingoleaf/contact` |
+
+Deploy `functions/lingoleaf/api/*` with the lingoleaf-web build. SPA fallback: ship `public/_redirects` in the lingoleaf-web repo, e.g.:
+
+```text
+/lingoleaf/*  /lingoleaf/index.html  200
+```
+
+#### Split-repo checklist (portfolio project)
+
+- Do **not** run `sync:lingoleaf-web` in the portfolio build (that is Option A only).
+- Keep `public/lingoleaf/demo/` and demo-related `_redirects` if you serve the Expo embed from portfolio.
+- Remove or avoid a portfolio-wide `/lingoleaf/*` SPA fallback in `_redirects` when a Worker serves other `/lingoleaf` paths from lingoleaf-web — only demo rules should remain on portfolio, e.g.:
+
+```text
+/lingoleaf/demo/embed/*  /lingoleaf/demo/embed/index.html  200
+```
+
+#### When to migrate back to Option A
+
+Consider monorepo sync again if:
+
+- You want one Cloudflare env-var UI and one deploy for `/lingoleaf/api/*` + static SPA
+- Preview deployments must mirror production path layout with no Worker
+- You are hitting Worker subrequest limits or debugging proxy/cache issues
+
+See Option A Step 1 build command (`npm run sync:lingoleaf-web && …`) and `apps/portfolio/scripts/sync-lingoleaf-web.sh`.
 
 #### Trellis repo
 
@@ -383,7 +540,11 @@ Verify client bundles do **not** contain `service_role` strings (browser DevTool
 | LingoLeaf forum 401/RLS errors | Confirm `lingoleaf` schema is exposed in Supabase API settings |
 | Turnstile failures | Match site key (client) and secret key (server); redeploy after env change |
 | Demo guest sign-in fails | Enable Anonymous sign-ins on the LingoLeaf Supabase project |
-| CF Functions 404 on `/lingoleaf/api/*` | Ensure lingoleaf-web `functions/` directory is included in the synced build |
+| CF Functions 404 on `/lingoleaf/api/*` | Option A: ensure `functions/` is copied during sync. Option B: confirm Worker routes `/lingoleaf/api/*` to lingoleaf-web Pages, not portfolio |
+| LingoLeaf assets 404 on `/lingoleaf/assets/*` | Option B: Worker must proxy to `lingoleaf-web.pages.dev` with `Host` set; build must use `base: "/lingoleaf/"` |
+| `/lingoleaf/demo` shows lingoleaf-web SPA | Worker route is too broad — exclude `/lingoleaf/demo` before proxying to lingoleaf-web |
+| OAuth lands on `lingoleaf-web.pages.dev` | Fix Supabase redirect URLs to `https://connorjpepin.com/lingoleaf/**`; never attach custom domain to lingoleaf-web Pages |
+| Portfolio `_redirects` breaks lingoleaf SPA | Remove portfolio catch-all `/lingoleaf/* → index.html` when using Option B; keep only demo rules on portfolio |
 
 ---
 

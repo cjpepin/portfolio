@@ -12,9 +12,9 @@ TARGET="$ROOT/public/lingoleaf/demo"
 EMBED="$TARGET/embed"
 
 if [[ ! -f "$SOURCE/index.html" ]]; then
-  echo "Missing demo export at $SOURCE" >&2
-  echo "Run from lingoleaf: npm run export:web-demo" >&2
-  exit 1
+  echo "Skipping demo sync — no export at $SOURCE" >&2
+  echo "Existing public/lingoleaf/demo/ is unchanged. To refresh: cd projects/lingoleaf && npm run export:web-demo" >&2
+  exit 0
 fi
 
 mkdir -p "$EMBED"

@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "npm ci --prefix apps/portfolio && npm run build --prefix apps/portfolio",
+    "build": "npm ci --prefix apps/portfolio && npm run build:pages --prefix apps/portfolio",
     "deploy": "node scripts/cloudflare-pages-deploy.mjs",
     "dev": "npm run dev --prefix apps/portfolio",
     "supabase:deploy": "node scripts/supabase-deploy.mjs --project all",

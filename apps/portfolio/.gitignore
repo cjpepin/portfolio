@@ -5,3 +5,11 @@ dist/
 .env.local
 *.log
 .DS_Store
+
+# Synced from projects/lingoleaf-web at build time (npm run sync:lingoleaf-web)
+public/lingoleaf/*
+!public/lingoleaf/demo/
+!public/lingoleaf/demo/**
+public/**/node_modules/
+functions/lingoleaf/
+functions/lib/

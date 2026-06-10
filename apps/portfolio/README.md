@@ -23,11 +23,29 @@ Output: `dist/`
 
 ## Cloudflare Pages deployment
 
+Connect the **monorepo** Git repo (not only `apps/portfolio`). Use one of the layouts below.
+
+### Option A — project root `apps/portfolio` (recommended)
+
 | Setting | Value |
 |---------|-------|
-| Build command | `npm run build` |
-| Build output directory | `dist` |
 | Root directory | `apps/portfolio` |
+| Build command | `npm install && npm run build:pages` |
+| Build output directory | `dist` |
+| **Deploy command** | *(leave empty)* |
+
+### Option B — monorepo root
+
+| Setting | Value |
+|---------|-------|
+| Root directory | *(empty)* |
+| Build command | `npm run build` |
+| Build output directory | `apps/portfolio/dist` |
+| **Deploy command** | *(leave empty)* |
+
+Do **not** set the deploy command to `npx wrangler deploy`. That targets Workers from the repo root; Wrangler 4 sees `pnpm-workspace.yaml` and fails with *"run in the root of a workspace instead of targeting a specific project"*. Cloudflare Pages uploads `dist` and `functions/` automatically after the build.
+
+Optional: `npm run deploy` (repo root) or `npm run deploy` from `apps/portfolio` runs `scripts/cloudflare-pages-deploy.mjs` (`wrangler pages deploy` from this directory). Only use that for manual/CI deploys — set `CF_PAGES_PROJECT_NAME` to your Pages project slug first.
 
 ### Environment variables
 

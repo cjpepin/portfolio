@@ -5,17 +5,28 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SOURCE="$ROOT/../../projects/lingoleaf-web"
 TARGET="$ROOT/public/lingoleaf"
+FUNCTIONS_SOURCE="$SOURCE/functions"
+FUNCTIONS_TARGET="$ROOT/functions"
 
 if [[ ! -f "$SOURCE/package.json" ]]; then
   echo "Missing lingoleaf-web at $SOURCE" >&2
   exit 1
 fi
 
+echo "Installing lingoleaf-web dependencies…" >&2
+(cd "$SOURCE" && npm ci)
+
 echo "Building lingoleaf-web (demo mode)…" >&2
 (cd "$SOURCE" && VITE_DEMO_MODE=true npm run build)
 
 if [[ ! -f "$SOURCE/dist/index.html" ]]; then
   echo "Build failed — no dist/index.html at $SOURCE/dist" >&2
+  exit 1
+fi
+
+if ! grep -q '/lingoleaf/assets/' "$SOURCE/dist/index.html"; then
+  echo "Build output is missing /lingoleaf/assets/ paths in index.html." >&2
+  echo "Check projects/lingoleaf-web/vite.config.ts base: \"/lingoleaf/\"" >&2
   exit 1
 fi
 
@@ -35,8 +46,20 @@ for item in "$SOURCE/dist"/*; do
   fi
 done
 
+# Cloudflare Pages Functions for /lingoleaf/api/*
+if [[ -d "$FUNCTIONS_SOURCE/lingoleaf" ]]; then
+  rm -rf "$FUNCTIONS_TARGET/lingoleaf"
+  mkdir -p "$FUNCTIONS_TARGET"
+  cp -R "$FUNCTIONS_SOURCE/lingoleaf" "$FUNCTIONS_TARGET/lingoleaf"
+fi
+if [[ -d "$FUNCTIONS_SOURCE/lib" ]]; then
+  rm -rf "$FUNCTIONS_TARGET/lib"
+  cp -R "$FUNCTIONS_SOURCE/lib" "$FUNCTIONS_TARGET/lib"
+fi
+
 echo "Synced lingoleaf-web to $TARGET"
 echo "  landing: /lingoleaf/"
 echo "  forum:   /lingoleaf/features"
 echo "  admin:   /lingoleaf/admin/analytics"
 echo "  demo:    /lingoleaf/demo (unchanged — Expo embed)"
+echo "  api:     /lingoleaf/api/* (Pages Functions)"
