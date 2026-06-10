@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+.dev.vars
+*.pem
+*.key
+credentials.json
+credentials/
+creds/
+service-account*.json
+
+# Build & framework output
+dist/
+dist-ssr/
+dist-electron/
+build/
+out/
+.astro/
+web-build/
+.expo/
+coverage/
+playwright-report/
+test-results/
+
+# Logs & local databases
+*.log
+logs/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# OS & editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.suo
+*.sw?
+
+# Supabase CLI temp (may contain connection strings)
+**/.supabase/
+**/supabase/.temp/
+
+# Embedded subprojects (tracked in their own repos)
+projects/

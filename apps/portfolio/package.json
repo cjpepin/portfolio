@@ -1,0 +1,31 @@
+{
+  "name": "@portfolio/site",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "dev:all": "./scripts/dev-with-lingoleaf-web.sh",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "sync:lingoleaf-demo": "./scripts/sync-lingoleaf-demo.sh",
+    "sync:lingoleaf-web": "./scripts/sync-lingoleaf-web.sh",
+    "sync:trellis-demo": "./scripts/sync-trellis-demo.sh"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/react": "^4.2.0",
+    "@astrojs/tailwind": "^6.0.2",
+    "astro": "^5.7.10",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.16.5",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2"
+  }
+}

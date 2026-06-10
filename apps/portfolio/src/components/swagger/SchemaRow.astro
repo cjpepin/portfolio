@@ -1,0 +1,16 @@
+---
+interface Props {
+  name: string;
+  type: string;
+  description?: string;
+  required?: boolean;
+}
+
+const { name, type, description, required = false } = Astro.props;
+---
+
+<tr class="border-b border-swagger-border last:border-0">
+  <td class="px-4 py-3 align-top font-mono text-sm text-swagger-get">{name}{required && <span class="text-swagger-delete">*</span>}</td>
+  <td class="px-4 py-3 align-top font-mono text-xs text-swagger-post">{type}</td>
+  <td class="px-4 py-3 align-top text-sm text-swagger-muted">{description ?? "—"}</td>
+</tr>

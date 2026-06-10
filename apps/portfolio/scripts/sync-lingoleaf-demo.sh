@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Sync LingoLeaf web demo export into the portfolio public folder.
+#
+# Expo export uses EXPO_PUBLIC_WEB_BASE_PATH (default /lingoleaf/demo), so _expo/
+# and assets/ must live at public/lingoleaf/demo/. index.html is served from
+# embed/ to avoid conflicting with the Astro wrapper page at /lingoleaf/demo.
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+SOURCE="${1:-$ROOT/../../projects/lingoleaf/dist/web-demo}"
+TARGET="$ROOT/public/lingoleaf/demo"
+EMBED="$TARGET/embed"
+
+if [[ ! -f "$SOURCE/index.html" ]]; then
+  echo "Missing demo export at $SOURCE" >&2
+  echo "Run from lingoleaf: npm run export:web-demo" >&2
+  exit 1
+fi
+
+mkdir -p "$EMBED"
+
+# Shell HTML lives under embed/ (iframe target)
+cp "$SOURCE/index.html" "$EMBED/index.html"
+cp "$SOURCE/metadata.json" "$EMBED/metadata.json"
+[[ -f "$SOURCE/auth-redirect.html" ]] && cp "$SOURCE/auth-redirect.html" "$EMBED/auth-redirect.html"
+
+# Asset paths in index.html reference /lingoleaf/demo/_expo and /lingoleaf/demo/assets
+rm -rf "$TARGET/_expo" "$TARGET/assets"
+cp -R "$SOURCE/_expo" "$TARGET/_expo"
+[[ -d "$SOURCE/assets" ]] && cp -R "$SOURCE/assets" "$TARGET/assets"
+[[ -f "$SOURCE/favicon.ico" ]] && cp "$SOURCE/favicon.ico" "$TARGET/favicon.ico"
+
+echo "Synced LingoLeaf demo to $TARGET"
+echo "  iframe: /lingoleaf/demo/embed/index.html"
+echo "  assets: /lingoleaf/demo/_expo/ ..."

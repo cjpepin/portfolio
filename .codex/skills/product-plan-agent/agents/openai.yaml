@@ -1,0 +1,3 @@
+interface:
+  display_name: "Product Plan Agent"
+  short_description: "Researches the portfolio monorepo and produces implementation handoffs"

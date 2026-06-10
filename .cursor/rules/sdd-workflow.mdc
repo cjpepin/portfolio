@@ -1,0 +1,16 @@
+---
+description: Specification-Driven Development workflow for this monorepo
+alwaysApply: true
+---
+
+# SDD Workflow
+
+Before implementing features:
+
+1. Read `specifications/REPO_SPEC.md`
+2. Read or create `specifications/<branch-name>/SPEC.md` for the active branch
+3. Branch SPEC inherits REPO_SPEC; override only where explicitly scoped
+
+When user prompts change requirements, scope, or acceptance criteria, update the branch `SPEC.md` incrementally.
+
+Do not rewrite `REPO_SPEC.md` on feature branches unless introducing durable repo-wide truth. Use iteration branches to promote stable guidance (see `sdd.md`).

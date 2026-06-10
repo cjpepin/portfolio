@@ -1,0 +1,3 @@
+interface:
+  display_name: "Feature Workflow"
+  short_description: "Routes work through plan, dev, test, and QA"

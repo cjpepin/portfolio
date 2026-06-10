@@ -1,0 +1,3 @@
+interface:
+  display_name: "Repo Refactor Agent"
+  short_description: "Conservative cleanup and security passes"

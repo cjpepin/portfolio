@@ -1,0 +1,12 @@
+{
+  "name": "portfolio-monorepo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "supabase:deploy": "node scripts/supabase-deploy.mjs --project all",
+    "supabase:validate": "node scripts/supabase-deploy.mjs --validate-only --project all"
+  },
+  "dependencies": {
+    "next": "14.2.35"
+  }
+}

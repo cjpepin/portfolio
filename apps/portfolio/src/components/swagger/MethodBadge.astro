@@ -1,0 +1,11 @@
+---
+import { methodColor, type HttpMethod } from "../../data/profile";
+
+interface Props {
+  method: HttpMethod;
+}
+
+const { method } = Astro.props;
+---
+
+<span class:list={["method-badge", methodColor(method)]}>{method}</span>

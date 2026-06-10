@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --swagger-bg: #fafafa;
+    --swagger-panel: #ffffff;
+    --swagger-border: #d8dde6;
+    --swagger-text: #3b4151;
+    --swagger-muted: #6b7280;
+    --swagger-get: #49cc90;
+    --swagger-post: #61affe;
+    --swagger-put: #fca130;
+    --swagger-delete: #f93e3e;
+    --swagger-code: #f0f3f8;
+  }
+
+  html.dark {
+    --swagger-bg: #1b1b1b;
+    --swagger-panel: #2b2b2b;
+    --swagger-border: #3b3b3b;
+    --swagger-text: #fafafa;
+    --swagger-muted: #aaaaaa;
+    --swagger-get: #49cc90;
+    --swagger-post: #61affe;
+    --swagger-put: #fca130;
+    --swagger-delete: #f93e3e;
+    --swagger-code: #41444e;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-swagger-bg text-swagger-text antialiased;
+  }
+
+  body.is-resizing {
+    cursor: col-resize;
+    user-select: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .swagger-panel {
+    @apply rounded border border-swagger-border bg-swagger-panel shadow-sm transition-shadow duration-300 hover:shadow-md;
+  }
+
+  .swagger-code {
+    @apply rounded bg-swagger-code px-2 py-1 font-mono text-sm text-swagger-text;
+  }
+
+  .method-badge {
+    @apply inline-flex min-w-[4.5rem] items-center justify-center rounded px-2 py-0.5 font-mono text-xs font-bold uppercase text-black;
+  }
+
+  .api-input {
+    @apply w-full rounded border border-swagger-border bg-swagger-bg px-3 py-2 font-mono text-sm transition-colors duration-200 focus:border-swagger-post focus:outline-none focus:ring-2 focus:ring-swagger-post;
+  }
+
+  .api-execute-btn {
+    @apply rounded px-4 py-2 font-mono text-sm font-semibold text-black transition-all duration-200 hover:opacity-90 hover:shadow-md active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .nav-link-active {
+    @apply bg-swagger-code font-medium text-swagger-get;
+  }
+
+  .stagger-children > * {
+    animation: fade-in-up 0.45s ease-out both;
+  }
+
+  .stagger-children > *:nth-child(1) {
+    animation-delay: 0ms;
+  }
+  .stagger-children > *:nth-child(2) {
+    animation-delay: 60ms;
+  }
+  .stagger-children > *:nth-child(3) {
+    animation-delay: 120ms;
+  }
+  .stagger-children > *:nth-child(4) {
+    animation-delay: 180ms;
+  }
+  .stagger-children > *:nth-child(5) {
+    animation-delay: 240ms;
+  }
+  .stagger-children > *:nth-child(6) {
+    animation-delay: 300ms;
+  }
+  .stagger-children > *:nth-child(7) {
+    animation-delay: 360ms;
+  }
+}

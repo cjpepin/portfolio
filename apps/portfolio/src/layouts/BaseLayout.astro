@@ -1,0 +1,42 @@
+---
+import "../styles/global.css";
+import Sidebar from "../components/layout/Sidebar.astro";
+import TopBar from "../components/layout/TopBar.astro";
+import { MobileNav } from "../components/react/MobileNav";
+
+interface Props {
+  title: string;
+  description?: string;
+  currentPath: string;
+}
+
+const { title, description, currentPath } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description ?? "Connor Pepin — full-stack engineer portfolio"} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/webp" href="/kat.webp" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen">
+    <TopBar />
+    <div class="mx-auto flex max-w-7xl">
+      <Sidebar currentSection={currentPath.replace(/^\//, "").replace(/\//g, "-") || "overview"} />
+      <MobileNav client:load currentSection={currentPath.replace(/^\//, "").replace(/\//g, "-") || "overview"} />
+      <main class="min-w-0 flex-1 px-4 py-6 md:px-8 md:py-8 lg:px-10">
+        <slot />
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+---
+description: Portfolio monorepo boundaries and subproject rules
+alwaysApply: true
+---
+
+# Monorepo Boundaries
+
+- Root owns portfolio shell, shared auth (planned), cross-project routing
+- `projects/lingoleaf`, `projects/lingoleaf-web`, `projects/trellis` keep domain logic
+- Never read `.env` files; use `.env.example` for variable names only
+- Subproject changes: read root `AGENTS.md` + subproject `AGENTS.md`
+- Auth/routing changes: align with `specifications/REPO_SPEC.md`
