@@ -53,6 +53,7 @@ export const PROJECT_PROFILES = {
     deployFunctions: true,
     delegateScript: "scripts/supabase.mjs",
     notes: [
+      "After migrations, expose the trellis schema in Supabase → Settings → API → Exposed schemas.",
       "Enable Auth → Providers → Anonymous sign-ins for guest mode.",
       "Set Stripe and provider secrets via supabase secrets set (see projects/trellis/docs/supabase-dx.md)."
     ]
