@@ -28,7 +28,6 @@ export function SystemsSection() {
         summary="Retrieve contributions by identifier"
         description="Pass all to list every contribution, or a specific contribution_id to fetch a single record. Optional query flags shape the response payload."
         contentType="parameters"
-        autoExecuteOnMount
         fields={[
           {
             name: "contribution_id",

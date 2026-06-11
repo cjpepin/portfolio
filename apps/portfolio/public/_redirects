@@ -1,6 +1,9 @@
 # LingoLeaf SPA deep links are handled by functions/lingoleaf/[[path]].ts.
 # Do not add /lingoleaf/* rewrites here — they also match /lingoleaf/assets/* and break JS/CSS.
 
+# lingoleaf-web is built with base `/lingoleaf/`; bare path must redirect.
+/lingoleaf /lingoleaf/ 308
+
 # Retire stale shell URL from an earlier deploy experiment.
 /lingoleaf-spa /lingoleaf/ 301
 /lingoleaf-spa.html /lingoleaf/ 301

@@ -16,7 +16,6 @@ export function OverviewSection() {
         summary="Retrieve developer profile and contact metadata"
         description="Query optional includes to shape the response payload. No authentication required."
         contentType="query parameters"
-        autoExecuteOnMount
         fields={[
           {
             name: "include",

@@ -16,7 +16,11 @@ export const onRequest = async (context: PagesContext) => {
   }
 
   const pathname = new URL(context.request.url).pathname;
-  if (!pathname.startsWith("/lingoleaf/") || pathname.startsWith("/lingoleaf/api/")) {
+  if (
+    !pathname.startsWith("/lingoleaf/") ||
+    pathname.startsWith("/lingoleaf/api/") ||
+    pathname.startsWith("/lingoleaf/demo/")
+  ) {
     return staticResponse;
   }
 

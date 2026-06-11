@@ -28,7 +28,6 @@ export function ExperienceSection() {
         summary="Retrieve employment history by role identifier"
         description="Pass all to list every role, or a specific role_id to fetch a single record. Optional query flags shape the response payload."
         contentType="parameters"
-        autoExecuteOnMount
         fields={[
           {
             name: "role_id",

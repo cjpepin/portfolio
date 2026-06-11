@@ -181,7 +181,7 @@ export const profile = {
         demo: true,
         appStore: "https://apps.apple.com/us/app/lingoleaf/id6758588394",
         github: "https://github.com/cjpepin/lingoleaf",
-        website: "/lingoleaf",
+        website: "/lingoleaf/",
       },
       accent: "from-emerald-500/20 to-teal-600/10",
     },

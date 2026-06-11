@@ -29,7 +29,7 @@ export function ProjectPreview({ data }: Props) {
   const links = data.links ? projectLinks(data.links) : {};
   const hasDemoLink =
     !!links.demo && (data.id === "lingoleaf" || data.id === "trellis");
-  const demoHref = data.id === "lingoleaf" ? "/lingoleaf#try-demo" : "/trellis#try-demo";
+  const demoHref = data.id === "lingoleaf" ? "/lingoleaf/#try-demo" : "/trellis#try-demo";
 
   return (
     <article

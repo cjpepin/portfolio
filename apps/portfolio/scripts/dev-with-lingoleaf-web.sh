@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Run portfolio (Astro) and lingoleaf-web (Vite) dev servers together.
-# Run both dev servers — portfolio proxies /lingoleaf/* to lingoleaf-web (including demo static assets).
+# Portfolio serves /lingoleaf/demo/* from public/; other /lingoleaf/* proxies to lingoleaf-web.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -17,6 +17,9 @@ if [[ ! -d "$PORTFOLIO/node_modules" ]]; then
   echo "Installing portfolio dependencies…" >&2
   (cd "$PORTFOLIO" && npm install)
 fi
+
+echo "Syncing LingoLeaf demo bundle (if export exists)…" >&2
+"$PORTFOLIO/scripts/sync-lingoleaf-demo.sh" || true
 
 cleanup() {
   trap - EXIT INT TERM
@@ -46,7 +49,7 @@ if [[ "$ready" != true ]]; then
   exit 1
 fi
 
-echo "Starting portfolio on http://localhost:4321 (proxying /lingoleaf → lingoleaf-web)" >&2
+echo "Starting portfolio on http://localhost:4321 (proxying /lingoleaf → lingoleaf-web; /lingoleaf/demo from public/)" >&2
 (cd "$PORTFOLIO" && npm run dev) &
 PORTFOLIO_PID=$!
 

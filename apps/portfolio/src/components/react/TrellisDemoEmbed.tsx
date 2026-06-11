@@ -1,4 +1,6 @@
-const demoSrc = "/trellis/demo/embed/index.html";
+import { useTheme } from "./useTheme";
+
+const demoBaseSrc = "/trellis/demo/embed/index.html";
 
 const FRAME_HEIGHT = {
   compact: 640,
@@ -18,7 +20,9 @@ export function TrellisDemoEmbed({
   backHref = "/#projects",
   backLabel = "portfolio",
 }: Props) {
+  const { theme } = useTheme();
   const frameHeight = FRAME_HEIGHT[variant];
+  const demoSrc = `${demoBaseSrc}?theme=${theme}`;
 
   if (demoBuilt) {
     return (
@@ -32,7 +36,9 @@ export function TrellisDemoEmbed({
             ← Back to {backLabel}
           </a>
         </div>
-        <div className="overflow-auto bg-[#0f1419]">
+        <div
+          className={`overflow-auto ${theme === "dark" ? "bg-[#0f1419]" : "bg-swagger-code"}`}
+        >
           <iframe
             title="Trellis desktop preview"
             src={demoSrc}

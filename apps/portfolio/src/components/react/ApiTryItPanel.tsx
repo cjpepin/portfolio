@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useCallback, useMemo, useRef, useState, type ReactNode } from "react";
 import { methodColor, type HttpMethod } from "../../data/profile";
+import { checkClientRateLimit, createClientRateBucket } from "../../lib/api/clientRateLimit";
 import { usePreviewPanel } from "./PreviewPanelContext";
 
 export type ApiField = {
@@ -36,7 +37,6 @@ type Props = {
   executeLabel?: string;
   contentType?: string;
   initialResponse?: unknown;
-  autoExecuteOnMount?: boolean;
   pathParams?: readonly string[];
   renderPreview?: (response: unknown) => ReactNode;
   className?: string;
@@ -56,7 +56,6 @@ export function ApiTryItPanel({
   executeLabel = "Execute",
   contentType = "application/json",
   initialResponse,
-  autoExecuteOnMount = false,
   pathParams = [],
   renderPreview,
   className = "",
@@ -87,6 +86,7 @@ export function ApiTryItPanel({
   );
   const [loading, setLoading] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const rateBucketRef = useRef(createClientRateBucket());
 
   const publishResponsePreview = useCallback(
     (nextResponse: unknown, payload: Record<string, string>) => {
@@ -104,6 +104,19 @@ export function ApiTryItPanel({
 
   const runExecute = useCallback(
     async (payload: Record<string, string>) => {
+      const rateCheck = checkClientRateLimit(rateBucketRef.current);
+      if (!rateCheck.allowed) {
+        const nextResponse = {
+          status: 429,
+          error: "Whoa — slow down! Wait a moment before trying again.",
+          retryAfterSec: rateCheck.retryAfterSec,
+          timestamp: new Date().toISOString(),
+        };
+        setResponse(nextResponse);
+        publishResponsePreview(nextResponse, payload);
+        return;
+      }
+
       setLoading(true);
       let nextResponse: unknown;
       try {
@@ -129,14 +142,6 @@ export function ApiTryItPanel({
     [onExecute, publishResponsePreview],
   );
 
-  const hasAutoExecuted = useRef(false);
-  useEffect(() => {
-    if (autoExecuteOnMount && !hasAutoExecuted.current) {
-      hasAutoExecuted.current = true;
-      void runExecute(initialValues);
-    }
-  }, [autoExecuteOnMount, initialValues, runExecute]);
-
   const update = (name: string, value: string) => {
     setValues((prev) => ({ ...prev, [name]: value }));
   };
@@ -146,23 +151,47 @@ export function ApiTryItPanel({
     await runExecute(values);
   };
 
+  const handleQuickExecute = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setExpanded(true);
+    void runExecute(values);
+  };
+
   return (
     <div className={`swagger-panel overflow-hidden ${className}`}>
-      <button
-        type="button"
-        className="flex w-full items-center gap-3 px-4 py-3 text-left transition-colors duration-200 hover:bg-swagger-code/40"
-        onClick={() => setExpanded((v) => !v)}
-        aria-expanded={expanded}
-      >
-        <MethodBadge method={method} />
-        <div className="min-w-0 flex-1">
-          <code className="font-mono text-sm">{path}</code>
-          {summary && <p className="mt-0.5 text-sm text-swagger-muted">{summary}</p>}
-        </div>
-        <span className="font-mono text-xs text-swagger-muted transition-transform duration-200">
+      <div className="flex w-full items-center gap-2 px-4 py-3">
+        <button
+          type="button"
+          className="flex min-w-0 flex-1 items-center gap-3 text-left transition-colors duration-200 hover:opacity-90"
+          onClick={() => setExpanded((v) => !v)}
+          aria-expanded={expanded}
+        >
+          <MethodBadge method={method} />
+          <div className="min-w-0 flex-1">
+            <code className="font-mono text-sm">{path}</code>
+            {summary && <p className="mt-0.5 text-sm text-swagger-muted">{summary}</p>}
+          </div>
+        </button>
+        {!expanded && (
+          <button
+            type="button"
+            disabled={loading}
+            onClick={handleQuickExecute}
+            className={`api-execute-btn shrink-0 px-4 py-1.5 text-sm ${methodColor(method)}`}
+          >
+            {loading ? "…" : executeLabel}
+          </button>
+        )}
+        <button
+          type="button"
+          className="shrink-0 font-mono text-xs text-swagger-muted transition-transform duration-200 hover:text-swagger-get"
+          onClick={() => setExpanded((v) => !v)}
+          aria-expanded={expanded}
+          aria-label={expanded ? "Collapse endpoint" : "Expand endpoint"}
+        >
           {expanded ? "▼" : "▶"}
-        </span>
-      </button>
+        </button>
+      </div>
 
       {expanded && (
         <div className="animate-accordion-open border-t border-swagger-border">

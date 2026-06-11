@@ -1,9 +1,4 @@
-type RateBucket = {
-  count: number;
-  windowStart: number;
-};
-
-const rateBuckets = new Map<string, RateBucket>();
+import { checkRateLimit as checkSharedRateLimit, getClientIp } from "../../_shared/rateLimit";
 
 export type DemoEnv = {
   GOOGLE_TRANSLATE_API_KEY?: string;
@@ -56,29 +51,24 @@ export function assertAllowedOrigin(request: Request, env: DemoEnv): Response | 
 
 export function getClientKey(request: Request): string {
   const session = request.headers.get("X-Demo-Session")?.trim();
-  const ip = request.headers.get("CF-Connecting-IP") ?? request.headers.get("X-Forwarded-For") ?? "unknown";
-  return `${ip}:${session ?? "anonymous"}`;
+  return `${getClientIp(request)}:${session ?? "anonymous"}`;
 }
 
 export function checkRateLimit(request: Request, env: DemoEnv, bucket: string): Response | null {
   const limit = Number(env.DEMO_RATE_LIMIT_PER_HOUR ?? "30");
   const windowMs = 60 * 60 * 1000;
   const key = `${bucket}:${getClientKey(request)}`;
-  const now = Date.now();
-  const current = rateBuckets.get(key);
+  const result = checkSharedRateLimit({ key, limit, windowMs });
 
-  if (!current || now - current.windowStart >= windowMs) {
-    rateBuckets.set(key, { count: 1, windowStart: now });
+  if (result.allowed) {
     return null;
   }
 
-  if (current.count >= limit) {
-    return json({ error: "Demo rate limit exceeded. Try again later." }, 429, corsHeaders());
-  }
-
-  current.count += 1;
-  rateBuckets.set(key, current);
-  return null;
+  return json(
+    { error: "Easy there — demo rate limit reached. Try again in a few minutes." },
+    429,
+    { ...corsHeaders(), "Retry-After": String(result.retryAfterSec) },
+  );
 }
 
 const STATIC_TRANSLATIONS: Record<string, string> = {

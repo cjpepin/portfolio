@@ -1,3 +1,5 @@
+import { checkRateLimit, getClientIp } from "../_shared/rateLimit";
+
 type ContactPayload = {
   name?: string;
   email?: string;
@@ -12,6 +14,7 @@ export const onRequestPost = async (context: {
     RESEND_API_KEY?: string;
     CONTACT_TO_EMAIL?: string;
     CONTACT_FROM_EMAIL?: string;
+    CONTACT_RATE_LIMIT_PER_15MIN?: string;
   };
 }) => {
   const { request, env } = context;
@@ -19,12 +22,13 @@ export const onRequestPost = async (context: {
   const toEmail = env.CONTACT_TO_EMAIL ?? "cjpepin@wustl.edu";
   const fromEmail = env.CONTACT_FROM_EMAIL ?? "Portfolio Contact <onboarding@resend.dev>";
 
-  const json = (data: unknown, status = 200) =>
+  const json = (data: unknown, status = 200, extraHeaders: Record<string, string> = {}) =>
     new Response(JSON.stringify(data), {
       status,
       headers: {
         "Content-Type": "application/json",
         "Cache-Control": "no-store",
+        ...extraHeaders,
       },
     });
 
@@ -39,6 +43,22 @@ export const onRequestPost = async (context: {
     } catch {
       return json({ error: "Origin not allowed." }, 403);
     }
+  }
+
+  const contactLimit = Number(env.CONTACT_RATE_LIMIT_PER_15MIN ?? "5");
+  const rateKey = `contact:${getClientIp(request)}`;
+  const rateResult = checkRateLimit({
+    key: rateKey,
+    limit: contactLimit,
+    windowMs: 15 * 60 * 1000,
+  });
+
+  if (!rateResult.allowed) {
+    return json(
+      { error: "Easy there — you've sent a few messages recently. Try again in a bit." },
+      429,
+      { "Retry-After": String(rateResult.retryAfterSec) },
+    );
   }
 
   if (!apiKey) {
