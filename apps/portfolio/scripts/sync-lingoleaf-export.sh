@@ -55,8 +55,10 @@ EOF
 fi
 
 echo "Installing LingoLeaf dependencies…" >&2
-# Cloned lingoleaf may have package-lock drift; npm install is tolerant (npm ci is not).
-(cd "$LINGOLEAF" && npm install)
+# --ignore-scripts: postinstall-postinstall runs `yarn postinstall`, which fails on CI
+# (no yarn workspace). Patches are applied explicitly via npm run postinstall below.
+(cd "$LINGOLEAF" && npm install --ignore-scripts)
+(cd "$LINGOLEAF" && npm run postinstall)
 
 echo "Exporting LingoLeaf web demo…" >&2
 (cd "$LINGOLEAF" && npm run export:web-demo)
