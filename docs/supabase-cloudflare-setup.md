@@ -9,7 +9,8 @@ This guide covers pushing local Supabase config from `projects/*` to remote Supa
 | Portfolio shell | `/` | Resend contact API (CF Function) | Cloudflare Pages (`apps/portfolio`) |
 | LingoLeaf web demo | `/lingoleaf/demo` | LingoLeaf mobile Supabase (guest) | Static embed in portfolio |
 | LingoLeaf web | `/lingoleaf/*` | Shared Supabase (`lingoleaf` schema) + CF Functions | Synced into portfolio build |
-| Trellis web demo | `/trellis/demo` (if synced) | Trellis Supabase | Static embed in portfolio |
+| Trellis project page | `/trellis` | *(none — demo uses local IndexedDB)* | Portfolio Astro page + static demo embed |
+| Trellis desktop demo | `/trellis/demo/*` (iframe at `/trellis#try-demo`) | *(none)* | Static embed synced from Trellis export |
 
 Each subproject keeps its own `.env` (never commit it). Use `.env.example` in each project as the checklist.
 
@@ -48,7 +49,7 @@ Recommended layout (matches current repo):
 |---------|------------------|--------|
 | `projects/lingoleaf` | Dedicated demo/mobile project | `public` |
 | `projects/lingoleaf-web` | Shared portfolio project | `lingoleaf` |
-| `projects/trellis` | Dedicated Trellis project | `public` |
+| `projects/trellis` | Dedicated Trellis project | `trellis` |
 
 **Target state** (future): one portfolio Supabase project with schemas `portfolio`, `lingoleaf`, and `trellis`. The deploy script works the same — each app still reads its own `.env` pointing at the correct project ref.
 
@@ -203,7 +204,7 @@ This matches the current monorepo layout.
 |---------|-------|
 | Production branch | `main` |
 | Root directory | `apps/portfolio` |
-| Build command | `npm run sync:lingoleaf-web && npm run sync:lingoleaf-demo && npm run build` |
+| Build command | `npm run sync:lingoleaf-web && npm run sync:lingoleaf-demo && npm run sync:trellis-demo && npm run build` |
 | Build output directory | `dist` |
 | Node version | 20+ |
 
@@ -525,7 +526,8 @@ Store these as Cloudflare / GitHub secrets — never in the repo:
 | `https://connorjpepin.com/lingoleaf/` | LingoLeaf landing |
 | `https://connorjpepin.com/lingoleaf/features` | Forum + Turnstile |
 | `https://connorjpepin.com/lingoleaf/demo` | Mobile web demo (guest auth) |
-| `https://connorjpepin.com/lingoleaf/admin/analytics` | Admin dashboard (admin user) |
+| `https://connorjpepin.com/trellis` | Trellis project page (desktop preview, not full webapp) |
+| `https://connorjpepin.com/trellis#try-demo` | Desktop app demo iframe |
 
 Verify client bundles do **not** contain `service_role` strings (browser DevTools → search).
 

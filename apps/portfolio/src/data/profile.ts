@@ -205,6 +205,7 @@ export const profile = {
       links: {
         demo: true,
         github: "https://github.com/cjpepin/trellis",
+        website: "/trellis",
       },
       accent: "from-amber-500/20 to-orange-600/10",
     },

@@ -1,0 +1,20 @@
+---
+import fs from "node:fs";
+import path from "node:path";
+import TopBar from "../../components/layout/TopBar.astro";
+import SinglePageLayout from "../../layouts/SinglePageLayout.astro";
+import { TrellisProjectPage } from "../../components/react/TrellisProjectPage";
+import { profile } from "../../data/profile";
+
+const trellis = profile.projects.find((project) => project.id === "trellis");
+const trellisDemoIndex = path.join(process.cwd(), "public/trellis/demo/embed/index.html");
+const trellisDemoBuilt = fs.existsSync(trellisDemoIndex);
+---
+
+<SinglePageLayout
+  title={trellis ? `${trellis.name} — ${profile.info.title}` : "Trellis"}
+  description={trellis?.description ?? "Local-first AI knowledge app"}
+>
+  <TopBar />
+  <TrellisProjectPage client:load demoBuilt={trellisDemoBuilt} />
+</SinglePageLayout>

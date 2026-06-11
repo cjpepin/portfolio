@@ -4,3 +4,6 @@
 # Retire stale shell URL from an earlier deploy experiment.
 /lingoleaf-spa /lingoleaf/ 301
 /lingoleaf-spa.html /lingoleaf/ 301
+
+# Trellis portfolio demo (desktop preview workspace in browser)
+/trellis/demo/embed/*  /trellis/demo/embed/index.html  200

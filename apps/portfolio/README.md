@@ -160,6 +160,27 @@ On Cloudflare, `projects/` is not in git — `sync-lingoleaf-web.sh` shallow-clo
 
 For **connorjpepin.com**, trigger the [portfolio deploy webhook](#trigger-deploy-webhook) above — it rebuilds and syncs lingoleaf-web into the portfolio bundle.
 
+## Trellis project page (`/trellis`)
+
+Unlike LingoLeaf, Trellis does **not** sync the full hosted webapp. `/trellis` is a portfolio-branded project page whose main content is the **desktop app preview** (Electron UI in the browser).
+
+Build and sync the demo static assets:
+
+```bash
+cd ../../projects/trellis
+bash scripts/export-web-demo.sh
+
+cd ../../apps/portfolio
+./scripts/sync-trellis-demo.sh
+npm run build
+```
+
+- Project page: `/trellis` (hero, features, links)
+- Desktop preview: `/trellis#try-demo` → iframe at `/trellis/demo/embed/index.html`
+- Portfolio Projects → Trellis → **Live demo** links to `/trellis#try-demo`
+
+No Supabase env vars are required for the demo embed. `build:pages` runs `sync:trellis-demo` automatically (skips gracefully if export is missing).
+
 ### Trigger deploy (lingoleaf-web Pages project)
 
 Redeploy the standalone **lingoleaf-web** Cloudflare Pages project (e.g. after pushing to `github.com/cjpepin/lingoleaf-web`):

@@ -1,14 +1,9 @@
 ---
-import fs from "node:fs";
-import path from "node:path";
 import SinglePageLayout from "../layouts/SinglePageLayout.astro";
 import { PortfolioShell } from "../components/react/PortfolioShell";
 import { profile } from "../data/profile";
-
-const trellisDemoIndex = path.join(process.cwd(), "public/trellis/demo/embed/index.html");
-const trellisDemoBuilt = fs.existsSync(trellisDemoIndex);
 ---
 
 <SinglePageLayout title={`${profile.info.title} — Portfolio`}>
-  <PortfolioShell client:load trellisDemoBuilt={trellisDemoBuilt} />
+  <PortfolioShell client:load />
 </SinglePageLayout>

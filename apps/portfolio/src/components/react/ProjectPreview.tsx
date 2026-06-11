@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { profile } from "../../data/profile";
-import { TrellisDemoEmbed } from "./TrellisDemoEmbed";
 import type { ProjectData } from "./projectResponse";
 
 type Project = (typeof profile.projects)[number];
@@ -25,14 +23,13 @@ function accentForProject(id: string): string {
 
 type Props = {
   data: ProjectData;
-  trellisDemoBuilt?: boolean;
 };
 
-export function ProjectPreview({ data, trellisDemoBuilt = false }: Props) {
-  const [demoOpen, setDemoOpen] = useState(false);
+export function ProjectPreview({ data }: Props) {
   const links = data.links ? projectLinks(data.links) : {};
-  const hasInlineDemo = data.id === "trellis" && !!links.demo;
-  const hasLingoleafDemoLink = data.id === "lingoleaf" && !!links.demo;
+  const hasDemoLink =
+    !!links.demo && (data.id === "lingoleaf" || data.id === "trellis");
+  const demoHref = data.id === "lingoleaf" ? "/lingoleaf#try-demo" : "/trellis#try-demo";
 
   return (
     <article
@@ -68,20 +65,10 @@ export function ProjectPreview({ data, trellisDemoBuilt = false }: Props) {
         )}
         {(links.demo || links.appStore || links.github || links.website) && (
           <div className="flex flex-wrap gap-3 pt-2">
-            {hasLingoleafDemoLink && (
-              <a href="/lingoleaf#try-demo" className="api-execute-btn bg-swagger-get">
+            {hasDemoLink && (
+              <a href={demoHref} className="api-execute-btn bg-swagger-get">
                 Live demo
               </a>
-            )}
-            {hasInlineDemo && (
-              <button
-                type="button"
-                onClick={() => setDemoOpen((open) => !open)}
-                className="api-execute-btn bg-swagger-get"
-                aria-expanded={demoOpen}
-              >
-                {demoOpen ? "Hide demo" : "Live demo"}
-              </button>
             )}
             {links.appStore && (
               <a
@@ -124,11 +111,6 @@ export function ProjectPreview({ data, trellisDemoBuilt = false }: Props) {
           </div>
         )}
       </div>
-      {hasInlineDemo && demoOpen && (
-        <div className="animate-fade-in-up">
-          <TrellisDemoEmbed demoBuilt={trellisDemoBuilt} />
-        </div>
-      )}
     </article>
   );
 }

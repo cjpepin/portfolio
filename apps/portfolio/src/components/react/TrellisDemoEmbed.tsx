@@ -1,33 +1,45 @@
 const demoSrc = "/trellis/demo/embed/index.html";
 
-const DEMO_FRAME_WIDTH = 960;
-const DEMO_FRAME_HEIGHT = 640;
+const FRAME_HEIGHT = {
+  compact: 640,
+  featured: 720,
+} as const;
 
 type Props = {
   demoBuilt: boolean;
+  variant?: keyof typeof FRAME_HEIGHT;
+  backHref?: string;
+  backLabel?: string;
 };
 
-export function TrellisDemoEmbed({ demoBuilt }: Props) {
+export function TrellisDemoEmbed({
+  demoBuilt,
+  variant = "compact",
+  backHref = "/#projects",
+  backLabel = "portfolio",
+}: Props) {
+  const frameHeight = FRAME_HEIGHT[variant];
+
   if (demoBuilt) {
     return (
       <div className="border-t border-swagger-border">
         <div className="flex items-center justify-between gap-2 border-b border-swagger-border bg-swagger-code px-4 py-2">
-          <p className="font-mono text-xs text-swagger-muted">Trellis web demo</p>
+          <p className="font-mono text-xs text-swagger-muted">Trellis desktop preview</p>
           <a
-            href="/#projects"
+            href={backHref}
             className="font-mono text-xs text-swagger-muted transition-colors hover:text-swagger-get"
           >
-            ← Back to portfolio
+            ← Back to {backLabel}
           </a>
         </div>
         <div className="overflow-auto bg-[#0f1419]">
           <iframe
-            title="Trellis web demo"
+            title="Trellis desktop preview"
             src={demoSrc}
-            width={DEMO_FRAME_WIDTH}
-            height={DEMO_FRAME_HEIGHT}
+            width={960}
+            height={frameHeight}
             className="w-full max-w-full border-0"
-            style={{ minHeight: DEMO_FRAME_HEIGHT }}
+            style={{ minHeight: frameHeight }}
             loading="lazy"
           />
         </div>
