@@ -32,6 +32,8 @@ cp -R "$SOURCE/_expo" "$TARGET/_expo"
 [[ -d "$SOURCE/assets" ]] && cp -R "$SOURCE/assets" "$TARGET/assets"
 [[ -f "$SOURCE/favicon.ico" ]] && cp "$SOURCE/favicon.ico" "$TARGET/favicon.ico"
 
+bash "$MONOREPO_ROOT/projects/lingoleaf/scripts/patch-web-demo-import-meta.sh" "$TARGET"
+
 echo "Synced LingoLeaf demo to $TARGET"
 echo "  iframe: /lingoleaf/demo/embed/index.html"
 echo "  assets: /lingoleaf/demo/_expo/ ..."
