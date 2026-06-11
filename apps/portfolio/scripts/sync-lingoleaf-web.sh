@@ -50,14 +50,13 @@ for item in "$SOURCE/dist"/*; do
   fi
 done
 
-# SPA fallback target for /lingoleaf/* deep links (see public/_redirects).
-cp "$SOURCE/dist/index.html" "$ROOT/public/lingoleaf-spa.html"
-
-# Cloudflare Pages Functions for /lingoleaf/api/*
+# Cloudflare Pages Functions for /lingoleaf/api/* (preserve portfolio SPA fallback handler).
 if [[ -d "$FUNCTIONS_SOURCE/lingoleaf" ]]; then
-  rm -rf "$FUNCTIONS_TARGET/lingoleaf"
-  mkdir -p "$FUNCTIONS_TARGET"
-  cp -R "$FUNCTIONS_SOURCE/lingoleaf" "$FUNCTIONS_TARGET/lingoleaf"
+  mkdir -p "$FUNCTIONS_TARGET/lingoleaf"
+  if [[ -d "$FUNCTIONS_SOURCE/lingoleaf/api" ]]; then
+    rm -rf "$FUNCTIONS_TARGET/lingoleaf/api"
+    cp -R "$FUNCTIONS_SOURCE/lingoleaf/api" "$FUNCTIONS_TARGET/lingoleaf/api"
+  fi
 fi
 if [[ -d "$FUNCTIONS_SOURCE/lib" ]]; then
   rm -rf "$FUNCTIONS_TARGET/lib"

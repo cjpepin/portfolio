@@ -21,7 +21,6 @@ mkdir -p "$EMBED"
 
 # Shell HTML lives under embed/ (iframe target)
 cp "$SOURCE/index.html" "$EMBED/index.html"
-cp "$SOURCE/index.html" "$ROOT/public/lingoleaf-demo-embed-spa.html"
 cp "$SOURCE/metadata.json" "$EMBED/metadata.json"
 [[ -f "$SOURCE/auth-redirect.html" ]] && cp "$SOURCE/auth-redirect.html" "$EMBED/auth-redirect.html"
 

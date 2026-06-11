@@ -1,4 +1,2 @@
-# Cloudflare rejects rewrites to */index.html under the same splat prefix (infinite loop).
-# Serve copied SPA shells from the public root instead; asset URLs stay under /lingoleaf/*.
-/lingoleaf/demo/embed/*  /lingoleaf-demo-embed-spa.html  200
-/lingoleaf/*  /lingoleaf-spa.html  200
+# LingoLeaf SPA deep links are handled by functions/lingoleaf/[[path]].ts.
+# Do not add /lingoleaf/* rewrites here — they also match /lingoleaf/assets/* and break JS/CSS.
