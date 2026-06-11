@@ -158,6 +158,8 @@ Forum/admin pages need Supabase env vars in `projects/lingoleaf-web/.env` at bui
 
 On Cloudflare, `projects/` is not in git — `sync-lingoleaf-web.sh` runs `sync-lingoleaf-export.sh` (shallow-clones `lingoleaf`, runs `export:web-demo`) and shallow-clones `lingoleaf-web` into `projects/lingoleaf-web` before building. Override with `LINGOLEAF_REPO` / `LINGOLEAF_REF` and `LINGOLEAF_WEB_REPO` / `LINGOLEAF_WEB_REF` if needed.
 
+**Important:** the `lingoleaf` GitHub repo must include `scripts/export-web-demo.sh` and demo-mode source (`src/demo/`). Push `projects/lingoleaf` to `github.com/cjpepin/lingoleaf` before expecting CI export to work.
+
 For **connorjpepin.com**, trigger the [portfolio deploy webhook](#trigger-deploy-webhook) above — it rebuilds and syncs lingoleaf-web into the portfolio bundle.
 
 ## Trellis project page (`/trellis`)

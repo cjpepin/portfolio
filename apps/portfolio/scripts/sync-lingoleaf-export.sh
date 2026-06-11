@@ -60,8 +60,16 @@ echo "Installing LingoLeaf dependencies…" >&2
 (cd "$LINGOLEAF" && npm install --ignore-scripts)
 (cd "$LINGOLEAF" && npm run postinstall)
 
+EXPORT_SCRIPT="$LINGOLEAF/scripts/export-web-demo.sh"
+if [[ ! -f "$EXPORT_SCRIPT" ]]; then
+  echo "LingoLeaf clone is missing scripts/export-web-demo.sh." >&2
+  echo "Push the latest lingoleaf main (includes web demo export) to $LINGOLEAF_REPO" >&2
+  echo "Or set LINGOLEAF_REF to a branch that contains the export script." >&2
+  exit 1
+fi
+
 echo "Exporting LingoLeaf web demo…" >&2
-(cd "$LINGOLEAF" && npm run export:web-demo)
+(cd "$LINGOLEAF" && bash scripts/export-web-demo.sh)
 
 if [[ ! -f "$EXPORT_OUT/index.html" ]]; then
   echo "LingoLeaf web demo export failed — no index.html at $EXPORT_OUT" >&2
