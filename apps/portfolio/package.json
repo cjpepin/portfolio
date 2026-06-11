@@ -12,6 +12,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "sync:lingoleaf-demo": "./scripts/sync-lingoleaf-demo.sh",
+    "sync:lingoleaf-export": "./scripts/sync-lingoleaf-export.sh",
     "sync:lingoleaf-web": "./scripts/sync-lingoleaf-web.sh",
     "sync:trellis-demo": "./scripts/sync-trellis-demo.sh"
   },

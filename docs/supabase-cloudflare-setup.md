@@ -504,8 +504,7 @@ npm run supabase:deploy
 
 # 3. Build portfolio with embedded subprojects
 cd apps/portfolio
-npm run sync:lingoleaf-web
-npm run sync:lingoleaf-demo
+npm run sync:lingoleaf-web   # clones lingoleaf + exports web demo, clones lingoleaf-web, syncs demo
 npm run build
 ```
 
@@ -545,6 +544,7 @@ Verify client bundles do **not** contain `service_role` strings (browser DevTool
 | CF Functions 404 on `/lingoleaf/api/*` | Option A: ensure `functions/` is copied during sync. Option B: confirm Worker routes `/lingoleaf/api/*` to lingoleaf-web Pages, not portfolio |
 | LingoLeaf assets 404 on `/lingoleaf/assets/*` | Option B: Worker must proxy to `lingoleaf-web.pages.dev` with `Host` set; build must use `base: "/lingoleaf/"` |
 | `/lingoleaf/demo` shows lingoleaf-web SPA | Worker route is too broad — exclude `/lingoleaf/demo` before proxying to lingoleaf-web |
+| LingoLeaf landing shows “mobile demo bundle is not built yet” | `sync-lingoleaf-export.sh` did not run or failed in CI — check build logs for clone/export; set `LINGOLEAF_FORCE_EXPORT=true` to rebuild; ensure `packages/demo-local` is present in the portfolio checkout |
 | OAuth lands on `lingoleaf-web.pages.dev` | Fix Supabase redirect URLs to `https://connorjpepin.com/lingoleaf/**`; never attach custom domain to lingoleaf-web Pages |
 | Portfolio `_redirects` breaks lingoleaf SPA | Remove portfolio catch-all `/lingoleaf/* → index.html` when using Option B; keep only demo rules on portfolio |
 

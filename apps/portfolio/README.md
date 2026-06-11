@@ -156,7 +156,7 @@ npm run build
 
 Forum/admin pages need Supabase env vars in `projects/lingoleaf-web/.env` at build time (or Cloudflare env vars for CI). Cloudflare Functions at `/lingoleaf/api/*` require `wrangler pages dev` or production CF deployment.
 
-On Cloudflare, `projects/` is not in git — `sync-lingoleaf-web.sh` shallow-clones `lingoleaf-web` into `projects/lingoleaf-web` before building. Override with `LINGOLEAF_WEB_REPO` / `LINGOLEAF_WEB_REF` if needed.
+On Cloudflare, `projects/` is not in git — `sync-lingoleaf-web.sh` runs `sync-lingoleaf-export.sh` (shallow-clones `lingoleaf`, runs `export:web-demo`) and shallow-clones `lingoleaf-web` into `projects/lingoleaf-web` before building. Override with `LINGOLEAF_REPO` / `LINGOLEAF_REF` and `LINGOLEAF_WEB_REPO` / `LINGOLEAF_WEB_REF` if needed.
 
 For **connorjpepin.com**, trigger the [portfolio deploy webhook](#trigger-deploy-webhook) above — it rebuilds and syncs lingoleaf-web into the portfolio bundle.
 

@@ -93,6 +93,9 @@ if (( ${#missing[@]} > 0 )); then
   exit 1
 fi
 
+echo "Exporting LingoLeaf mobile web demo (clone + Expo export if needed)…" >&2
+"$SCRIPT_DIR/sync-lingoleaf-export.sh"
+
 echo "Syncing LingoLeaf Expo demo into lingoleaf-web public/demo/…" >&2
 "$SCRIPT_DIR/sync-lingoleaf-demo.sh"
 

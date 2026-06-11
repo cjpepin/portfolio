@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { profile } from "../../data/profile";
 import { TrellisDemoEmbed } from "./TrellisDemoEmbed";
-import { ThemeToggle } from "./ThemeToggle";
 
 type Props = {
   demoBuilt: boolean;
@@ -24,14 +23,13 @@ export function TrellisProjectPage({ demoBuilt }: Props) {
 
   return (
     <div className="mx-auto max-w-5xl px-4 pb-16 pt-8 md:px-6">
-      <div className="mb-8 flex items-start justify-between gap-4">
+      <div className="mb-8">
         <a
           href="/#projects"
           className="font-mono text-sm text-swagger-muted transition-colors hover:text-swagger-get"
         >
           ← Portfolio
         </a>
-        <ThemeToggle />
       </div>
 
       <header

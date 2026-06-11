@@ -15,7 +15,7 @@ EMBED="$TARGET/embed"
 if [[ ! -f "$SOURCE/index.html" ]]; then
   echo "Skipping demo sync — no export at $SOURCE" >&2
   echo "Existing projects/lingoleaf-web/public/demo/ is unchanged." >&2
-  echo "To refresh: cd projects/lingoleaf && npm run export:web-demo" >&2
+  echo "To refresh locally: npm run sync:lingoleaf-export (or cd projects/lingoleaf && npm run export:web-demo)" >&2
   exit 0
 fi
 
