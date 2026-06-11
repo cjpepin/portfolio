@@ -6,6 +6,39 @@
 # SPA router does not intercept /lingoleaf/demo.
 set -euo pipefail
 
+patch_web_demo_import_meta() {
+  local root="$1"
+  ROOT="$root" node <<'NODE'
+const fs = require("fs");
+const { execSync } = require("child_process");
+
+const root = process.env.ROOT;
+const pattern = /\(import\.meta\.env\?import\.meta\.env\.MODE:void 0\)/g;
+const replacement = '"production"';
+let patched = 0;
+
+const files = execSync(
+  `find ${JSON.stringify(root)} -path '*/_expo/static/js/web/AppEntry-*.js' 2>/dev/null || true`,
+  { encoding: "utf8" },
+)
+  .trim()
+  .split("\n")
+  .filter(Boolean);
+
+for (const file of files) {
+  const content = fs.readFileSync(file, "utf8");
+  if (!content.includes("import.meta")) continue;
+  fs.writeFileSync(file, content.replace(pattern, replacement));
+  console.log(`Patched import.meta in ${file}`);
+  patched += 1;
+}
+
+if (patched === 0) {
+  console.log(`No import.meta patches needed under ${root}`);
+}
+NODE
+}
+
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 MONOREPO_ROOT="$(cd "$ROOT/../.." && pwd)"
 SOURCE="${1:-$MONOREPO_ROOT/projects/lingoleaf/dist/web-demo}"
@@ -32,7 +65,9 @@ cp -R "$SOURCE/_expo" "$TARGET/_expo"
 [[ -d "$SOURCE/assets" ]] && cp -R "$SOURCE/assets" "$TARGET/assets"
 [[ -f "$SOURCE/favicon.ico" ]] && cp "$SOURCE/favicon.ico" "$TARGET/favicon.ico"
 
-bash "$MONOREPO_ROOT/projects/lingoleaf/scripts/patch-web-demo-import-meta.sh" "$TARGET"
+# Expo loads AppEntry as a classic script; zustand ESM can emit import.meta until
+# lingoleaf metro.config resolves CJS on web (see projects/lingoleaf/metro.config.js).
+patch_web_demo_import_meta "$TARGET"
 
 echo "Synced LingoLeaf demo to $TARGET"
 echo "  iframe: /lingoleaf/demo/embed/index.html"
