@@ -39,13 +39,27 @@ export function parseEnvFile(filePath) {
   return values;
 }
 
-export function loadProjectEnv(projectDir) {
-  const envPath = path.join(projectDir, ".env");
-  const envLocalPath = path.join(projectDir, ".env.local");
-  const merged = {
-    ...parseEnvFile(envPath),
-    ...parseEnvFile(envLocalPath)
-  };
+export function projectEnvFilePaths(projectDir, options = {}) {
+  const { repoRoot } = options;
+  const files = [];
+
+  if (repoRoot) {
+    files.push(path.join(repoRoot, "apps/portfolio/.env"));
+    files.push(path.join(repoRoot, "apps/portfolio/.env.local"));
+  }
+
+  files.push(path.join(projectDir, ".env"));
+  files.push(path.join(projectDir, ".env.local"));
+
+  return files;
+}
+
+export function loadProjectEnv(projectDir, options = {}) {
+  const merged = {};
+
+  for (const filePath of projectEnvFilePaths(projectDir, options)) {
+    Object.assign(merged, parseEnvFile(filePath));
+  }
 
   for (const [key, value] of Object.entries(merged)) {
     if (!(key in process.env)) {
@@ -58,8 +72,12 @@ export function loadProjectEnv(projectDir) {
 
 export function firstDefined(env, keys) {
   for (const key of keys) {
-    const value = env[key]?.trim();
+    const fromProcess = process.env[key]?.trim();
+    if (fromProcess) {
+      return fromProcess;
+    }
 
+    const value = env[key]?.trim();
     if (value) {
       return value;
     }

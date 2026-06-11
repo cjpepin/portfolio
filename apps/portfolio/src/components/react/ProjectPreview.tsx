@@ -1,14 +1,21 @@
 import { useState } from "react";
 import { profile } from "../../data/profile";
-import { LingoLeafDemoEmbed } from "./LingoLeafDemoEmbed";
 import { TrellisDemoEmbed } from "./TrellisDemoEmbed";
-import { LingoLeafWebShowcase } from "./LingoLeafWebShowcase";
 import type { ProjectData } from "./projectResponse";
 
 type Project = (typeof profile.projects)[number];
 
 function projectLinks(links: Project["links"]) {
-  return links as { demo?: boolean; appStore?: string; github?: string; website?: string };
+  return links as {
+    demo?: boolean;
+    appStore?: string;
+    github?: string;
+    website?: string;
+  };
+}
+
+function isSameOriginHref(href: string): boolean {
+  return href.startsWith("/") && !href.startsWith("//");
 }
 
 function accentForProject(id: string): string {
@@ -18,14 +25,14 @@ function accentForProject(id: string): string {
 
 type Props = {
   data: ProjectData;
-  demoBuilt?: boolean;
   trellisDemoBuilt?: boolean;
 };
 
-export function ProjectPreview({ data, demoBuilt = false, trellisDemoBuilt = false }: Props) {
+export function ProjectPreview({ data, trellisDemoBuilt = false }: Props) {
   const [demoOpen, setDemoOpen] = useState(false);
   const links = data.links ? projectLinks(data.links) : {};
-  const hasInlineDemo = !!links.demo && (data.id === "lingoleaf" || data.id === "trellis");
+  const hasInlineDemo = data.id === "trellis" && !!links.demo;
+  const hasLingoleafDemoLink = data.id === "lingoleaf" && !!links.demo;
 
   return (
     <article
@@ -61,6 +68,11 @@ export function ProjectPreview({ data, demoBuilt = false, trellisDemoBuilt = fal
         )}
         {(links.demo || links.appStore || links.github || links.website) && (
           <div className="flex flex-wrap gap-3 pt-2">
+            {hasLingoleafDemoLink && (
+              <a href="/lingoleaf#try-demo" className="api-execute-btn bg-swagger-get">
+                Live demo
+              </a>
+            )}
             {hasInlineDemo && (
               <button
                 type="button"
@@ -91,27 +103,30 @@ export function ProjectPreview({ data, demoBuilt = false, trellisDemoBuilt = fal
                 GitHub
               </a>
             )}
-            {links.website && (
-              <a
-                href={links.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded border border-swagger-border px-3 py-1.5 font-mono text-sm transition-colors duration-200 hover:border-swagger-get hover:text-swagger-get"
-              >
-                Website
-              </a>
-            )}
+            {links.website &&
+              (isSameOriginHref(links.website) ? (
+                <a
+                  href={links.website}
+                  className="rounded border border-swagger-border px-3 py-1.5 font-mono text-sm transition-colors duration-200 hover:border-swagger-get hover:text-swagger-get"
+                >
+                  Website
+                </a>
+              ) : (
+                <a
+                  href={links.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded border border-swagger-border px-3 py-1.5 font-mono text-sm transition-colors duration-200 hover:border-swagger-get hover:text-swagger-get"
+                >
+                  Website
+                </a>
+              ))}
           </div>
         )}
       </div>
-      {data.id === "lingoleaf" && <LingoLeafWebShowcase />}
       {hasInlineDemo && demoOpen && (
         <div className="animate-fade-in-up">
-          {data.id === "lingoleaf" ? (
-            <LingoLeafDemoEmbed demoBuilt={demoBuilt} />
-          ) : (
-            <TrellisDemoEmbed demoBuilt={trellisDemoBuilt} />
-          )}
+          <TrellisDemoEmbed demoBuilt={trellisDemoBuilt} />
         </div>
       )}
     </article>

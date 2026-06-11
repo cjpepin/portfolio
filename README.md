@@ -41,3 +41,12 @@ npm run supabase:deploy     # push migrations, seeds, edge functions
 ```
 
 See [`docs/supabase-cloudflare-setup.md`](docs/supabase-cloudflare-setup.md) for full setup.
+
+## Demo seed data
+
+Realistic fake data for Trellis, LingoLeaf, and lingoleaf-web: [`docs/demo-seed-data.md`](docs/demo-seed-data.md).
+
+```bash
+npm run seed:demo -- --target fixtures
+node scripts/seed-demo.mjs --target supabase --project all
+```

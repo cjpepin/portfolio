@@ -1,19 +1,21 @@
 #!/usr/bin/env bash
-# Sync LingoLeaf web demo export into the portfolio public folder.
+# Sync LingoLeaf Expo web demo export into lingoleaf-web public/ for Vite build.
 #
 # Expo export uses EXPO_PUBLIC_WEB_BASE_PATH (default /lingoleaf/demo), so _expo/
-# and assets/ must live at public/lingoleaf/demo/. index.html is served from
-# embed/ to avoid conflicting with the Astro wrapper page at /lingoleaf/demo.
+# and assets/ must live at public/demo/. index.html is served from embed/ so the
+# SPA router does not intercept /lingoleaf/demo.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-SOURCE="${1:-$ROOT/../../projects/lingoleaf/dist/web-demo}"
-TARGET="$ROOT/public/lingoleaf/demo"
+MONOREPO_ROOT="$(cd "$ROOT/../.." && pwd)"
+SOURCE="${1:-$MONOREPO_ROOT/projects/lingoleaf/dist/web-demo}"
+TARGET="$MONOREPO_ROOT/projects/lingoleaf-web/public/demo"
 EMBED="$TARGET/embed"
 
 if [[ ! -f "$SOURCE/index.html" ]]; then
   echo "Skipping demo sync — no export at $SOURCE" >&2
-  echo "Existing public/lingoleaf/demo/ is unchanged. To refresh: cd projects/lingoleaf && npm run export:web-demo" >&2
+  echo "Existing projects/lingoleaf-web/public/demo/ is unchanged." >&2
+  echo "To refresh: cd projects/lingoleaf && npm run export:web-demo" >&2
   exit 0
 fi
 

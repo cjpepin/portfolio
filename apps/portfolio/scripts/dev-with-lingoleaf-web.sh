@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Run portfolio (Astro) and lingoleaf-web (Vite) dev servers together.
-# Portfolio proxies /lingoleaf/* to lingoleaf-web, except /lingoleaf/demo/* (Expo embed).
+# Run both dev servers — portfolio proxies /lingoleaf/* to lingoleaf-web (including demo static assets).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"

@@ -19,13 +19,6 @@ export default defineConfig({
           target: LINGOLEAF_WEB_DEV,
           changeOrigin: true,
           ws: true,
-          bypass(req) {
-            const url = req.url ?? "";
-            // Portfolio owns the Expo mobile demo under /lingoleaf/demo/*
-            if (url.startsWith("/lingoleaf/demo")) {
-              return url;
-            }
-          },
         },
       },
     },

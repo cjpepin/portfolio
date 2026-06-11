@@ -10,16 +10,27 @@ type Props = {
 export function TrellisDemoEmbed({ demoBuilt }: Props) {
   if (demoBuilt) {
     return (
-      <div className="overflow-auto border-t border-swagger-border bg-[#0f1419]">
-        <iframe
-          title="Trellis web demo"
-          src={demoSrc}
-          width={DEMO_FRAME_WIDTH}
-          height={DEMO_FRAME_HEIGHT}
-          className="w-full max-w-full border-0"
-          style={{ minHeight: DEMO_FRAME_HEIGHT }}
-          loading="lazy"
-        />
+      <div className="border-t border-swagger-border">
+        <div className="flex items-center justify-between gap-2 border-b border-swagger-border bg-swagger-code px-4 py-2">
+          <p className="font-mono text-xs text-swagger-muted">Trellis web demo</p>
+          <a
+            href="/#projects"
+            className="font-mono text-xs text-swagger-muted transition-colors hover:text-swagger-get"
+          >
+            ← Back to portfolio
+          </a>
+        </div>
+        <div className="overflow-auto bg-[#0f1419]">
+          <iframe
+            title="Trellis web demo"
+            src={demoSrc}
+            width={DEMO_FRAME_WIDTH}
+            height={DEMO_FRAME_HEIGHT}
+            className="w-full max-w-full border-0"
+            style={{ minHeight: DEMO_FRAME_HEIGHT }}
+            loading="lazy"
+          />
+        </div>
       </div>
     );
   }

@@ -1,0 +1,35 @@
+{
+  "version": "demo-users-v1",
+  "users": [
+    {
+      "id": "00000000-0000-4000-8000-000000000001",
+      "email": "demo-reader@lingoleaf.local",
+      "password": "demo-seed-local-only",
+      "user_metadata": { "name": "Demo Reader" }
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000002",
+      "email": "demo-forum-1@lingoleaf.local",
+      "password": "demo-seed-local-only",
+      "user_metadata": { "name": "Maya Chen" }
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000003",
+      "email": "demo-forum-2@lingoleaf.local",
+      "password": "demo-seed-local-only",
+      "user_metadata": { "name": "Alex Rivera" }
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000099",
+      "email": "demo-admin@lingoleaf.local",
+      "password": "demo-seed-local-only",
+      "user_metadata": { "name": "Connor Pepin" }
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000201",
+      "email": "demo-trellis@trellis.local",
+      "password": "demo-seed-local-only",
+      "user_metadata": { "name": "Demo Trellis User" }
+    }
+  ]
+}

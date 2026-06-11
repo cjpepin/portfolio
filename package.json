@@ -7,7 +7,9 @@
     "deploy": "node scripts/cloudflare-pages-deploy.mjs",
     "dev": "npm run dev --prefix apps/portfolio",
     "supabase:deploy": "node scripts/supabase-deploy.mjs --project all",
-    "supabase:validate": "node scripts/supabase-deploy.mjs --validate-only --project all"
+    "supabase:validate": "node scripts/supabase-deploy.mjs --validate-only --project all",
+    "seed:demo": "node scripts/seed-demo.mjs --target all",
+    "test:seed-demo": "node --test scripts/lib/demo-seed/generate-fixtures.test.mjs"
   },
   "engines": {
     "node": ">=20"

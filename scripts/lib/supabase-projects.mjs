@@ -27,7 +27,7 @@ export const PROJECT_PROFILES = {
     serviceRoleKeys: ["SUPABASE_SERVICE_ROLE_KEY"],
     projectRefKeys: ["SUPABASE_PROJECT_REF"],
     dbPasswordKeys: ["SUPABASE_DB_PASSWORD"],
-    seedFiles: [],
+    seedFiles: ["supabase/demo/seed.sql"],
     deployFunctions: false,
     notes: [
       "After migrations, expose the lingoleaf schema in Supabase → Settings → API → Exposed schemas.",
@@ -49,7 +49,7 @@ export const PROJECT_PROFILES = {
     serviceRoleKeys: ["SUPABASE_SERVICE_ROLE_KEY"],
     projectRefKeys: ["SUPABASE_PROJECT_REF"],
     dbPasswordKeys: ["SUPABASE_DB_PASSWORD"],
-    seedFiles: [],
+    seedFiles: ["supabase/demo/seed.sql"],
     deployFunctions: true,
     delegateScript: "scripts/supabase.mjs",
     notes: [

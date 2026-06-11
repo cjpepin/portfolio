@@ -5,12 +5,10 @@ import SinglePageLayout from "../layouts/SinglePageLayout.astro";
 import { PortfolioShell } from "../components/react/PortfolioShell";
 import { profile } from "../data/profile";
 
-const demoIndex = path.join(process.cwd(), "public/lingoleaf/demo/embed/index.html");
 const trellisDemoIndex = path.join(process.cwd(), "public/trellis/demo/embed/index.html");
-const demoBuilt = fs.existsSync(demoIndex);
 const trellisDemoBuilt = fs.existsSync(trellisDemoIndex);
 ---
 
 <SinglePageLayout title={`${profile.info.title} — Portfolio`}>
-  <PortfolioShell client:load demoBuilt={demoBuilt} trellisDemoBuilt={trellisDemoBuilt} />
+  <PortfolioShell client:load trellisDemoBuilt={trellisDemoBuilt} />
 </SinglePageLayout>

@@ -16,12 +16,12 @@ import { SystemsSection } from "./sections/SystemsSection";
 
 type SectionId = (typeof profile.navigation)[number]["id"];
 
-const sections: { id: SectionId; content: (props: { demoBuilt: boolean; trellisDemoBuilt: boolean }) => ReactNode }[] = [
+const sections: { id: SectionId; content: (props: { trellisDemoBuilt: boolean }) => ReactNode }[] = [
   { id: "overview", content: () => <OverviewSection /> },
   { id: "experience", content: () => <ExperienceSection /> },
   { id: "systems", content: () => <SystemsSection /> },
-  { id: "projects", content: ({ demoBuilt, trellisDemoBuilt }) => (
-    <ProjectsSection demoBuilt={demoBuilt} trellisDemoBuilt={trellisDemoBuilt} />
+  { id: "projects", content: ({ trellisDemoBuilt }) => (
+    <ProjectsSection trellisDemoBuilt={trellisDemoBuilt} />
   ) },
   { id: "contact", content: () => <ContactSection /> },
 ];
@@ -33,11 +33,10 @@ function parseHash(): SectionId {
 }
 
 type Props = {
-  demoBuilt: boolean;
   trellisDemoBuilt: boolean;
 };
 
-function PortfolioShellContent({ demoBuilt, trellisDemoBuilt }: Props) {
+function PortfolioShellContent({ trellisDemoBuilt }: Props) {
   const [activeId, setActiveId] = useState<SectionId>("overview");
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const isScrollingRef = useRef(false);
@@ -186,7 +185,7 @@ function PortfolioShellContent({ demoBuilt, trellisDemoBuilt }: Props) {
               <main className="px-4 py-6 md:px-8 lg:px-10">
                 {sections.map((section) => (
                   <SectionReveal key={section.id} id={section.id}>
-                    <div className="mx-auto max-w-4xl">{section.content({ demoBuilt, trellisDemoBuilt })}</div>
+                    <div className="mx-auto max-w-4xl">{section.content({ trellisDemoBuilt })}</div>
                   </SectionReveal>
                 ))}
               </main>

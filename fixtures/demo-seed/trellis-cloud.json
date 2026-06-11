@@ -1,0 +1,96 @@
+{
+  "version": "trellis-cloud-demo-v1",
+  "demoUserId": "00000000-0000-4000-8000-000000000201",
+  "workspace": {
+    "id": "55555555-5555-4555-8555-555555555501",
+    "name": "Demo Vault",
+    "slug": "demo-vault"
+  },
+  "notes": [
+    {
+      "id": "66666666-6666-4666-8666-666666666601",
+      "slug": "trellis-roadmap",
+      "title": "Trellis Roadmap",
+      "note_type": "concept",
+      "folder_path": "wiki",
+      "excerpt": "Quarterly themes for local-first knowledge capture.",
+      "markdown_body": "---\ntitle: Trellis Roadmap\ntags: [product, roadmap]\ntype: concept\n---\nA running map of bets that compound the product. Links to [[Local First Principles]] and [[Notes From Chats]].\n\n## Q2 bets\n- Make first-run value legible within the first session.\n- Make extracted notes easier to trust and edit.\n- Make local-versus-cloud boundaries obvious.",
+      "frontmatter_json": { "tags": ["product", "roadmap"], "type": "concept", "sources": 2 },
+      "links": ["local-first-principles", "notes-from-chats"]
+    },
+    {
+      "id": "66666666-6666-4666-8666-666666666602",
+      "slug": "local-first-principles",
+      "title": "Local First Principles",
+      "note_type": "concept",
+      "folder_path": "wiki",
+      "excerpt": "Why user-owned vaults matter for trust and speed.",
+      "markdown_body": "---\ntitle: Local First Principles\ntags: [research]\ntype: concept\n---\nLocal-first software keeps the authoritative copy on the device. Cloud is for sync and backup, not the primary read path.\n\nSee [[Trellis Roadmap]] for how this shows up in product bets.",
+      "frontmatter_json": { "tags": ["research"], "type": "concept", "sources": 1 },
+      "links": ["trellis-roadmap"]
+    },
+    {
+      "id": "66666666-6666-4666-8666-666666666603",
+      "slug": "notes-from-chats",
+      "title": "Notes From Chats",
+      "note_type": "synthesis",
+      "folder_path": "wiki",
+      "excerpt": "Patterns extracted from recent assistant conversations.",
+      "markdown_body": "---\ntitle: Notes From Chats\ntags: [synthesis]\ntype: synthesis\n---\nChat sessions are a rich source of provisional notes. Trellis promotes the durable ones into the vault.\n\nReferenced in [[Trellis Roadmap]] and the Preview Workspace seed sessions.",
+      "frontmatter_json": { "tags": ["synthesis"], "type": "synthesis", "sources": 4 },
+      "links": ["trellis-roadmap"]
+    },
+    {
+      "id": "66666666-6666-4666-8666-666666666604",
+      "slug": "trust-signals",
+      "title": "Trust Signals",
+      "note_type": "concept",
+      "folder_path": "wiki",
+      "excerpt": "What makes extracted notes feel safe to keep.",
+      "markdown_body": "---\ntitle: Trust Signals\ntags: [product]\ntype: concept\n---\nProvenance, edit history, and obvious source links help users trust automated extractions.",
+      "frontmatter_json": { "tags": ["product"], "type": "concept", "sources": 1 },
+      "links": ["notes-from-chats"]
+    },
+    {
+      "id": "66666666-6666-4666-8666-666666666605",
+      "slug": "preview-workspace",
+      "title": "Preview Workspace",
+      "note_type": "entity",
+      "folder_path": "wiki",
+      "excerpt": "The editable sandbox shipped with Trellis desktop.",
+      "markdown_body": "---\ntitle: Preview Workspace\ntags: [product]\ntype: entity\n---\nThe preview workspace is an isolated vault with seeded chats and notes. Reset restores the shipped fixture.",
+      "frontmatter_json": { "tags": ["product"], "type": "entity", "sources": 0 },
+      "links": ["trellis-roadmap"]
+    }
+  ],
+  "noteLinks": [
+    { "source_slug": "trellis-roadmap", "target_slug": "local-first-principles", "target_title": "Local First Principles" },
+    { "source_slug": "trellis-roadmap", "target_slug": "notes-from-chats", "target_title": "Notes From Chats" },
+    { "source_slug": "local-first-principles", "target_slug": "trellis-roadmap", "target_title": "Trellis Roadmap" },
+    { "source_slug": "notes-from-chats", "target_slug": "trellis-roadmap", "target_title": "Trellis Roadmap" },
+    { "source_slug": "notes-from-chats", "target_slug": "trust-signals", "target_title": "Trust Signals" },
+    { "source_slug": "preview-workspace", "target_slug": "trellis-roadmap", "target_title": "Trellis Roadmap" }
+  ],
+  "chatSessions": [
+    {
+      "id": "77777777-7777-4777-8777-777777777701",
+      "legacy_id": "preview-session-roadmap",
+      "title": "Roadmap review with assistant",
+      "model": "gpt-4.1-mini",
+      "message_count": 4
+    },
+    {
+      "id": "77777777-7777-4777-8777-777777777702",
+      "legacy_id": "preview-session-extraction",
+      "title": "Notes from chats",
+      "model": "gpt-4.1-mini",
+      "message_count": 4
+    }
+  ],
+  "chatMessages": [
+    { "id": "eeeeeeee-eeee-4eee-8eee-eeeeeeee0001", "session_id": "77777777-7777-4777-8777-777777777701", "role": "user", "content": "Summarize the themes in [[Trellis Roadmap]] for a design partner email.", "created_at": "2026-04-01T16:00:00.000Z" },
+    { "id": "eeeeeeee-eeee-4eee-8eee-eeeeeeee0002", "session_id": "77777777-7777-4777-8777-777777777701", "role": "assistant", "content": "The roadmap centers on first-run clarity, trustworthy extractions, and obvious data boundaries — all tied to [[Local First Principles]].", "created_at": "2026-04-01T16:01:00.000Z" },
+    { "id": "eeeeeeee-eeee-4eee-8eee-eeeeeeee0003", "session_id": "77777777-7777-4777-8777-777777777702", "role": "user", "content": "What patterns should become notes from our last three chats?", "created_at": "2026-04-02T10:00:00.000Z" },
+    { "id": "eeeeeeee-eeee-4eee-8eee-eeeeeeee0004", "session_id": "77777777-7777-4777-8777-777777777702", "role": "assistant", "content": "Promote provenance cues into [[Trust Signals]] and link the synthesis in [[Notes From Chats]].", "created_at": "2026-04-02T10:02:00.000Z" }
+  ]
+}

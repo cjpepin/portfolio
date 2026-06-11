@@ -8,8 +8,6 @@ dist/
 
 # Synced from projects/lingoleaf-web at build time (npm run sync:lingoleaf-web)
 public/lingoleaf/*
-!public/lingoleaf/demo/
-!public/lingoleaf/demo/**
 public/**/node_modules/
 .wrangler/
 # Synced from lingoleaf-web at build time (npm run sync:lingoleaf-web)

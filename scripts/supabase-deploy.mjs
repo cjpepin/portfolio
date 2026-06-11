@@ -203,7 +203,7 @@ async function validateProject(name, profile, options) {
     throw new Error(`Supabase directory not found: ${supabaseDir}`);
   }
 
-  const env = loadProjectEnv(projectDir);
+  const env = loadProjectEnv(projectDir, { repoRoot });
   assertRequiredEnv(profile.label, env, [
     ...profile.urlKeys.slice(0, 1),
     ...profile.anonKeyKeys.slice(0, 1)

@@ -150,8 +150,8 @@ node scripts/supabase-deploy.mjs --project trellis
 | Project | Migrations | Seeds | Edge functions |
 |---------|------------|-------|----------------|
 | `lingoleaf` | `supabase/migrations/*` | `supabase/demo/seed.sql` | translate, study-pack-metadata, premium-entitlement-sync, analytics-ingest, migrate-user-data |
-| `lingoleaf-web` | `supabase/migrations/202604090001_lingoleaf_schema.sql` | — | — (uses Cloudflare Functions instead) |
-| `trellis` | via `pnpm run supabase:backend:deploy` delegate | — | all functions under `supabase/functions/` |
+| `lingoleaf-web` | `supabase/migrations/202604090001_lingoleaf_schema.sql` | `supabase/demo/seed.sql` | — (uses Cloudflare Functions instead) |
+| `trellis` | via `pnpm run supabase:backend:deploy` delegate | `supabase/demo/seed.sql` | all functions under `supabase/functions/` |
 
 ### Post-deploy manual steps
 

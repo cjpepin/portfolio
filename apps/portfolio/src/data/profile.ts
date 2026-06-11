@@ -1,7 +1,7 @@
 export const profile = {
   info: {
-    title: "Connor Pepin API Documentation",
-    version: "1.0.2",
+    title: "Connor Pepin API Docs",
+    version: "1.1.2",
     description:
       "Full-stack software engineer — Spring Boot microservices, React/React Native products, and local-first systems.",
     profileImage: "/ME_NEWER.JPG",
@@ -181,13 +181,7 @@ export const profile = {
         demo: true,
         appStore: "https://apps.apple.com/us/app/lingoleaf/id6758588394",
         github: "https://github.com/cjpepin/lingoleaf",
-        webPages: [
-          { label: "Landing", path: "/lingoleaf/" },
-          { label: "Feature forum", path: "/lingoleaf/features" },
-          { label: "App updates", path: "/lingoleaf/updates" },
-          { label: "Contact", path: "/lingoleaf/contact" },
-          { label: "Admin analytics", path: "/lingoleaf/admin/analytics" },
-        ],
+        website: "/lingoleaf",
       },
       accent: "from-emerald-500/20 to-teal-600/10",
     },

@@ -6,11 +6,10 @@ import { extractProjectData } from "../projectResponse";
 import { SectionHeader } from "../SectionHeader";
 
 type Props = {
-  demoBuilt: boolean;
   trellisDemoBuilt: boolean;
 };
 
-export function ProjectsSection({ demoBuilt, trellisDemoBuilt }: Props) {
+export function ProjectsSection({ trellisDemoBuilt }: Props) {
   return (
     <div className="stagger-children space-y-2">
       <SectionHeader
@@ -76,7 +75,7 @@ export function ProjectsSection({ demoBuilt, trellisDemoBuilt }: Props) {
                 </div>
               );
             }
-            return <ProjectPreview data={data} demoBuilt={demoBuilt} trellisDemoBuilt={trellisDemoBuilt} />;
+            return <ProjectPreview data={data} trellisDemoBuilt={trellisDemoBuilt} />;
           }}
         />
       ))}

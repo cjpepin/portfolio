@@ -61,14 +61,35 @@ curl -d "" "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/16a
 
 ### Environment variables
 
-Set in Cloudflare Pages → Settings → Environment variables:
+Set in Cloudflare Pages → Settings → Environment variables (Production **and** Preview):
 
+**Portfolio contact form**
 
-| Variable             | Required | Description                                               |
-| -------------------- | -------- | --------------------------------------------------------- |
-| `RESEND_API_KEY`     | Yes      | Resend API key for contact form                           |
-| `CONTACT_TO_EMAIL`   | No       | Inbox (default: `cjpepin@wustl.edu`)                      |
-| `CONTACT_FROM_EMAIL` | No       | Verified Resend sender (default: `onboarding@resend.dev`) |
+| Variable             | Required | Encrypted | Description                                               |
+| -------------------- | -------- | --------- | --------------------------------------------------------- |
+| `RESEND_API_KEY`     | Yes      | Yes       | Resend API key for contact form                           |
+| `CONTACT_TO_EMAIL`   | No       | No        | Inbox (default: `cjpepin@wustl.edu`)                      |
+| `CONTACT_FROM_EMAIL` | No       | No        | Verified Resend sender (default: `onboarding@resend.dev`) |
+
+**LingoLeaf web client (build-time — baked into `/lingoleaf/*` JS during `sync:lingoleaf-web`)**
+
+| Variable                   | Required | Encrypted | Description                                      |
+| -------------------------- | -------- | --------- | ------------------------------------------------ |
+| `VITE_SUPABASE_URL`        | Yes      | No        | Supabase project URL                             |
+| `VITE_SUPABASE_ANON_KEY`   | Yes      | No        | Supabase anon/publishable key (same value as below) |
+| `VITE_SUPABASE_DB_SCHEMA`  | No       | No        | `lingoleaf`                                      |
+| `VITE_TURNSTILE_SITE_KEY`  | Forum    | No        | Turnstile site key for feature forum             |
+
+**LingoLeaf web server (Pages Functions at `/lingoleaf/api/*`)**
+
+| Variable                     | Required | Encrypted | Description                          |
+| ---------------------------- | -------- | --------- | ------------------------------------ |
+| `SUPABASE_URL`               | Yes      | Yes       | Same URL as `VITE_SUPABASE_URL`      |
+| `SUPABASE_ANON_KEY`          | Yes      | Yes       | Same key as `VITE_SUPABASE_ANON_KEY` |
+| `SUPABASE_SERVICE_ROLE_KEY`  | Forum    | Yes       | Turnstile verification writes only   |
+| `TURNSTILE_SECRET_KEY`       | Forum    | Yes       | Turnstile server verify              |
+
+`SUPABASE_ANON_KEY` alone does **not** configure the forum UI — Vite only exposes `VITE_*` vars to the browser bundle. Set both keys to the same anon/publishable value, then redeploy.
 
 
 Contact API: `POST /api/contact` (Cloudflare Pages Function in `functions/api/contact.ts`).
@@ -84,38 +105,39 @@ npx wrangler pages dev dist
 
 Set `RESEND_API_KEY` in a `.dev.vars` file at the project root for local testing.
 
-## LingoLeaf demo embed
+## LingoLeaf demo and website
 
-Build the web demo from the subproject, then sync with the portfolio script (handles base-path layout):
+The mobile web demo and companion site (`projects/lingoleaf-web`) both live under `/lingoleaf/*`. The demo is embedded on the landing page at `/lingoleaf#try-demo`.
+
+Build the Expo demo, sync into lingoleaf-web, then build and deploy:
 
 ```bash
 cd ../../projects/lingoleaf
 cp .env.demo.example .env.demo
-# Fill demo Supabase credentials (EXPO_PUBLIC_WEB_BASE_PATH defaults to /lingoleaf/demo)
 npm run export:web-demo
 
 cd ../../apps/portfolio
-./scripts/sync-lingoleaf-demo.sh
+./scripts/sync-lingoleaf-demo.sh   # → projects/lingoleaf-web/public/demo/
+npm run sync:lingoleaf-web         # builds lingoleaf-web (includes demo) → public/lingoleaf/
 ```
 
-The Expo export references `/lingoleaf/demo/_expo/...` — the sync script copies `_expo/` and `assets/` to `public/lingoleaf/demo/` while keeping `index.html` under `embed/` for the Astro iframe wrapper.
-
-SPA routing for the embed uses `public/_redirects`. The page at `/lingoleaf/demo` auto-detects the bundle at build time.
+The Expo export references `/lingoleaf/demo/_expo/...` — assets land in `public/demo/` inside lingoleaf-web and are copied to `public/lingoleaf/demo/` on sync.
 
 ## LingoLeaf companion website (`lingoleaf-web`)
 
-The marketing site, feature forum, app updates, contact form, and admin dashboard live in `projects/lingoleaf-web` and mount at `/lingoleaf/*`.
+The marketing site, feature forum, app updates, contact form, admin dashboard, and browser demo live in `projects/lingoleaf-web` and mount at `/lingoleaf/*`.
 
 ### Local dev (proxy)
 
-Run both dev servers — portfolio proxies `/lingoleaf` to lingoleaf-web except `/lingoleaf/demo/*` (Expo embed):
+Run both dev servers — portfolio proxies all of `/lingoleaf/*` to lingoleaf-web (including demo static assets):
 
 ```bash
 cd apps/portfolio
+./scripts/sync-lingoleaf-demo.sh   # once, if demo iframe is needed locally
 npm run dev:all
 ```
 
-- Portfolio: [http://localhost:4321](http://localhost:4321) — open **Projects → LingoLeaf → Live demo** for mobile demo + web page links/previews
+- Portfolio: [http://localhost:4321](http://localhost:4321) — **Projects → LingoLeaf → Live demo** opens `/lingoleaf#try-demo`
 - lingoleaf-web direct: [http://localhost:8080/lingoleaf/](http://localhost:8080/lingoleaf/)
 
 Or run separately: `npm run dev` in each project (portfolio still proxies when lingoleaf-web is on port 8080).
@@ -124,7 +146,7 @@ Optional: `LINGOLEAF_WEB_DEV_URL` overrides the proxy target (default `http://lo
 
 ### Production static sync
 
-For Cloudflare Pages static deploy, build and copy the lingoleaf-web bundle into `public/lingoleaf/` (preserves the Expo demo under `demo/`):
+For Cloudflare Pages static deploy, build and copy the lingoleaf-web bundle (including demo) into `public/lingoleaf/`:
 
 ```bash
 cd apps/portfolio
