@@ -55,7 +55,8 @@ EOF
 fi
 
 echo "Installing LingoLeaf dependencies…" >&2
-(cd "$LINGOLEAF" && npm ci)
+# Cloned lingoleaf may have package-lock drift; npm install is tolerant (npm ci is not).
+(cd "$LINGOLEAF" && npm install)
 
 echo "Exporting LingoLeaf web demo…" >&2
 (cd "$LINGOLEAF" && npm run export:web-demo)
