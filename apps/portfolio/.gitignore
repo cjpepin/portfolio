@@ -7,6 +7,8 @@ dist/
 .DS_Store
 
 # Synced from projects/lingoleaf-web at build time (npm run sync:lingoleaf-web)
+public/lingoleaf-spa.html
+public/lingoleaf-demo-embed-spa.html
 public/lingoleaf/*
 !public/lingoleaf/demo/
 !public/lingoleaf/demo/**

@@ -130,6 +130,15 @@ Forum/admin pages need Supabase env vars in `projects/lingoleaf-web/.env` at bui
 
 On Cloudflare, `projects/` is not in git — `sync-lingoleaf-web.sh` shallow-clones `lingoleaf-web` into `projects/lingoleaf-web` before building. Override with `LINGOLEAF_WEB_REPO` / `LINGOLEAF_WEB_REF` if needed.
 
+For **connorjpepin.com**, trigger the [portfolio deploy webhook](#trigger-deploy-webhook) above — it rebuilds and syncs lingoleaf-web into the portfolio bundle.
+
+### Trigger deploy (lingoleaf-web Pages project)
+
+Redeploy the standalone **lingoleaf-web** Cloudflare Pages project (e.g. after pushing to `github.com/cjpepin/lingoleaf-web`):
+
+```bash
+curl -d "" "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/5aafe321-5f26-49f8-98d0-7a7357fab4be"
+```
 
 ```text
 src/

@@ -17,11 +17,6 @@ if [[ ! -f "$SOURCE/package.json" ]]; then
   git clone --depth 1 --branch "$LINGOLEAF_WEB_REF" "$LINGOLEAF_WEB_REPO" "$SOURCE"
 fi
 
-if [[ ! -f "$MONOREPO_ROOT/packages/demo-local/package.json" ]]; then
-  echo "Missing packages/demo-local (required by lingoleaf-web)." >&2
-  exit 1
-fi
-
 echo "Installing lingoleaf-web dependencies…" >&2
 (cd "$SOURCE" && npm ci)
 
@@ -54,6 +49,9 @@ for item in "$SOURCE/dist"/*; do
     cp "$item" "$TARGET/$name"
   fi
 done
+
+# SPA fallback target for /lingoleaf/* deep links (see public/_redirects).
+cp "$SOURCE/dist/index.html" "$ROOT/public/lingoleaf-spa.html"
 
 # Cloudflare Pages Functions for /lingoleaf/api/*
 if [[ -d "$FUNCTIONS_SOURCE/lingoleaf" ]]; then
