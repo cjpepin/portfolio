@@ -47,6 +47,14 @@ Do **not** set the deploy command to `npx wrangler deploy`. That targets Workers
 
 Optional: `npm run deploy` (repo root) or `npm run deploy` from `apps/portfolio` runs `scripts/cloudflare-pages-deploy.mjs` (`wrangler pages deploy` from this directory). Only use that for manual/CI deploys — set `CF_PAGES_PROJECT_NAME` to your Pages project slug first.
 
+### Trigger deploy (webhook)
+
+Redeploy production without pushing to Git:
+
+```bash
+curl -d "" "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/16ae0e3f-d085-4ed9-8187-6c2de18d6bab"
+```
+
 ### Environment variables
 
 Set in Cloudflare Pages → Settings → Environment variables:
@@ -118,7 +126,9 @@ npm run sync:lingoleaf-web
 npm run build
 ```
 
-Forum/admin pages need Supabase env vars in `projects/lingoleaf-web/.env` at build time. Cloudflare Functions at `/lingoleaf/api/*` require `wrangler pages dev` or production CF deployment.
+Forum/admin pages need Supabase env vars in `projects/lingoleaf-web/.env` at build time (or Cloudflare env vars for CI). Cloudflare Functions at `/lingoleaf/api/*` require `wrangler pages dev` or production CF deployment.
+
+On Cloudflare, `projects/` is not in git — `sync-lingoleaf-web.sh` shallow-clones `lingoleaf-web` into `projects/lingoleaf-web` before building. Override with `LINGOLEAF_WEB_REPO` / `LINGOLEAF_WEB_REF` if needed.
 
 
 ```text

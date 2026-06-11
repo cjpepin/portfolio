@@ -3,13 +3,22 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-SOURCE="$ROOT/../../projects/lingoleaf-web"
+MONOREPO_ROOT="$(cd "$ROOT/../.." && pwd)"
+SOURCE="$MONOREPO_ROOT/projects/lingoleaf-web"
 TARGET="$ROOT/public/lingoleaf"
 FUNCTIONS_SOURCE="$SOURCE/functions"
 FUNCTIONS_TARGET="$ROOT/functions"
+LINGOLEAF_WEB_REPO="${LINGOLEAF_WEB_REPO:-https://github.com/cjpepin/lingoleaf-web.git}"
+LINGOLEAF_WEB_REF="${LINGOLEAF_WEB_REF:-main}"
 
 if [[ ! -f "$SOURCE/package.json" ]]; then
-  echo "Missing lingoleaf-web at $SOURCE" >&2
+  echo "lingoleaf-web not found at $SOURCE — cloning for build…" >&2
+  mkdir -p "$(dirname "$SOURCE")"
+  git clone --depth 1 --branch "$LINGOLEAF_WEB_REF" "$LINGOLEAF_WEB_REPO" "$SOURCE"
+fi
+
+if [[ ! -f "$MONOREPO_ROOT/packages/demo-local/package.json" ]]; then
+  echo "Missing packages/demo-local (required by lingoleaf-web)." >&2
   exit 1
 fi
 
