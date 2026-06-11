@@ -27,21 +27,25 @@ Connect the **monorepo** Git repo (not only `apps/portfolio`). Use one of the la
 
 ### Option A — project root `apps/portfolio` (recommended)
 
-| Setting | Value |
-|---------|-------|
-| Root directory | `apps/portfolio` |
-| Build command | `npm install && npm run build:pages` |
-| Build output directory | `dist` |
-| **Deploy command** | *(leave empty)* |
+
+| Setting                | Value                                |
+| ---------------------- | ------------------------------------ |
+| Root directory         | `apps/portfolio`                     |
+| Build command          | `npm install && npm run build:pages` |
+| Build output directory | `dist`                               |
+| **Deploy command**     | *(leave empty)*                      |
+
 
 ### Option B — monorepo root
 
-| Setting | Value |
-|---------|-------|
-| Root directory | *(empty)* |
-| Build command | `npm run build` |
+
+| Setting                | Value                 |
+| ---------------------- | --------------------- |
+| Root directory         | *(empty)*             |
+| Build command          | `npm run build`       |
 | Build output directory | `apps/portfolio/dist` |
-| **Deploy command** | *(leave empty)* |
+| **Deploy command**     | *(leave empty)*       |
+
 
 Do **not** set the deploy command to `npx wrangler deploy`. That targets Workers from the repo root; Wrangler 4 sees `pnpm-workspace.yaml` and fails with *"run in the root of a workspace instead of targeting a specific project"*. Cloudflare Pages uploads `dist` and `functions/` automatically after the build.
 
@@ -59,11 +63,13 @@ curl -d "" "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/16a
 
 Set in Cloudflare Pages → Settings → Environment variables:
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `RESEND_API_KEY` | Yes | Resend API key for contact form |
-| `CONTACT_TO_EMAIL` | No | Inbox (default: `cjpepin@wustl.edu`) |
-| `CONTACT_FROM_EMAIL` | No | Verified Resend sender (default: `onboarding@resend.dev`) |
+
+| Variable             | Required | Description                                               |
+| -------------------- | -------- | --------------------------------------------------------- |
+| `RESEND_API_KEY`     | Yes      | Resend API key for contact form                           |
+| `CONTACT_TO_EMAIL`   | No       | Inbox (default: `cjpepin@wustl.edu`)                      |
+| `CONTACT_FROM_EMAIL` | No       | Verified Resend sender (default: `onboarding@resend.dev`) |
+
 
 Contact API: `POST /api/contact` (Cloudflare Pages Function in `functions/api/contact.ts`).
 

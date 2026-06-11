@@ -11,5 +11,7 @@ public/lingoleaf/*
 !public/lingoleaf/demo/
 !public/lingoleaf/demo/**
 public/**/node_modules/
-functions/lingoleaf/
+.wrangler/
+# Synced from lingoleaf-web at build time (npm run sync:lingoleaf-web)
+functions/lingoleaf/api/
 functions/lib/
