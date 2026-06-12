@@ -10,20 +10,8 @@ type ChatPayload = {
   messages?: Array<{ role?: string; content?: string }>;
 };
 
-function buildDemoReply(messages: Array<{ role: string; content: string }>): string {
-  const lastUser = [...messages].reverse().find((message) => message.role === "user");
-  const prompt = lastUser?.content?.trim() ?? "";
-  if (!prompt) {
-    return "Ask me something about your notes, roadmap, or local-first product ideas.";
-  }
-  return [
-    "Demo mode reply (rate-limited, not persisted to cloud):",
-    "",
-    `You asked about “${prompt.slice(0, 120)}”.`,
-    "In the full Trellis app this would stream from your configured model and stay in your vault.",
-    "Here, the assistant response is generated locally in the portfolio demo API.",
-  ].join("\n");
-}
+const SYSTEM_PROMPT =
+  "You are Trellis, a local-first AI knowledge assistant. Answer concisely (≤120 words) as a helpful demo assistant for a portfolio embed. Help users think about their notes, ideas, and projects.";
 
 export const onRequestPost = async (context: { request: Request; env: DemoEnv }) => {
   const { request, env } = context;
@@ -44,61 +32,94 @@ export const onRequestPost = async (context: { request: Request; env: DemoEnv })
       return json({ error: "At least one message is required." }, 400, corsHeaders());
     }
 
-    const reply = buildDemoReply(messages);
-
-    if (env.OPENAI_API_KEY) {
-      try {
-        const response = await fetch("https://api.openai.com/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${env.OPENAI_API_KEY}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            model: "gpt-4.1-mini",
-            messages: [
-              {
-                role: "system",
-                content:
-                  "You are Trellis demo assistant. Keep answers concise (<=120 words) for a portfolio embed.",
-              },
-              ...messages.slice(-6),
-            ],
-            max_tokens: 180,
-          }),
-        });
-
-        if (response.ok) {
-          const data = (await response.json()) as {
-            choices?: Array<{ message?: { content?: string } }>;
-          };
-          const content = data.choices?.[0]?.message?.content?.trim();
-          if (content) {
-            return streamText(content);
-          }
-        }
-      } catch (error) {
-        console.warn("Demo chat OpenAI fallback", error);
-      }
+    const apiKey = env.OPENAI_API_KEY?.trim();
+    if (!apiKey) {
+      return json(
+        {
+          error:
+            "Demo chat AI is not configured. Set OPENAI_API_KEY in Cloudflare Pages environment variables (or apps/portfolio/.dev.vars for local wrangler dev).",
+        },
+        503,
+        corsHeaders(),
+      );
     }
 
-    return streamText(reply);
+    try {
+      return await streamOpenAI(messages, apiKey);
+    } catch (error) {
+      console.error("Demo chat OpenAI error", error);
+      return json({ error: "Chat provider failed. Try again shortly." }, 502, corsHeaders());
+    }
   } catch (error) {
     console.error("Demo chat error", error);
     return json({ error: "Chat failed." }, 500, corsHeaders());
   }
 };
 
-function streamText(text: string): Response {
+async function streamOpenAI(
+  messages: Array<{ role: string; content: string }>,
+  apiKey: string,
+): Promise<Response> {
+  const openaiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: "gpt-4.1-mini",
+      messages: [{ role: "system", content: SYSTEM_PROMPT }, ...messages.slice(-6)],
+      max_tokens: 180,
+      stream: true,
+    }),
+  });
+
+  if (!openaiResponse.ok || !openaiResponse.body) {
+    throw new Error(`OpenAI request failed (${openaiResponse.status})`);
+  }
+
   const encoder = new TextEncoder();
+  const decoder = new TextDecoder();
+  const reader = openaiResponse.body.getReader();
+
   const stream = new ReadableStream<Uint8Array>({
-    start(controller) {
-      const chunks = text.match(/.{1,24}/g) ?? [text];
-      for (const chunk of chunks) {
-        controller.enqueue(encoder.encode(`data: ${JSON.stringify({ token: chunk })}\n\n`));
+    async start(controller) {
+      let buffer = "";
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split("\n");
+          buffer = lines.pop() ?? "";
+
+          for (const line of lines) {
+            const trimmed = line.trim();
+            if (!trimmed.startsWith("data:")) continue;
+
+            const payload = trimmed.slice(5).trim();
+            if (payload === "[DONE]") continue;
+
+            try {
+              const parsed = JSON.parse(payload) as {
+                choices?: Array<{ delta?: { content?: string } }>;
+              };
+              const token = parsed.choices?.[0]?.delta?.content;
+              if (token) {
+                controller.enqueue(encoder.encode(`data: ${JSON.stringify({ token })}\n\n`));
+              }
+            } catch {
+              // ignore malformed chunks
+            }
+          }
+        }
+
+        controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+        controller.close();
+      } catch (error) {
+        controller.error(error);
       }
-      controller.enqueue(encoder.encode("data: [DONE]\n\n"));
-      controller.close();
     },
   });
 

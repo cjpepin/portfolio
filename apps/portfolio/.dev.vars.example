@@ -1,0 +1,7 @@
+# Local Cloudflare Pages Functions secrets (wrangler pages dev)
+# Copy to .dev.vars and fill in values — never commit .dev.vars
+
+OPENAI_API_KEY=
+GOOGLE_TRANSLATE_API_KEY=
+DEMO_ALLOWED_ORIGINS=http://localhost:4321,http://localhost:8788
+DEMO_RATE_LIMIT_PER_HOUR=30
