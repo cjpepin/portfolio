@@ -63,6 +63,12 @@ cp "$SOURCE/metadata.json" "$EMBED/metadata.json"
 rm -rf "$TARGET/_expo" "$TARGET/assets"
 cp -R "$SOURCE/_expo" "$TARGET/_expo"
 [[ -d "$SOURCE/assets" ]] && cp -R "$SOURCE/assets" "$TARGET/assets"
+
+if [[ ! -d "$TARGET/assets" ]]; then
+  echo "Demo sync warning: missing $TARGET/assets (icon fonts will 404)." >&2
+  echo "Re-run export: cd projects/lingoleaf && bash scripts/export-web-demo.sh" >&2
+  exit 1
+fi
 [[ -f "$SOURCE/favicon.ico" ]] && cp "$SOURCE/favicon.ico" "$TARGET/favicon.ico"
 
 # Expo loads AppEntry as a classic script; zustand ESM can emit import.meta until

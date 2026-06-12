@@ -74,6 +74,31 @@ function generateLingoleafIdbSeed(data) {
           created_at: session.started_at
         })),
         (session) => session.id
+      ),
+      user_settings: toIdbStore(
+        [
+          {
+            user_id: userId,
+            ...data.userSettings
+          }
+        ],
+        (row) => row.user_id
+      ),
+      user_garden_state: toIdbStore(
+        [
+          {
+            user_id: userId,
+            ...data.gardenState
+          }
+        ],
+        (row) => row.user_id
+      ),
+      user_garden_daily_progress: toIdbStore(
+        (data.gardenDailyProgress ?? []).map((row) => ({
+          user_id: userId,
+          ...row
+        })),
+        (row) => `${row.user_id}:${row.day}`
       )
     }
   };
