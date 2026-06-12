@@ -25,6 +25,106 @@ function toIdbStore(rows, idSelector) {
   }));
 }
 
+function localDateKey(date = new Date()) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+function addDays(day, deltaDays) {
+  const [year, month, date] = day.split("-").map(Number);
+  const next = new Date(Date.UTC(year, month - 1, date + deltaDays));
+  return next.toISOString().slice(0, 10);
+}
+
+function shiftIsoDays(iso, deltaDays) {
+  const base = new Date(iso);
+  if (Number.isNaN(base.getTime())) return iso;
+  base.setUTCDate(base.getUTCDate() + deltaDays);
+  return base.toISOString();
+}
+
+function gutenbergCacheEpubUrl(sourceId) {
+  return `https://www.gutenberg.org/cache/epub/${sourceId}/pg${sourceId}-images-3.epub`;
+}
+
+function prepareLingoleafDemoData(data) {
+  const today = localDateKey();
+  const yesterday = addDays(today, -1);
+  const twoDaysAgo = addDays(today, -2);
+  const anchorDay = "2025-06-09";
+  const dayOffset = Math.round(
+    (Date.parse(`${today}T12:00:00.000Z`) - Date.parse(`${anchorDay}T12:00:00.000Z`)) /
+      (24 * 60 * 60 * 1000),
+  );
+
+  const shiftDay = (day) => addDays(day, dayOffset);
+
+  return {
+    ...data,
+    version: "lingoleaf-demo-v5",
+    books: data.books.map((book) => ({
+      ...book,
+      epub_url: book.source_id ? gutenbergCacheEpubUrl(book.source_id) : book.epub_url,
+      created_at: shiftIsoDays(book.created_at, dayOffset),
+    })),
+    userBooks: data.userBooks.map((row) => ({
+      ...row,
+      last_read_at: row.last_read_at ? shiftIsoDays(row.last_read_at, dayOffset) : null,
+      created_at: shiftIsoDays(row.created_at, dayOffset),
+      updated_at: shiftIsoDays(row.updated_at, dayOffset),
+      highlights: (row.highlights ?? []).map((highlight) => ({
+        ...highlight,
+        created_at: shiftIsoDays(highlight.created_at, dayOffset),
+      })),
+    })),
+    readingSessions: data.readingSessions.map((session) => ({
+      ...session,
+      started_at: shiftIsoDays(session.started_at, dayOffset),
+      ended_at: shiftIsoDays(session.ended_at, dayOffset),
+    })),
+    studyWords: data.studyWords.map((word) => ({
+      ...word,
+      created_at: shiftIsoDays(word.created_at, dayOffset),
+    })),
+    studyWordReviews: (data.studyWordReviews ?? []).map((review) => ({
+      ...review,
+      next_review_at: shiftIsoDays(review.next_review_at, dayOffset),
+    })),
+    userSettings: {
+      ...data.userSettings,
+      created_at: shiftIsoDays(data.userSettings.created_at, dayOffset),
+      updated_at: shiftIsoDays(data.userSettings.updated_at, dayOffset),
+    },
+    gardenState: {
+      ...data.gardenState,
+      total_gp: 320,
+      stage: "young_tree",
+      freshness: "fresh",
+      streak_days: 6,
+      last_goal_completed_on: yesterday,
+      last_activity_on: today,
+      created_at: shiftIsoDays(data.gardenState.created_at, dayOffset),
+      updated_at: shiftIsoDays(data.gardenState.updated_at, dayOffset),
+    },
+    gardenDailyProgress: (data.gardenDailyProgress ?? []).map((row, index) => ({
+      ...row,
+      day: index === 0 ? today : yesterday,
+      reading_minutes: index === 0 ? 30 : 25,
+      goal_completed: true,
+      created_at: shiftIsoDays(row.created_at, dayOffset),
+      updated_at: shiftIsoDays(row.updated_at, dayOffset),
+    })),
+    vocabLists: data.vocabLists.map((list) => ({
+      ...list,
+      created_at: shiftIsoDays(list.created_at, dayOffset),
+      updated_at: shiftIsoDays(list.updated_at, dayOffset),
+      last_used_at: shiftIsoDays(list.last_used_at, dayOffset),
+    })),
+  };
+}
+
 function generateLingoleafIdbSeed(data) {
   const userId = data.demoUserId;
 
@@ -99,7 +199,15 @@ function generateLingoleafIdbSeed(data) {
           ...row
         })),
         (row) => `${row.user_id}:${row.day}`
-      )
+      ),
+      study_word_reviews: toIdbStore(
+        (data.studyWordReviews ?? []).map((row) => ({
+          ...row,
+          created_at: row.created_at ?? new Date().toISOString(),
+          updated_at: row.updated_at ?? new Date().toISOString(),
+        })),
+        (row) => row.study_word_id
+      ),
     }
   };
 }
@@ -529,7 +637,7 @@ function generateTrellisSql(data) {
 }
 
 export function generateAllFixtures() {
-  const lingoleaf = readFixture("lingoleaf");
+  const lingoleaf = prepareLingoleafDemoData(readFixture("lingoleaf"));
   const lingoleafWeb = readFixture("lingoleaf-web");
   const trellisCloud = readFixture("trellis-cloud");
 

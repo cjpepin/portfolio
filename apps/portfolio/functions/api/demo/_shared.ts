@@ -18,10 +18,10 @@ export function json(data: unknown, status = 200, extraHeaders: Record<string, s
   });
 }
 
-export function corsHeaders(): Record<string, string> {
+export function corsHeaders(methods = "POST, OPTIONS"): Record<string, string> {
   return {
     "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Methods": methods,
     "Access-Control-Allow-Headers": "Content-Type, X-Demo-Session",
   };
 }

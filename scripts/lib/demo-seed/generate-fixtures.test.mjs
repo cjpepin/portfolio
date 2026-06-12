@@ -14,10 +14,15 @@ test("generateAllFixtures writes expanded demo seeds", () => {
   const lingoleafSeed = JSON.parse(
     fs.readFileSync(path.join(repoRoot, "projects/lingoleaf/src/demo/seed.json"), "utf8"),
   );
-  assert.equal(lingoleafSeed.version, "lingoleaf-demo-v2");
+  assert.equal(lingoleafSeed.version, "lingoleaf-demo-v5");
   assert.ok(lingoleafSeed.stores.user_books.length >= 3);
   assert.ok(lingoleafSeed.stores.study_words.length >= 5);
   assert.ok(lingoleafSeed.stores.vocab_lists.length >= 2);
+  assert.ok(lingoleafSeed.stores.study_word_reviews.length >= 1);
+  assert.match(
+    lingoleafSeed.stores.books[0].value.epub_url,
+    /^https:\/\/www\.gutenberg\.org\/cache\/epub\/\d+\/pg\d+-images-3\.epub$/,
+  );
 
   const forumSeed = JSON.parse(
     fs.readFileSync(path.join(repoRoot, "projects/lingoleaf-web/src/lib/demo/forum-seed.json"), "utf8"),

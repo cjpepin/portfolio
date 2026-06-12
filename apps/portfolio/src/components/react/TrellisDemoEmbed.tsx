@@ -10,15 +10,11 @@ const FRAME_HEIGHT = {
 type Props = {
   demoBuilt: boolean;
   variant?: keyof typeof FRAME_HEIGHT;
-  backHref?: string;
-  backLabel?: string;
 };
 
 export function TrellisDemoEmbed({
   demoBuilt,
   variant = "compact",
-  backHref = "/#projects",
-  backLabel = "portfolio",
 }: Props) {
   const { theme } = useTheme();
   const frameHeight = FRAME_HEIGHT[variant];
@@ -27,14 +23,8 @@ export function TrellisDemoEmbed({
   if (demoBuilt) {
     return (
       <div className="border-t border-swagger-border">
-        <div className="flex items-center justify-between gap-2 border-b border-swagger-border bg-swagger-code px-4 py-2">
+        <div className="border-b border-swagger-border bg-swagger-code px-4 py-2">
           <p className="font-mono text-xs text-swagger-muted">Trellis desktop preview</p>
-          <a
-            href={backHref}
-            className="font-mono text-xs text-swagger-muted transition-colors hover:text-swagger-get"
-          >
-            ← Back to {backLabel}
-          </a>
         </div>
         <div
           className={`overflow-auto ${theme === "dark" ? "bg-[#0f1419]" : "bg-swagger-code"}`}

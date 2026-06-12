@@ -23,15 +23,6 @@ export function TrellisProjectPage({ demoBuilt }: Props) {
 
   return (
     <div className="mx-auto max-w-5xl px-4 pb-16 pt-8 md:px-6">
-      <div className="mb-8">
-        <a
-          href="/#projects"
-          className="font-mono text-sm text-swagger-muted transition-colors hover:text-swagger-get"
-        >
-          ← Portfolio
-        </a>
-      </div>
-
       <header
         className={`swagger-panel overflow-hidden bg-gradient-to-br ${trellis.accent} animate-fade-in`}
       >
@@ -86,12 +77,7 @@ export function TrellisProjectPage({ demoBuilt }: Props) {
         </div>
 
         <div className="swagger-panel overflow-hidden">
-          <TrellisDemoEmbed
-            demoBuilt={demoBuilt}
-            variant="featured"
-            backHref="/trellis"
-            backLabel="Trellis"
-          />
+          <TrellisDemoEmbed demoBuilt={demoBuilt} variant="featured" />
         </div>
       </section>
 
