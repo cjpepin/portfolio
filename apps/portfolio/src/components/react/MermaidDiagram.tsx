@@ -46,14 +46,13 @@ export function MermaidDiagram({ chart }: Props) {
           startOnLoad: false,
           theme: theme === "dark" ? "dark" : "neutral",
           securityLevel: "strict",
-          useMaxWidth: true,
+          htmlLabels: true,
           fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
           themeVariables: {
             fontSize: "14px",
           },
           flowchart: {
             useMaxWidth: true,
-            htmlLabels: true,
             curve: "basis",
             padding: 12,
             nodeSpacing: 36,
