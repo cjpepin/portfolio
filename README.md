@@ -13,11 +13,27 @@ Personal portfolio site and embedded subprojects.
 
 ## Portfolio (Pass 1)
 
+**Portfolio only** (no demo rebuilds):
+
 ```bash
 cd apps/portfolio
 npm install
 npm run dev
 ```
+
+**Portfolio + fresh LingoLeaf & Trellis demos** (one command from repo root):
+
+```bash
+npm install --prefix apps/portfolio
+npm install --prefix packages/demo-local   # first run only; LingoLeaf export needs this
+npm run dev:all
+```
+
+- Portfolio: [http://localhost:4321](http://localhost:4321)
+- LingoLeaf live demo: `/lingoleaf#try-demo`
+- Trellis desktop preview: `/trellis#try-demo`
+
+Faster restarts without rebuilding demos: `SKIP_DEMO_BUILD=true npm run dev:all`
 
 See [`apps/portfolio/README.md`](apps/portfolio/README.md) for deployment, LingoLeaf demo embed, and Resend contact setup.
 

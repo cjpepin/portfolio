@@ -6,6 +6,8 @@
     "build": "npm ci --prefix apps/portfolio && npm run build:pages --prefix apps/portfolio",
     "deploy": "node scripts/cloudflare-pages-deploy.mjs",
     "dev": "npm run dev --prefix apps/portfolio",
+    "dev:all": "./scripts/dev-local.sh",
+    "sync:demos": "npm run sync:all-demos --prefix apps/portfolio",
     "supabase:deploy": "node scripts/supabase-deploy.mjs --project all",
     "supabase:validate": "node scripts/supabase-deploy.mjs --validate-only --project all",
     "seed:demo": "node scripts/seed-demo.mjs --target all",
