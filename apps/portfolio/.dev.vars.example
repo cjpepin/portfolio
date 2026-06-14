@@ -1,5 +1,8 @@
 # Local Cloudflare Pages Functions secrets (wrangler pages dev)
 # Copy to .dev.vars and fill in values — never commit .dev.vars
+#
+# Local astro dev also reads GOOGLE_TRANSLATE_API_KEY from apps/portfolio/.env when present.
+# .dev.vars values override .env for the same key.
 
 OPENAI_API_KEY=
 GOOGLE_TRANSLATE_API_KEY=

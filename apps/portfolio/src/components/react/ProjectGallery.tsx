@@ -44,7 +44,7 @@ export function ProjectGallery({ projects }: { projects: readonly Project[] }) {
               {typeof links.demo === "string" && links.demo && (
                 <a
                   href={links.demo}
-                  className="rounded bg-swagger-get px-3 py-1.5 font-mono text-sm font-semibold text-black hover:opacity-90"
+                  className="rounded bg-swagger-get px-3 py-1.5 font-mono text-sm font-semibold text-white hover:opacity-90"
                 >
                   Live demo
                 </a>

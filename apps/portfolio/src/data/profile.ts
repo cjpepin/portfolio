@@ -1,9 +1,44 @@
 export const profile = {
+  positioning: {
+    headline: "Full-stack engineer shipping products across all stacks",
+    subheadline:
+      "Spring Boot platform work, greenfield web and mobile products, and fast contract MVPs.",
+  },
+  metrics: [
+    {
+      id: "cd-lead-time",
+      value: "86%",
+      label: "deployment lead-time reduction",
+      context: "Mastercard CD platform",
+      target: { section: "systems", itemId: "mastercard-cd" },
+    },
+    {
+      id: "caralyst-deal",
+      value: "$100K",
+      label: "deal secured with full-stack app",
+      context: "WashU School of Medicine x Caralyst",
+      target: { section: "experience", itemId: "caralyst" },
+    },
+    {
+      id: "mvp-weeks",
+      value: "<4 weeks",
+      label: "MVP delivery",
+      context: "Crosswalk Legal",
+      target: { section: "experience", itemId: "crosswalk" },
+    },
+    {
+      id: "app-store",
+      value: "Shipped",
+      label: "iOS app live",
+      context: "LingoLeaf",
+      target: { section: "projects", itemId: "lingoleaf" },
+    },
+  ],
   info: {
     title: "Connor Pepin API Docs",
-    version: "1.1.2",
+    version: "1.2.0",
     description:
-      "Full-stack software engineer — Spring Boot microservices, React/React Native products, and local-first systems.",
+      "Full-stack engineer owning the stack end to end — Spring Boot APIs and CD platform at Mastercard, greenfield React/Node products, and shipped mobile apps with Supabase backends.",
     profileImage: "/ME_NEWER.JPG",
     contact: {
       name: "Connor Pepin",
@@ -51,7 +86,8 @@ export const profile = {
       company: "Mastercard",
       location: "O'Fallon, MO",
       period: "August 2023 – Present",
-      summary: "Spring Boot API features and continuous delivery platform work in a 10-person Agile team.",
+      summary:
+        "Full-stack platform engineer delivering Spring Boot APIs and continuous delivery tooling in a 10-person Agile team.",
       responsibilities: [
         "Delivered new Spring Boot API features improving digital redemption capabilities.",
         "Developed features and fixed defects for a continuous delivery platform, reducing deployment lead time by 86%.",
@@ -66,7 +102,8 @@ export const profile = {
       company: "Caralyst Health",
       location: "Remote",
       period: "November 2022 – May 2024",
-      summary: "Full-stack lead building a greenfield application on AWS.",
+      summary:
+        "Full-stack lead owning frontend, API, and data layers for a greenfield healthcare application on AWS.",
       responsibilities: [
         "Designed and built a full-stack application from scratch with React, Angular, Node.js, and MySQL on AWS.",
         "Collaborated with the CTO on cloud architecture for scalability and reliability.",
@@ -81,13 +118,14 @@ export const profile = {
       company: "Crosswalk Legal",
       location: "Remote",
       period: "May 2025 – January 2026",
-      summary: "Legal document management with real-time hybrid sync.",
+      summary:
+        "Contract full-stack engineer shipping a legal document platform with real-time hybrid sync in under four weeks.",
       responsibilities: [
         "Built a legal document and client management system with a real-time sync engine.",
-        "Designed hybrid local + cloud architecture using PostgreSQL, Express, and webhooks.",
+        "Designed hybrid local + cloud architecture with PGLite offline storage, Express APIs, and ACL-aware webhook fan-out.",
         "Shipped a feature-heavy MVP in under 4 weeks with the company CTO.",
       ],
-      stack: ["PostgreSQL", "Express", "Webhooks", "TypeScript"],
+      stack: ["PGLite", "PostgreSQL", "Express", "Webhooks", "TypeScript"],
     },
   ],
   systems: [
@@ -122,17 +160,23 @@ export const profile = {
       title: "Crosswalk Sync Engine",
       subtitle: "Crosswalk Legal",
       period: "May 2025 – January 2026",
-      description: "Millisecond-level document sync between local clients and cloud Postgres.",
+      description:
+        "Local-first sync: PGLite offline writes, sync-table upload, and ACL-scoped webhook delivery from cloud Postgres.",
       operations: [
         {
+          id: "local-sync",
+          summary: "PGLite local store with sync table for offline CRUD + ACL metadata",
+          stack: ["PGLite", "TypeScript"],
+        },
+        {
           id: "webhook-sync",
-          summary: "Webhook-driven bidirectional sync",
+          summary: "DB triggers route ACL-filtered changes to clients via webhooks",
           stack: ["Express", "PostgreSQL", "Webhooks"],
         },
         {
           id: "hybrid-arch",
-          summary: "Hybrid local + cloud architecture",
-          stack: ["Local storage", "Cloud Postgres"],
+          summary: "Express API validates sync payloads and persists to cloud Postgres",
+          stack: ["Express", "Node.js", "PostgreSQL"],
         },
       ],
     },
@@ -169,9 +213,9 @@ export const profile = {
       type: "mobile",
       period: "December 2025 – Present",
       description:
-        "iOS-first language learning app combining EPUB reading, translation, vocabulary, and spaced repetition.",
+        "Shipped iOS language learning app — EPUB reading, in-context translation, vocabulary, and spaced repetition.",
       features: [
-        "EPUB reader with highlights and resume",
+        "Live on the App Store (Expo / React Native)",
         "Cache-first translation pipeline",
         "Supabase Auth, Postgres, and Row Level Security",
         "Premium entitlements and offline analytics",

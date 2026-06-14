@@ -1,6 +1,7 @@
 import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
+import { pagesFunctionsDevPlugin } from "./vite/pages-functions-dev.mjs";
 
 /** lingoleaf-web Vite dev server (see projects/lingoleaf-web/vite.config.ts). */
 const LINGOLEAF_WEB_DEV = process.env.LINGOLEAF_WEB_DEV_URL ?? "http://localhost:8080";
@@ -20,6 +21,7 @@ export default defineConfig({
   site: "https://connorjpepin.com",
   integrations: [react(), tailwind({ applyBaseStyles: false })],
   vite: {
+    plugins: [pagesFunctionsDevPlugin()],
     build: {
       cssMinify: true,
     },

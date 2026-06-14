@@ -1,9 +1,15 @@
+import { useEffect, useState } from "react";
 import { profile } from "../../../data/profile";
-import { fetchExperienceResponse } from "../../../lib/api/handlers";
+import {
+  fetchAllExperienceDefaults,
+  fetchExperienceResponse,
+} from "../../../lib/api/handlers";
 import { ApiTryItPanel } from "../ApiTryItPanel";
 import { ExperiencePreview } from "../ExperiencePreview";
 import { extractExperiencePreview } from "../experienceResponse";
 import { SectionHeader } from "../SectionHeader";
+import { useViewMode } from "../ViewModeContext";
+import type { ExperienceData } from "../experienceResponse";
 
 const roleOptions = [
   { value: "all", label: "all roles" },
@@ -14,6 +20,12 @@ const roleOptions = [
 ];
 
 export function ExperienceSection() {
+  const { isReadable } = useViewMode();
+
+  if (isReadable) {
+    return <ReadableExperience />;
+  }
+
   return (
     <div className="stagger-children">
       <SectionHeader
@@ -89,6 +101,38 @@ export function ExperienceSection() {
           );
         }}
       />
+    </div>
+  );
+}
+
+function ReadableExperience() {
+  const [roles, setRoles] = useState<ExperienceData[] | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    void fetchAllExperienceDefaults().then((result) => {
+      if (cancelled) return;
+      const data = result.data;
+      if (Array.isArray(data)) {
+        setRoles(data as ExperienceData[]);
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  return (
+    <div className="stagger-children space-y-4">
+      <SectionHeader
+        title="Experience"
+        description="Full employment history — frontend, API, data, and delivery ownership across roles."
+      />
+      {roles ? (
+        roles.map((role) => <ExperiencePreview key={role.id} data={role} />)
+      ) : (
+        <div className="swagger-panel p-6 text-sm text-swagger-muted">Loading experience…</div>
+      )}
     </div>
   );
 }

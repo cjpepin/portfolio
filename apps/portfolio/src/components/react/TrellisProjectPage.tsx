@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { profile } from "../../data/profile";
 import { TrellisDemoEmbed } from "./TrellisDemoEmbed";
+import { TrellisShowcase } from "./TrellisShowcase";
+import { TrellisShowcaseStoryTabs } from "./TrellisShowcaseStoryTabs";
 
 type Props = {
   demoBuilt: boolean;
@@ -8,11 +10,22 @@ type Props = {
 
 const trellis = profile.projects.find((project) => project.id === "trellis");
 
+function scrollToHashTarget() {
+  const hash = window.location.hash;
+  if (hash === "#showcase" || hash.startsWith("#showcase")) {
+    document.getElementById("showcase")?.scrollIntoView({ behavior: "smooth" });
+    return;
+  }
+  if (hash === "#try-demo" || hash.startsWith("#try-demo")) {
+    document.getElementById("try-demo")?.scrollIntoView({ behavior: "smooth" });
+  }
+}
+
 export function TrellisProjectPage({ demoBuilt }: Props) {
   useEffect(() => {
-    if (window.location.hash === "#try-demo") {
-      document.getElementById("try-demo")?.scrollIntoView({ behavior: "smooth" });
-    }
+    scrollToHashTarget();
+    window.addEventListener("hashchange", scrollToHashTarget);
+    return () => window.removeEventListener("hashchange", scrollToHashTarget);
   }, []);
 
   if (!trellis) {
@@ -50,7 +63,13 @@ export function TrellisProjectPage({ demoBuilt }: Props) {
           )}
 
           <div className="flex flex-wrap gap-3">
-            <a href="#try-demo" className="api-execute-btn bg-swagger-get">
+            <a href="#showcase" className="api-execute-btn bg-swagger-get">
+              View showcase
+            </a>
+            <a
+              href="#try-demo"
+              className="rounded border border-swagger-border px-4 py-2 font-mono text-sm transition-colors duration-200 hover:border-swagger-get hover:text-swagger-get"
+            >
               Try desktop preview
             </a>
             {github && (
@@ -67,7 +86,10 @@ export function TrellisProjectPage({ demoBuilt }: Props) {
         </div>
       </header>
 
-      <section id="try-demo" className="scroll-mt-8 pt-12">
+      <TrellisShowcase />
+      <TrellisShowcaseStoryTabs />
+
+      <section id="try-demo" className="scroll-mt-8 border-t border-swagger-border pt-12">
         <div className="mb-6 space-y-2 text-center">
           <h2 className="text-xl font-semibold md:text-2xl">Desktop app preview</h2>
           <p className="mx-auto max-w-2xl text-sm text-swagger-muted">

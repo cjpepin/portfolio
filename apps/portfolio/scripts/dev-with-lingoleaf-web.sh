@@ -18,8 +18,10 @@ if [[ ! -d "$PORTFOLIO/node_modules" ]]; then
   (cd "$PORTFOLIO" && npm install)
 fi
 
-echo "Syncing LingoLeaf demo bundle (if export exists)…" >&2
-"$PORTFOLIO/scripts/sync-lingoleaf-demo.sh" || true
+if [[ "${SKIP_DEMO_SYNC:-}" != "true" ]]; then
+  echo "Syncing LingoLeaf demo bundle (if export exists)…" >&2
+  "$PORTFOLIO/scripts/sync-lingoleaf-demo.sh" || true
+fi
 
 cleanup() {
   trap - EXIT INT TERM

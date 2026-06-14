@@ -1,8 +1,12 @@
 import type { ExperienceData } from "./experienceResponse";
+import { portfolioItemId, scrollAnchorClass } from "../../lib/portfolioNavigation";
 
 export function ExperiencePreview({ data }: { data: ExperienceData }) {
   return (
-    <article className="swagger-panel overflow-hidden bg-gradient-to-br from-swagger-get/10 to-swagger-post/5 animate-fade-in">
+    <article
+      id={portfolioItemId("experience", data.id)}
+      className={`swagger-panel overflow-hidden bg-gradient-to-br from-swagger-get/10 to-swagger-post/5 animate-fade-in ${scrollAnchorClass}`}
+    >
       <div className="border-b border-swagger-border px-4 py-3">
         <div className="flex flex-wrap items-start justify-between gap-2">
           <div>

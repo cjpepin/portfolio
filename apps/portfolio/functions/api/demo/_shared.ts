@@ -95,11 +95,7 @@ export async function translateTerm(input: {
   }
 
   if (!input.apiKey) {
-    return {
-      translation: `[demo] ${term}`,
-      from_cache: false,
-      detected_lang: input.source_lang,
-    };
+    throw new Error("Translation service is not configured.");
   }
 
   const googleUrl = `https://translation.googleapis.com/language/translate/v2?key=${input.apiKey}`;

@@ -1,9 +1,15 @@
+import { useEffect, useState } from "react";
 import { profile } from "../../../data/profile";
-import { fetchContributionsResponse } from "../../../lib/api/handlers";
+import {
+  fetchAllContributionsDefaults,
+  fetchContributionsResponse,
+} from "../../../lib/api/handlers";
 import { ApiTryItPanel } from "../ApiTryItPanel";
 import { ContributionsPreview } from "../ContributionsPreview";
 import { extractContributionsPreview } from "../contributionsResponse";
 import { SectionHeader } from "../SectionHeader";
+import { useViewMode } from "../ViewModeContext";
+import type { ContributionData } from "../contributionsResponse";
 
 const contributionOptions = [
   { value: "all", label: "all contributions" },
@@ -14,6 +20,12 @@ const contributionOptions = [
 ];
 
 export function SystemsSection() {
+  const { isReadable } = useViewMode();
+
+  if (isReadable) {
+    return <ReadableContributions />;
+  }
+
   return (
     <div className="stagger-children">
       <SectionHeader
@@ -89,6 +101,38 @@ export function SystemsSection() {
           );
         }}
       />
+    </div>
+  );
+}
+
+function ReadableContributions() {
+  const [items, setItems] = useState<ContributionData[] | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    void fetchAllContributionsDefaults().then((result) => {
+      if (cancelled) return;
+      const data = result.data;
+      if (Array.isArray(data)) {
+        setItems(data as ContributionData[]);
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  return (
+    <div className="stagger-children space-y-4">
+      <SectionHeader
+        title="Contributions"
+        description="Platform, analytics, and sync systems — full-stack delivery beyond day-to-day role responsibilities."
+      />
+      {items ? (
+        items.map((item) => <ContributionsPreview key={item.id} data={item} />)
+      ) : (
+        <div className="swagger-panel p-6 text-sm text-swagger-muted">Loading contributions…</div>
+      )}
     </div>
   );
 }

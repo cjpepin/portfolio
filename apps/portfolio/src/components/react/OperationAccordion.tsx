@@ -126,7 +126,7 @@ export function SystemsOperations({ items }: { items: readonly SystemItem[] }) {
                 </div>
                 <button
                   type="button"
-                  className="rounded bg-swagger-post px-4 py-2 font-mono text-sm font-semibold text-black hover:opacity-90"
+                  className="rounded bg-swagger-post px-4 py-2 font-mono text-sm font-semibold text-white hover:opacity-90"
                   onClick={() => setTryItId(trying ? null : system.id)}
                 >
                   {trying ? "Hide response" : "Try it out"}

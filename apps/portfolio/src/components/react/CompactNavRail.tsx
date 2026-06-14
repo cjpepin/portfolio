@@ -3,14 +3,6 @@ import { profile } from "../../data/profile";
 type NavItem = (typeof profile.navigation)[number];
 type SectionId = NavItem["id"];
 
-const SHORT_TAG: Record<NavItem["tag"], string> = {
-  info: "ovr",
-  paths: "exp",
-  operations: "ops",
-  gallery: "gal",
-  post: "eml",
-};
-
 type Props = {
   activeId: SectionId;
   onNavigate: (id: SectionId) => void;
@@ -45,7 +37,7 @@ export function CompactNavRail({ activeId, onNavigate }: Props) {
                       aria-hidden
                     />
                   )}
-                  {SHORT_TAG[item.tag]}
+                  {item.id.slice(0, 3)}
                 </button>
 
                 <div

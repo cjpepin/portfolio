@@ -1,11 +1,21 @@
+import { useEffect, useState } from "react";
 import { profile } from "../../../data/profile";
-import { fetchProjectResponse } from "../../../lib/api/handlers";
+import { portfolioItemId, scrollAnchorClass } from "../../../lib/portfolioNavigation";
+import { fetchProjectDefaults, fetchProjectResponse } from "../../../lib/api/handlers";
 import { ApiTryItPanel } from "../ApiTryItPanel";
 import { ProjectPreview } from "../ProjectPreview";
 import { extractProjectData } from "../projectResponse";
 import { SectionHeader } from "../SectionHeader";
+import { useViewMode } from "../ViewModeContext";
+import type { ProjectData } from "../projectResponse";
 
 export function ProjectsSection() {
+  const { isReadable } = useViewMode();
+
+  if (isReadable) {
+    return <ReadableProjects />;
+  }
+
   return (
     <div className="stagger-children space-y-2">
       <SectionHeader
@@ -14,8 +24,12 @@ export function ProjectsSection() {
       />
 
       {profile.projects.map((project) => (
-        <ApiTryItPanel
+        <div
           key={project.id}
+          id={portfolioItemId("projects", project.id)}
+          className={scrollAnchorClass}
+        >
+          <ApiTryItPanel
           method={project.method}
           path={project.path}
           summary={`${project.name} — ${project.tagline}`}
@@ -74,7 +88,39 @@ export function ProjectsSection() {
             return <ProjectPreview data={data} />;
           }}
         />
+        </div>
       ))}
+    </div>
+  );
+}
+
+function ReadableProjects() {
+  const [projects, setProjects] = useState<ProjectData[] | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    void Promise.all(profile.projects.map((project) => fetchProjectDefaults(project.id))).then(
+      (results) => {
+        if (cancelled) return;
+        setProjects(results.map((result) => result.data as ProjectData));
+      },
+    );
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  return (
+    <div className="stagger-children space-y-4">
+      <SectionHeader
+        title="Projects"
+        description="Shipped products across mobile, desktop, and web — each with live demos where available."
+      />
+      {projects ? (
+        projects.map((project) => <ProjectPreview key={project.id} data={project} />)
+      ) : (
+        <div className="swagger-panel p-6 text-sm text-swagger-muted">Loading projects…</div>
+      )}
     </div>
   );
 }

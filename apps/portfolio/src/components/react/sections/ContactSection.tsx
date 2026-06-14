@@ -1,6 +1,8 @@
 import { profile } from "../../../data/profile";
 import { ApiTryItPanel } from "../ApiTryItPanel";
+import { ReadableContact } from "../ReadableContact";
 import { SectionHeader } from "../SectionHeader";
+import { useViewMode } from "../ViewModeContext";
 
 type ContactPayload = {
   name: string;
@@ -10,6 +12,20 @@ type ContactPayload = {
 };
 
 export function ContactSection() {
+  const { isReadable } = useViewMode();
+
+  if (isReadable) {
+    return (
+      <div className="stagger-children space-y-6">
+        <SectionHeader
+          title="Contact"
+          description="Reach out for full-time roles, contract work, or collaborations."
+        />
+        <ReadableContact />
+      </div>
+    );
+  }
+
   const serverHint = {
     hint: "Submit the form to send a real request to POST /api/contact",
     contact: profile.info.contact.email,

@@ -1,0 +1,16 @@
+---
+import TopBar from "../../components/layout/TopBar.astro";
+import SinglePageLayout from "../../layouts/SinglePageLayout.astro";
+import { CaseStudyPage } from "../../components/react/CaseStudyPage";
+import { getCaseStudyBySlug } from "../../data/caseStudies";
+
+const study = getCaseStudyBySlug("crosswalk");
+---
+
+<SinglePageLayout
+  title={study ? `${study.title} Case Study` : "Case Study"}
+  description={study?.problem ?? "Full-stack case study"}
+>
+  <TopBar />
+  <CaseStudyPage client:load slug="crosswalk" />
+</SinglePageLayout>

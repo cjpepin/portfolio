@@ -13,7 +13,7 @@ export function MobileNav({ currentSection = "overview" }: Props) {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="rounded-full bg-swagger-post px-4 py-3 font-mono text-sm font-semibold text-black shadow-lg transition-transform duration-200 hover:scale-105"
+        className="rounded-full bg-swagger-post px-4 py-3 font-mono text-sm font-semibold text-white shadow-lg transition-transform duration-200 hover:scale-105"
         aria-expanded={open}
         aria-label="Toggle navigation"
       >

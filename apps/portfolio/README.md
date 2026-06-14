@@ -129,20 +129,34 @@ The marketing site, feature forum, app updates, contact form, admin dashboard, a
 
 ### Local dev (proxy)
 
-Run both dev servers — portfolio proxies all of `/lingoleaf/*` to lingoleaf-web (including demo static assets):
+**One command** — rebuild demo embeds from `projects/lingoleaf` and `projects/trellis`, then start portfolio + lingoleaf-web:
 
 ```bash
-cd apps/portfolio
-./scripts/sync-lingoleaf-demo.sh   # once, if demo iframe is needed locally
+# from repo root
+npm run dev:all
+
+# or from apps/portfolio
 npm run dev:all
 ```
 
-- Portfolio: [http://localhost:4321](http://localhost:4321) — **Projects → LingoLeaf → Live demo** opens `/lingoleaf#try-demo`
+This runs `sync-all-demos.sh` (Expo export → LingoLeaf iframe, Trellis Vite export → desktop preview), copies the LingoLeaf demo into `public/lingoleaf/demo/` for Astro dev, then starts both servers.
+
+- Portfolio: [http://localhost:4321](http://localhost:4321) — **Projects → LingoLeaf → Live demo** opens `/lingoleaf#try-demo`; **Trellis → Live demo** opens `/trellis#try-demo`
 - lingoleaf-web direct: [http://localhost:8080/lingoleaf/](http://localhost:8080/lingoleaf/)
 
-Or run separately: `npm run dev` in each project (portfolio still proxies when lingoleaf-web is on port 8080).
+**Faster restart** (skip Expo/Vite rebuilds, sync existing `dist/web-demo` artifacts only):
+
+```bash
+SKIP_DEMO_BUILD=true npm run dev:all
+```
+
+**Portfolio only** (no demo rebuild, no lingoleaf-web proxy): `npm run dev`
+
+**Proxy without demo rebuild**: `npm run dev:proxy`
 
 Optional: `LINGOLEAF_WEB_DEV_URL` overrides the proxy target (default `http://localhost:8080`).
+
+Sync demos without starting dev servers: `npm run sync:all-demos`
 
 ### Production static sync
 

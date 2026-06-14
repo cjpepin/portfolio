@@ -1,4 +1,5 @@
 import { profile } from "../../data/profile";
+import { portfolioItemId, scrollAnchorClass } from "../../lib/portfolioNavigation";
 import type { ProjectData } from "./projectResponse";
 
 type Project = (typeof profile.projects)[number];
@@ -29,11 +30,16 @@ export function ProjectPreview({ data }: Props) {
   const links = data.links ? projectLinks(data.links) : {};
   const hasDemoLink =
     !!links.demo && (data.id === "lingoleaf" || data.id === "trellis");
-  const demoHref = data.id === "lingoleaf" ? "/lingoleaf/#try-demo" : "/trellis#try-demo";
+  const showcaseHref =
+    data.id === "lingoleaf" ? "/lingoleaf/#showcase" : "/trellis#try-demo";
+  const demoHref =
+    data.id === "lingoleaf" ? "/lingoleaf/#try-demo" : "/trellis#try-demo";
+  const deepDiveHref = data.id === "lingoleaf" ? "/case-studies/lingoleaf" : undefined;
 
   return (
     <article
-      className={`swagger-panel m-4 overflow-hidden bg-gradient-to-br ${accentForProject(data.id)} animate-fade-in`}
+      id={portfolioItemId("projects", data.id)}
+      className={`swagger-panel m-4 overflow-hidden bg-gradient-to-br ${accentForProject(data.id)} animate-fade-in ${scrollAnchorClass}`}
     >
       <div className="border-b border-swagger-border px-4 py-3">
         <div className="flex items-center justify-between gap-2">
@@ -65,9 +71,38 @@ export function ProjectPreview({ data }: Props) {
         )}
         {(links.demo || links.appStore || links.github || links.website) && (
           <div className="flex flex-wrap gap-3 pt-2">
-            {hasDemoLink && (
-              <a href={demoHref} className="api-execute-btn bg-swagger-get">
-                Live demo
+            {hasDemoLink && data.id === "lingoleaf" && (
+              <>
+                <a href={showcaseHref} className="api-execute-btn bg-swagger-get">
+                  View showcase
+                </a>
+                <a
+                  href={demoHref}
+                  className="rounded border border-swagger-border px-3 py-1.5 font-mono text-sm transition-colors duration-200 hover:border-swagger-get hover:text-swagger-get"
+                >
+                  Live demo
+                </a>
+              </>
+            )}
+            {hasDemoLink && data.id === "trellis" && (
+              <>
+                <a href={showcaseHref} className="api-execute-btn bg-swagger-get">
+                  View showcase
+                </a>
+                <a
+                  href={demoHref}
+                  className="rounded border border-swagger-border px-3 py-1.5 font-mono text-sm transition-colors duration-200 hover:border-swagger-get hover:text-swagger-get"
+                >
+                  Live demo
+                </a>
+              </>
+            )}
+            {deepDiveHref && (
+              <a
+                href={deepDiveHref}
+                className="rounded border border-swagger-border px-3 py-1.5 font-mono text-sm transition-colors duration-200 hover:border-swagger-get hover:text-swagger-get"
+              >
+                Deep dive
               </a>
             )}
             {links.appStore && (

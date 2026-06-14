@@ -5,7 +5,9 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "dev:all": "./scripts/dev-with-lingoleaf-web.sh",
+    "dev:all": "./scripts/dev-with-demos.sh",
+    "dev:proxy": "./scripts/dev-with-lingoleaf-web.sh",
+    "sync:all-demos": "./scripts/sync-all-demos.sh",
     "build": "astro check && astro build",
     "build:pages": "npm run sync:lingoleaf-web && npm run sync:lingoleaf-demo && npm run sync:trellis-demo && npm run build",
     "deploy": "node ../../scripts/cloudflare-pages-deploy.mjs",
@@ -14,13 +16,15 @@
     "sync:lingoleaf-demo": "./scripts/sync-lingoleaf-demo.sh",
     "sync:lingoleaf-export": "./scripts/sync-lingoleaf-export.sh",
     "sync:lingoleaf-web": "./scripts/sync-lingoleaf-web.sh",
-    "sync:trellis-demo": "./scripts/sync-trellis-demo.sh"
+    "sync:trellis-demo": "./scripts/sync-trellis-demo.sh",
+    "sync:trellis-export": "./scripts/sync-trellis-export.sh"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
     "@astrojs/react": "^4.2.0",
     "@astrojs/tailwind": "^6.0.2",
     "astro": "^5.7.10",
+    "mermaid": "^11.15.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "tailwindcss": "^3.4.17",

@@ -202,3 +202,42 @@ export async function fetchProjectResponse(projectId: string, values: Record<str
 
   return { data };
 }
+
+export const defaultDeveloperParams = {
+  include: "all",
+  format: "full",
+} as const;
+
+export const defaultExperienceParams = {
+  role_id: "all",
+  include_stack: "true",
+  include_responsibilities: "true",
+} as const;
+
+export const defaultContributionsParams = {
+  contribution_id: "all",
+  include_operations: "true",
+  verbose: "true",
+} as const;
+
+export const defaultProjectParams = {
+  include_features: "true",
+  include_stack: "true",
+  include_links: "true",
+} as const;
+
+export async function fetchDeveloperDefaults(): Promise<{ data: DeveloperData }> {
+  return fetchDeveloperResponse({ ...defaultDeveloperParams });
+}
+
+export async function fetchAllExperienceDefaults() {
+  return fetchExperienceResponse({ ...defaultExperienceParams });
+}
+
+export async function fetchAllContributionsDefaults() {
+  return fetchContributionsResponse({ ...defaultContributionsParams });
+}
+
+export async function fetchProjectDefaults(projectId: string) {
+  return fetchProjectResponse(projectId, { ...defaultProjectParams, project_id: projectId });
+}

@@ -49,6 +49,7 @@ if [[ ! -f "$LINGOLEAF/.env.demo" ]]; then
     cat >"$LINGOLEAF/.env.demo" <<'EOF'
 EXPO_PUBLIC_DEMO_MODE=true
 EXPO_PUBLIC_WEB_BASE_PATH=/lingoleaf/demo
+EXPO_PUBLIC_SUPABASE_DB_SCHEMA=lingoleaf
 EOF
     echo "Created minimal $LINGOLEAF/.env.demo" >&2
   fi
