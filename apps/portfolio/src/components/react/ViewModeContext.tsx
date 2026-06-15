@@ -4,10 +4,22 @@ export type ViewMode = "interactive" | "readable";
 
 const STORAGE_KEY = "portfolio-view-mode";
 
+/** Matches Tailwind `md` — narrower viewports default to readable mode. */
+const MOBILE_VIEWPORT_QUERY = "(max-width: 767px)";
+
+function isMobileViewport(): boolean {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia(MOBILE_VIEWPORT_QUERY).matches;
+}
+
+function resolveViewMode(stored: string | null): ViewMode {
+  if (stored === "readable" || stored === "interactive") return stored;
+  return isMobileViewport() ? "readable" : "interactive";
+}
+
 function readStoredMode(): ViewMode {
   if (typeof window === "undefined") return "interactive";
-  const stored = window.localStorage.getItem(STORAGE_KEY);
-  return stored === "readable" ? "readable" : "interactive";
+  return resolveViewMode(window.localStorage.getItem(STORAGE_KEY));
 }
 
 type ViewModeContextValue = {
@@ -34,7 +46,7 @@ export function ViewModeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const onStorage = (event: StorageEvent) => {
       if (event.key !== STORAGE_KEY) return;
-      setModeState(event.newValue === "readable" ? "readable" : "interactive");
+      setModeState(resolveViewMode(event.newValue));
     };
     window.addEventListener("storage", onStorage);
     return () => window.removeEventListener("storage", onStorage);

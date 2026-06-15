@@ -1,5 +1,7 @@
+import { CopyTooltip } from "./CopyTooltip";
 import { GitHubIcon, GlobeIcon, MailIcon, PhoneIcon } from "./icons";
 import type { DeveloperData } from "./developerResponse";
+import { useCopyToClipboard } from "./useCopyToClipboard";
 
 type Contact = NonNullable<DeveloperData["contact"]>;
 
@@ -14,17 +16,24 @@ function hasFullContact(contact: Contact): contact is {
   return "email" in contact && "github" in contact;
 }
 
+const contactRowClassName =
+  "flex w-full items-center gap-3 rounded border border-swagger-border bg-swagger-bg/60 p-3 text-left transition-colors duration-200 hover:border-swagger-get/40";
+
 function ContactRow({
   icon: Icon,
   label,
   value,
   href,
+  copyValue,
 }: {
   icon: typeof MailIcon;
   label: string;
   value: string;
   href?: string;
+  copyValue?: string;
 }) {
+  const { copied, copy } = useCopyToClipboard();
+
   const content = (
     <>
       <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-swagger-code text-swagger-get">
@@ -37,18 +46,31 @@ function ContactRow({
     </>
   );
 
-  const className =
-    "flex items-center gap-3 rounded border border-swagger-border bg-swagger-bg/60 p-3 transition-colors duration-200 hover:border-swagger-get/40";
+  if (copyValue) {
+    return (
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => copy(copyValue)}
+          className={contactRowClassName}
+          aria-label={`Copy ${label}`}
+        >
+          {content}
+        </button>
+        <CopyTooltip visible={copied} />
+      </div>
+    );
+  }
 
   if (href) {
     return (
-      <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" className={className}>
+      <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" className={contactRowClassName}>
         {content}
       </a>
     );
   }
 
-  return <div className={className}>{content}</div>;
+  return <div className={contactRowClassName}>{content}</div>;
 }
 
 const skillLabels: Record<string, string> = {
@@ -94,8 +116,8 @@ export function DeveloperProfilePreview({ data }: { data: DeveloperData }) {
           <div className="grid gap-2 sm:grid-cols-2">
             {fullContact ? (
               <>
-                <ContactRow icon={MailIcon} label="email" value={fullContact.email} href={`mailto:${fullContact.email}`} />
-                <ContactRow icon={PhoneIcon} label="phone" value={fullContact.phone} href={`tel:${fullContact.phone.replace(/[^\d+]/g, "")}`} />
+                <ContactRow icon={MailIcon} label="email" value={fullContact.email} copyValue={fullContact.email} />
+                <ContactRow icon={PhoneIcon} label="phone" value={fullContact.phone} copyValue={fullContact.phone} />
                 <ContactRow icon={GlobeIcon} label="location" value={fullContact.location} />
                 <ContactRow icon={GitHubIcon} label="github" value="cjpepin" href={fullContact.github} />
                 <ContactRow icon={GlobeIcon} label="website" value="connorjpepin.com" href={fullContact.website} />

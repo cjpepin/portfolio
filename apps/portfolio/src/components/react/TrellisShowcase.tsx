@@ -1,8 +1,3 @@
-import { useState } from "react";
-
-const VIDEO_SRC = "/trellis/showcase/trellis-recruiter.mp4";
-const POSTER_SRC = "/trellis/showcase/trellis-recruiter-poster.jpg";
-
 const engineeringCards = [
   {
     title: "Markdown vault",
@@ -22,8 +17,6 @@ const engineeringCards = [
 ];
 
 export function TrellisShowcase() {
-  const [videoFailed, setVideoFailed] = useState(false);
-
   return (
     <section id="showcase" className="scroll-mt-8 border-t border-swagger-border pt-12">
       <div className="space-y-10">
@@ -35,25 +28,6 @@ export function TrellisShowcase() {
             Local-first AI knowledge app — chats become structured notes in a vault you own, with hybrid
             local and cloud AI.
           </p>
-        </div>
-
-        <div className="swagger-panel overflow-hidden">
-          {!videoFailed ? (
-            <video
-              className="aspect-video w-full bg-swagger-code object-cover"
-              src={VIDEO_SRC}
-              poster={POSTER_SRC}
-              autoPlay
-              muted
-              loop
-              playsInline
-              onError={() => setVideoFailed(true)}
-            />
-          ) : (
-            <div className="flex aspect-video flex-col items-center justify-center gap-3 bg-swagger-code/40 px-6 text-center">
-              <p className="text-sm font-medium text-swagger-text">Showcase video coming soon</p>
-            </div>
-          )}
         </div>
 
         <div className="grid gap-4 md:grid-cols-3">

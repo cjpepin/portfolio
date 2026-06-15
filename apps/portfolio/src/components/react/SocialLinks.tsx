@@ -1,43 +1,54 @@
 import { profile } from "../../data/profile";
+import { CopyTooltip } from "./CopyTooltip";
 import { GitHubIcon, MailIcon, PhoneIcon } from "./icons";
+import { useCopyToClipboard } from "./useCopyToClipboard";
 
-const links = [
-  {
-    href: profile.info.contact.github,
-    label: "GitHub",
-    icon: GitHubIcon,
-    external: true,
-  },
-  {
-    href: `mailto:${profile.info.contact.email}`,
-    label: "Email",
-    icon: MailIcon,
-    external: false,
-  },
-  {
-    href: `tel:${profile.info.contact.phone.replace(/[^\d+]/g, "")}`,
-    label: "Phone",
-    icon: PhoneIcon,
-    external: false,
-  },
-] as const;
+const iconButtonClassName =
+  "flex h-9 w-9 items-center justify-center rounded border border-transparent text-swagger-muted transition-all duration-200 hover:border-swagger-border hover:bg-swagger-panel hover:text-swagger-get hover:shadow-sm";
+
+function CopyIconButton({
+  label,
+  value,
+  icon: Icon,
+}: {
+  label: string;
+  value: string;
+  icon: typeof MailIcon;
+}) {
+  const { copied, copy } = useCopyToClipboard();
+
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => copy(value)}
+        className={iconButtonClassName}
+        aria-label={`Copy ${label}`}
+      >
+        <Icon size={18} />
+      </button>
+      <CopyTooltip visible={copied} />
+    </div>
+  );
+}
 
 export function SocialLinks() {
+  const { contact } = profile.info;
+
   return (
     <div className="flex items-center gap-2">
-      {links.map(({ href, label, icon: Icon, external }) => (
-        <a
-          key={label}
-          href={href}
-          target={external ? "_blank" : undefined}
-          rel={external ? "noopener noreferrer" : undefined}
-          className="flex h-9 w-9 items-center justify-center rounded border border-transparent text-swagger-muted transition-all duration-200 hover:border-swagger-border hover:bg-swagger-panel hover:text-swagger-get hover:shadow-sm"
-          aria-label={label}
-          title={label}
-        >
-          <Icon size={18} />
-        </a>
-      ))}
+      <a
+        href={contact.github}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={iconButtonClassName}
+        aria-label="GitHub"
+        title="GitHub"
+      >
+        <GitHubIcon size={18} />
+      </a>
+      <CopyIconButton label="Email" value={contact.email} icon={MailIcon} />
+      <CopyIconButton label="Phone" value={contact.phone} icon={PhoneIcon} />
     </div>
   );
 }

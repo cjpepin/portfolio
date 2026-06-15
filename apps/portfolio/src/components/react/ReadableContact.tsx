@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { profile } from "../../data/profile";
+import { CopyTooltip } from "./CopyTooltip";
 import { GitHubIcon, GlobeIcon, MailIcon, PhoneIcon } from "./icons";
+import { useCopyToClipboard } from "./useCopyToClipboard";
 
 type ContactPayload = {
   name: string;
@@ -18,24 +20,26 @@ const emptyPayload: ContactPayload = {
 
 const { contact } = profile.info;
 
+const contactLinkClassName =
+  "flex w-full items-center gap-3 rounded-lg border border-swagger-border bg-swagger-bg/60 p-4 text-left transition-colors duration-200 hover:border-swagger-get/40";
+
 function ContactLink({
   icon: Icon,
   label,
   value,
   href,
+  copyValue,
 }: {
   icon: typeof MailIcon;
   label: string;
   value: string;
-  href: string;
+  href?: string;
+  copyValue?: string;
 }) {
-  return (
-    <a
-      href={href}
-      target={href.startsWith("http") ? "_blank" : undefined}
-      rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-      className="flex items-center gap-3 rounded-lg border border-swagger-border bg-swagger-bg/60 p-4 transition-colors duration-200 hover:border-swagger-get/40"
-    >
+  const { copied, copy } = useCopyToClipboard();
+
+  const content = (
+    <>
       <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded bg-swagger-code text-swagger-get">
         <Icon size={18} />
       </span>
@@ -43,6 +47,33 @@ function ContactLink({
         <span className="block text-xs text-swagger-muted">{label}</span>
         <span className="block truncate text-sm font-medium text-swagger-text">{value}</span>
       </span>
+    </>
+  );
+
+  if (copyValue) {
+    return (
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => copy(copyValue)}
+          className={contactLinkClassName}
+          aria-label={`Copy ${label}`}
+        >
+          {content}
+        </button>
+        <CopyTooltip visible={copied} />
+      </div>
+    );
+  }
+
+  return (
+    <a
+      href={href}
+      target={href?.startsWith("http") ? "_blank" : undefined}
+      rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
+      className={contactLinkClassName}
+    >
+      {content}
     </a>
   );
 }
@@ -87,18 +118,8 @@ export function ReadableContact() {
   return (
     <div className="space-y-6">
       <div className="grid gap-3 sm:grid-cols-2">
-        <ContactLink
-          icon={MailIcon}
-          label="Email"
-          value={contact.email}
-          href={`mailto:${contact.email}`}
-        />
-        <ContactLink
-          icon={PhoneIcon}
-          label="Phone"
-          value={contact.phone}
-          href={`tel:${contact.phone.replace(/[^\d+]/g, "")}`}
-        />
+        <ContactLink icon={MailIcon} label="Email" value={contact.email} copyValue={contact.email} />
+        <ContactLink icon={PhoneIcon} label="Phone" value={contact.phone} copyValue={contact.phone} />
         <ContactLink icon={GitHubIcon} label="GitHub" value="cjpepin" href={contact.github} />
         <ContactLink icon={GlobeIcon} label="Location" value={contact.location} href={contact.website} />
       </div>
