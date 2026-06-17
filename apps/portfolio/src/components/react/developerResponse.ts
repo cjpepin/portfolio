@@ -6,6 +6,7 @@ export type DeveloperContact = {
   phone: string;
   location: string;
   github: string;
+  linkedin: string;
   website: string;
 };
 

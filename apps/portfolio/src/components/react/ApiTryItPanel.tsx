@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useRef, useState, type ReactNode } from "react";
 import { methodColor, type HttpMethod } from "../../data/profile";
 import { checkClientRateLimit, createClientRateBucket } from "../../lib/api/clientRateLimit";
+import { useMediaQuery, WIDE_PREVIEW_LAYOUT_QUERY } from "../../lib/useMediaQuery";
 import { usePreviewPanel } from "./PreviewPanelContext";
 
 export type ApiField = {
@@ -61,6 +62,7 @@ export function ApiTryItPanel({
   className = "",
 }: Props) {
   const { publishPreview } = usePreviewPanel();
+  const isWideLayout = useMediaQuery(WIDE_PREVIEW_LAYOUT_QUERY);
   const visibleFields = fields.filter((f) => !f.hidden);
   const initialValues = useMemo(
     () =>
@@ -90,7 +92,7 @@ export function ApiTryItPanel({
 
   const publishResponsePreview = useCallback(
     (nextResponse: unknown, payload: Record<string, string>) => {
-      if (!renderPreview) return;
+      if (!renderPreview || !isWideLayout) return;
       const previewPath =
         pathParams.length > 0 ? resolvePath(path, payload, pathParams) : path;
       publishPreview({
@@ -99,7 +101,7 @@ export function ApiTryItPanel({
         content: renderPreview(nextResponse),
       });
     },
-    [method, path, pathParams, publishPreview, renderPreview],
+    [isWideLayout, method, path, pathParams, publishPreview, renderPreview],
   );
 
   const runExecute = useCallback(
@@ -290,6 +292,15 @@ export function ApiTryItPanel({
                 {JSON.stringify(response, null, 2)}
               </pre>
             </div>
+
+            {!isWideLayout && renderPreview && (
+              <div className="border-t border-swagger-border">
+                <div className="flex shrink-0 items-center gap-2 border-b border-swagger-border px-4 py-2">
+                  <span className="font-mono text-xs uppercase text-swagger-muted">Preview</span>
+                </div>
+                <div className="animate-fade-in">{renderPreview(response)}</div>
+              </div>
+            )}
           </div>
         </div>
       )}

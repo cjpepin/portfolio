@@ -46,6 +46,7 @@ export const profile = {
       phone: "314-707-9026",
       location: "St. Louis, MO",
       github: "https://github.com/cjpepin",
+      linkedin: "https://www.linkedin.com/in/connor-pepin-10954b192/",
       website: "https://connorjpepin.com",
     },
   },
@@ -277,8 +278,8 @@ export const profile = {
   navigation: [
     { id: "overview", label: "Overview", tag: "info" },
     { id: "experience", label: "Experience", tag: "paths" },
-    { id: "systems", label: "Contributions", tag: "operations" },
     { id: "projects", label: "Projects", tag: "gallery" },
+    { id: "systems", label: "Contributions", tag: "operations" },
     { id: "contact", label: "Contact", tag: "post" },
   ],
 } as const;

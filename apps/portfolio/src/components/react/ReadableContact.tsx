@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { profile } from "../../data/profile";
 import { CopyTooltip } from "./CopyTooltip";
-import { GitHubIcon, GlobeIcon, MailIcon, PhoneIcon } from "./icons";
+import { GitHubIcon, GlobeIcon, LinkedInIcon, MailIcon, PhoneIcon } from "./icons";
 import { useCopyToClipboard } from "./useCopyToClipboard";
 
 type ContactPayload = {
@@ -121,6 +121,12 @@ export function ReadableContact() {
         <ContactLink icon={MailIcon} label="Email" value={contact.email} copyValue={contact.email} />
         <ContactLink icon={PhoneIcon} label="Phone" value={contact.phone} copyValue={contact.phone} />
         <ContactLink icon={GitHubIcon} label="GitHub" value="cjpepin" href={contact.github} />
+        <ContactLink
+          icon={LinkedInIcon}
+          label="LinkedIn"
+          value="connor-pepin"
+          href={contact.linkedin}
+        />
         <ContactLink icon={GlobeIcon} label="Location" value={contact.location} href={contact.website} />
       </div>
 

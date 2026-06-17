@@ -26,8 +26,8 @@ import { SystemsSection } from "./sections/SystemsSection";
 const sections: { id: SectionId; content: () => ReactNode }[] = [
   { id: "overview", content: () => <OverviewSection /> },
   { id: "experience", content: () => <ExperienceSection /> },
-  { id: "systems", content: () => <SystemsSection /> },
   { id: "projects", content: () => <ProjectsSection /> },
+  { id: "systems", content: () => <SystemsSection /> },
   { id: "contact", content: () => <ContactSection /> },
 ];
 

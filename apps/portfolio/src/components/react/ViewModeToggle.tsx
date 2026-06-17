@@ -1,7 +1,9 @@
 import { useViewMode } from "./ViewModeContext";
 
 export function ViewModeToggle() {
-  const { mode, toggleMode } = useViewMode();
+  const { mode, toggleMode, canUseInteractive } = useViewMode();
+
+  if (!canUseInteractive) return null;
 
   return (
     <button

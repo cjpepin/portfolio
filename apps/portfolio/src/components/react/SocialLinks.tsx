@@ -1,6 +1,6 @@
 import { profile } from "../../data/profile";
 import { CopyTooltip } from "./CopyTooltip";
-import { GitHubIcon, MailIcon, PhoneIcon } from "./icons";
+import { GitHubIcon, LinkedInIcon, MailIcon, PhoneIcon } from "./icons";
 import { useCopyToClipboard } from "./useCopyToClipboard";
 
 const iconButtonClassName =
@@ -46,6 +46,16 @@ export function SocialLinks() {
         title="GitHub"
       >
         <GitHubIcon size={18} />
+      </a>
+      <a
+        href={contact.linkedin}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={iconButtonClassName}
+        aria-label="LinkedIn"
+        title="LinkedIn"
+      >
+        <LinkedInIcon size={18} />
       </a>
       <CopyIconButton label="Email" value={contact.email} icon={MailIcon} />
       <CopyIconButton label="Phone" value={contact.phone} icon={PhoneIcon} />

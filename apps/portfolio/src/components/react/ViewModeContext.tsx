@@ -1,20 +1,14 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { MOBILE_VIEWPORT_QUERY, matchesMediaQuery, useMediaQuery } from "../../lib/useMediaQuery";
 
 export type ViewMode = "interactive" | "readable";
 
 const STORAGE_KEY = "portfolio-view-mode";
 
-/** Matches Tailwind `md` — narrower viewports default to readable mode. */
-const MOBILE_VIEWPORT_QUERY = "(max-width: 767px)";
-
-function isMobileViewport(): boolean {
-  if (typeof window === "undefined") return false;
-  return window.matchMedia(MOBILE_VIEWPORT_QUERY).matches;
-}
-
 function resolveViewMode(stored: string | null): ViewMode {
+  if (matchesMediaQuery(MOBILE_VIEWPORT_QUERY)) return "readable";
   if (stored === "readable" || stored === "interactive") return stored;
-  return isMobileViewport() ? "readable" : "interactive";
+  return "interactive";
 }
 
 function readStoredMode(): ViewMode {
@@ -25,6 +19,8 @@ function readStoredMode(): ViewMode {
 type ViewModeContextValue = {
   mode: ViewMode;
   isReadable: boolean;
+  isMobile: boolean;
+  canUseInteractive: boolean;
   setMode: (mode: ViewMode) => void;
   toggleMode: () => void;
 };
@@ -32,16 +28,23 @@ type ViewModeContextValue = {
 const ViewModeContext = createContext<ViewModeContextValue | null>(null);
 
 export function ViewModeProvider({ children }: { children: ReactNode }) {
+  const isMobile = useMediaQuery(MOBILE_VIEWPORT_QUERY);
   const [mode, setModeState] = useState<ViewMode>(readStoredMode);
 
   const setMode = useCallback((next: ViewMode) => {
+    if (matchesMediaQuery(MOBILE_VIEWPORT_QUERY) && next === "interactive") return;
     setModeState(next);
     window.localStorage.setItem(STORAGE_KEY, next);
   }, []);
 
   const toggleMode = useCallback(() => {
-    setMode(mode === "readable" ? "interactive" : "readable");
-  }, [mode, setMode]);
+    if (matchesMediaQuery(MOBILE_VIEWPORT_QUERY)) return;
+    setModeState((current) => {
+      const next = current === "readable" ? "interactive" : "readable";
+      window.localStorage.setItem(STORAGE_KEY, next);
+      return next;
+    });
+  }, []);
 
   useEffect(() => {
     const onStorage = (event: StorageEvent) => {
@@ -54,12 +57,14 @@ export function ViewModeProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo(
     () => ({
-      mode,
-      isReadable: mode === "readable",
+      mode: isMobile ? "readable" : mode,
+      isReadable: isMobile || mode === "readable",
+      isMobile,
+      canUseInteractive: !isMobile,
       setMode,
       toggleMode,
     }),
-    [mode, setMode, toggleMode],
+    [isMobile, mode, setMode, toggleMode],
   );
 
   return <ViewModeContext.Provider value={value}>{children}</ViewModeContext.Provider>;

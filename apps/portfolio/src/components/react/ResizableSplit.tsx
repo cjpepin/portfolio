@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { useMediaQuery, WIDE_PREVIEW_LAYOUT_QUERY } from "../../lib/useMediaQuery";
 
 const STORAGE_KEY = "portfolio-preview-width-pct";
 const DEFAULT_RIGHT_PCT = 38;
@@ -13,20 +14,6 @@ function readStoredWidth(): number {
   return Math.min(MAX_RIGHT_PCT, Math.max(MIN_RIGHT_PCT, parsed));
 }
 
-function useMinWidth(query: string): boolean {
-  const [matches, setMatches] = useState(false);
-
-  useEffect(() => {
-    const media = window.matchMedia(query);
-    const onChange = () => setMatches(media.matches);
-    onChange();
-    media.addEventListener("change", onChange);
-    return () => media.removeEventListener("change", onChange);
-  }, [query]);
-
-  return matches;
-}
-
 type Props = {
   left: ReactNode;
   right: ReactNode;
@@ -37,7 +24,7 @@ export function ResizableSplit({ left, right }: Props) {
   const rightPctRef = useRef(rightPct);
   const containerRef = useRef<HTMLDivElement>(null);
   const draggingRef = useRef(false);
-  const isWide = useMinWidth("(min-width: 1280px)");
+  const isWide = useMediaQuery(WIDE_PREVIEW_LAYOUT_QUERY);
 
   rightPctRef.current = rightPct;
 
@@ -105,12 +92,13 @@ export function ResizableSplit({ left, right }: Props) {
     }
   };
 
+  if (!isWide) {
+    return <div className="min-h-0 min-w-0 flex-1 overflow-y-auto">{left}</div>;
+  }
+
   return (
-    <div ref={containerRef} className="flex min-h-0 min-w-0 flex-1 flex-col xl:flex-row">
-      <div
-        className={`min-h-0 min-w-0 overflow-y-auto ${isWide ? "shrink-0" : "flex-1"}`}
-        style={isWide ? { width: `${100 - rightPct}%` } : undefined}
-      >
+    <div ref={containerRef} className="flex min-h-0 min-w-0 flex-1">
+      <div className="min-h-0 min-w-0 shrink-0 overflow-y-auto" style={{ width: `${100 - rightPct}%` }}>
         {left}
       </div>
 
@@ -121,19 +109,16 @@ export function ResizableSplit({ left, right }: Props) {
         aria-valuemin={MIN_RIGHT_PCT}
         aria-valuemax={MAX_RIGHT_PCT}
         aria-label="Resize preview panel"
-        tabIndex={isWide ? 0 : -1}
+        tabIndex={0}
         onPointerDown={onHandlePointerDown}
         onKeyDown={onHandleKeyDown}
-        className="group relative z-10 hidden w-2 shrink-0 cursor-col-resize touch-none bg-swagger-border/40 transition-colors duration-200 hover:bg-swagger-get/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-swagger-get xl:block"
+        className="group relative z-10 w-2 shrink-0 cursor-col-resize touch-none bg-swagger-border/40 transition-colors duration-200 hover:bg-swagger-get/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-swagger-get"
       >
         <span className="pointer-events-none absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-swagger-border group-hover:bg-swagger-get/70" />
       </div>
 
-      <div
-        className="h-[42vh] shrink-0 border-t border-swagger-border xl:h-auto xl:shrink-0 xl:border-t-0"
-        style={isWide ? { width: `${rightPct}%` } : undefined}
-      >
-        <div className="h-full xl:sticky xl:top-14 xl:h-[calc(100vh-3.5rem)]">{right}</div>
+      <div className="shrink-0" style={{ width: `${rightPct}%` }}>
+        <div className="sticky top-14 h-[calc(100vh-3.5rem)]">{right}</div>
       </div>
     </div>
   );

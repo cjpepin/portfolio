@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchDeveloperDefaults, fetchDeveloperResponse } from "../../../lib/api/handlers";
+import { useMediaQuery, WIDE_PREVIEW_LAYOUT_QUERY } from "../../../lib/useMediaQuery";
 import { extractDeveloperData } from "../developerResponse";
 import { DeveloperProfilePreview } from "../DeveloperProfilePreview";
 import { ApiTryItPanel } from "../ApiTryItPanel";
@@ -11,9 +12,10 @@ import { useViewMode } from "../ViewModeContext";
 export function OverviewSection() {
   const { isReadable } = useViewMode();
   const { publishPreview } = usePreviewPanel();
+  const isWideLayout = useMediaQuery(WIDE_PREVIEW_LAYOUT_QUERY);
 
   useEffect(() => {
-    if (isReadable) return;
+    if (isReadable || !isWideLayout) return;
 
     let cancelled = false;
 
@@ -35,7 +37,7 @@ export function OverviewSection() {
     return () => {
       cancelled = true;
     };
-  }, [isReadable, publishPreview]);
+  }, [isReadable, isWideLayout, publishPreview]);
 
   if (isReadable) {
     return (

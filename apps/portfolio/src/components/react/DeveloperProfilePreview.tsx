@@ -1,5 +1,5 @@
 import { CopyTooltip } from "./CopyTooltip";
-import { GitHubIcon, GlobeIcon, MailIcon, PhoneIcon } from "./icons";
+import { GitHubIcon, GlobeIcon, LinkedInIcon, MailIcon, PhoneIcon } from "./icons";
 import type { DeveloperData } from "./developerResponse";
 import { useCopyToClipboard } from "./useCopyToClipboard";
 
@@ -11,6 +11,7 @@ function hasFullContact(contact: Contact): contact is {
   phone: string;
   location: string;
   github: string;
+  linkedin: string;
   website: string;
 } {
   return "email" in contact && "github" in contact;
@@ -120,6 +121,12 @@ export function DeveloperProfilePreview({ data }: { data: DeveloperData }) {
                 <ContactRow icon={PhoneIcon} label="phone" value={fullContact.phone} copyValue={fullContact.phone} />
                 <ContactRow icon={GlobeIcon} label="location" value={fullContact.location} />
                 <ContactRow icon={GitHubIcon} label="github" value="cjpepin" href={fullContact.github} />
+                <ContactRow
+                  icon={LinkedInIcon}
+                  label="linkedin"
+                  value="connor-pepin"
+                  href={fullContact.linkedin}
+                />
                 <ContactRow icon={GlobeIcon} label="website" value="connorjpepin.com" href={fullContact.website} />
               </>
             ) : (
