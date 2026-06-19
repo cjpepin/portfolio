@@ -21,22 +21,36 @@ import { ContactSection } from "./sections/ContactSection";
 import { ExperienceSection } from "./sections/ExperienceSection";
 import { OverviewSection } from "./sections/OverviewSection";
 import { ProjectsSection } from "./sections/ProjectsSection";
-import { SystemsSection } from "./sections/SystemsSection";
+import { ResumeSection } from "./sections/ResumeSection";
 
 const sections: { id: SectionId; content: () => ReactNode }[] = [
   { id: "overview", content: () => <OverviewSection /> },
   { id: "experience", content: () => <ExperienceSection /> },
   { id: "projects", content: () => <ProjectsSection /> },
-  { id: "systems", content: () => <SystemsSection /> },
+  { id: "resume", content: () => <ResumeSection /> },
   { id: "contact", content: () => <ContactSection /> },
 ];
+
+function scrollWithinContainer(
+  container: HTMLElement,
+  target: HTMLElement,
+  behavior: ScrollBehavior,
+) {
+  const top =
+    container.scrollTop +
+    target.getBoundingClientRect().top -
+    container.getBoundingClientRect().top;
+  container.scrollTo({ top, behavior });
+}
 
 function PortfolioShellContent() {
   const [activeId, setActiveId] = useState<SectionId>("overview");
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [navExpanded, setNavExpanded] = useState(false);
   const { isReadable } = useViewMode();
   const isScrollingRef = useRef(false);
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const mainScrollRef = useRef<HTMLDivElement>(null);
 
   const scrollToTarget = useCallback(
     (target: ScrollTarget | SectionId, behavior: ScrollBehavior = "smooth") => {
@@ -59,7 +73,13 @@ function PortfolioShellContent() {
       const itemEl = resolved.itemId
         ? document.getElementById(portfolioItemId(resolved.section, resolved.itemId))
         : null;
-      (itemEl ?? sectionEl).scrollIntoView({ behavior, block: "start" });
+      const scrollTarget = itemEl ?? sectionEl;
+      const container = mainScrollRef.current;
+      if (container) {
+        scrollWithinContainer(container, scrollTarget, behavior);
+      } else {
+        scrollTarget.scrollIntoView({ behavior, block: "start" });
+      }
 
       scrollTimeoutRef.current = setTimeout(() => {
         isScrollingRef.current = false;
@@ -88,33 +108,51 @@ function PortfolioShellContent() {
   }, [scrollToTarget]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (isScrollingRef.current) return;
+    let observer: IntersectionObserver | null = null;
+    let frame = 0;
 
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+    const attach = () => {
+      const root = mainScrollRef.current;
+      if (!root) return;
 
-        const top = visible[0];
-        if (top?.target.id) {
-          const id = top.target.id as SectionId;
-          setActiveId(id);
-          if (window.location.hash !== `#${id}`) {
-            window.history.replaceState(null, "", `#${id}`);
+      observer?.disconnect();
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (isScrollingRef.current) return;
+
+          const visible = entries
+            .filter((e) => e.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+          const top = visible[0];
+          if (top?.target.id) {
+            const id = top.target.id as SectionId;
+            setActiveId(id);
+            if (window.location.hash !== `#${id}`) {
+              window.history.replaceState(null, "", `#${id}`);
+            }
           }
-        }
-      },
-      { rootMargin: "-30% 0px -55% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] },
-    );
+        },
+        {
+          root,
+          rootMargin: "-20% 0px -55% 0px",
+          threshold: [0, 0.25, 0.5, 0.75, 1],
+        },
+      );
 
-    sections.forEach((section) => {
-      const el = document.getElementById(section.id);
-      if (el) observer.observe(el);
-    });
+      sections.forEach((section) => {
+        const el = document.getElementById(section.id);
+        if (el) observer?.observe(el);
+      });
+    };
 
-    return () => observer.disconnect();
-  }, []);
+    frame = requestAnimationFrame(attach);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      observer?.disconnect();
+    };
+  }, [isReadable]);
 
   useEffect(() => {
     return () => {
@@ -124,18 +162,23 @@ function PortfolioShellContent() {
 
   return (
     <PortfolioNavigationProvider scrollToTarget={scrollToTarget}>
-    <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-40 shrink-0 border-b border-swagger-border bg-swagger-bg/95 backdrop-blur">
+    <div className="flex h-screen flex-col overflow-hidden">
+      <header className="z-40 h-14 shrink-0 border-b border-swagger-border bg-swagger-bg/95 backdrop-blur">
         <div className="flex h-14 items-center justify-between gap-4 px-4 md:px-6">
           <button
             type="button"
             onClick={() => scrollToTarget("overview")}
-            className="flex items-center gap-2 font-mono text-sm font-semibold text-swagger-text transition-colors duration-200 hover:text-swagger-get"
+            className="flex min-w-0 items-center gap-2 text-left transition-colors duration-200 hover:text-swagger-get"
           >
-            <span className="text-swagger-get">{profile.info.title}</span>
-            <span className="rounded bg-swagger-code px-1.5 py-0.5 text-xs text-swagger-muted">
-              v{profile.info.version}
+            <span className="truncate font-semibold text-swagger-text">{profile.info.title}</span>
+            <span className="hidden truncate text-sm text-swagger-muted sm:inline">
+              {profile.info.subtitle}
             </span>
+            {!isReadable && (
+              <span className="shrink-0 rounded bg-swagger-code px-1.5 py-0.5 font-mono text-xs text-swagger-muted">
+                API v{profile.info.version}
+              </span>
+            )}
           </button>
 
           <div className="flex items-center gap-2 md:gap-3">
@@ -157,11 +200,20 @@ function PortfolioShellContent() {
         </div>
       </header>
 
-      <div className="flex min-h-0 flex-1">
-        <CompactNavRail activeId={activeId} onNavigate={scrollToTarget} />
+      <CompactNavRail
+        activeId={activeId}
+        onNavigate={scrollToTarget}
+        expanded={navExpanded}
+        onExpandedChange={setNavExpanded}
+      />
 
+      <div
+        className={`flex min-h-0 flex-1 overflow-hidden transition-[margin-left] duration-200 ease-out ${
+          navExpanded ? "md:ml-44" : "md:ml-11"
+        }`}
+      >
         {isReadable ? (
-          <div className="relative min-w-0 flex-1 overflow-y-auto">
+          <div ref={mainScrollRef} className="relative min-h-0 min-w-0 flex-1 overflow-y-auto">
             {mobileNavOpen && (
               <nav
                 className="sticky top-14 z-30 border-b border-swagger-border bg-swagger-panel p-3 shadow-lg animate-fade-in md:hidden"
@@ -204,6 +256,7 @@ function PortfolioShellContent() {
           </div>
         ) : (
           <ResizableSplit
+            scrollRef={mainScrollRef}
             left={
               <div className="relative min-w-0">
                 {mobileNavOpen && (

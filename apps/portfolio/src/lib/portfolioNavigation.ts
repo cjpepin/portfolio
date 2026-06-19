@@ -11,7 +11,8 @@ export function portfolioItemId(section: SectionId, itemId: string): string {
   return `${section}-${itemId}`;
 }
 
-export function targetHash(target: ScrollTarget): string {
+export function targetHash(target?: ScrollTarget): string {
+  if (!target) return "#overview";
   return target.itemId
     ? `#${portfolioItemId(target.section, target.itemId)}`
     : `#${target.section}`;
@@ -20,6 +21,10 @@ export function targetHash(target: ScrollTarget): string {
 export function parsePortfolioHash(hash: string): ScrollTarget {
   const normalized = hash.replace(/^#/, "");
   if (!normalized) return { section: "overview" };
+
+  if (normalized === "systems") {
+    return { section: "resume" };
+  }
 
   const exact = profile.navigation.find((item) => item.id === normalized);
   if (exact) return { section: exact.id };

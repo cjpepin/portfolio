@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode, type RefObject } from "react";
 import { useMediaQuery, WIDE_PREVIEW_LAYOUT_QUERY } from "../../lib/useMediaQuery";
 
 const STORAGE_KEY = "portfolio-preview-width-pct";
@@ -17,9 +17,10 @@ function readStoredWidth(): number {
 type Props = {
   left: ReactNode;
   right: ReactNode;
+  scrollRef?: RefObject<HTMLDivElement | null>;
 };
 
-export function ResizableSplit({ left, right }: Props) {
+export function ResizableSplit({ left, right, scrollRef }: Props) {
   const [rightPct, setRightPct] = useState(readStoredWidth);
   const rightPctRef = useRef(rightPct);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -93,12 +94,20 @@ export function ResizableSplit({ left, right }: Props) {
   };
 
   if (!isWide) {
-    return <div className="min-h-0 min-w-0 flex-1 overflow-y-auto">{left}</div>;
+    return (
+      <div ref={scrollRef} className="min-h-0 min-w-0 flex-1 overflow-y-auto">
+        {left}
+      </div>
+    );
   }
 
   return (
     <div ref={containerRef} className="flex min-h-0 min-w-0 flex-1">
-      <div className="min-h-0 min-w-0 shrink-0 overflow-y-auto" style={{ width: `${100 - rightPct}%` }}>
+      <div
+        ref={scrollRef}
+        className="min-h-0 min-w-0 shrink-0 overflow-y-auto"
+        style={{ width: `${100 - rightPct}%` }}
+      >
         {left}
       </div>
 

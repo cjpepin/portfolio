@@ -6,9 +6,8 @@ import { ThemeToggle } from "../react/ThemeToggle";
 
 <header class="sticky top-0 z-40 border-b border-swagger-border bg-swagger-bg/95 backdrop-blur">
   <div class="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 md:px-6">
-    <a href="/" class="flex items-center gap-2 font-mono text-sm font-semibold text-swagger-text">
-      <span class="text-swagger-get">{profile.info.title}</span>
-      <span class="rounded bg-swagger-code px-1.5 py-0.5 text-xs text-swagger-muted">v{profile.info.version}</span>
+    <a href="/" class="flex min-w-0 items-center gap-2 text-left">
+      <span class="truncate font-semibold text-swagger-text">{profile.info.title}</span>
     </a>
     <div class="flex items-center gap-2 md:gap-3">
       <div class="hidden sm:flex">

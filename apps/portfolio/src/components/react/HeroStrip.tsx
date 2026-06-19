@@ -31,6 +31,7 @@ const featuredWork = [
 
 export function HeroStrip({ onContact }: Props) {
   const { scrollToTarget } = usePortfolioNavigation();
+  const { info, positioning } = profile;
 
   return (
     <section
@@ -38,33 +39,30 @@ export function HeroStrip({ onContact }: Props) {
       aria-label="Introduction"
     >
       <div className="space-y-6 px-5 py-6 md:px-8 md:py-8">
-        <div className="space-y-3">
-          <h1 className="text-2xl font-semibold leading-tight text-swagger-text md:text-3xl">
-            {profile.positioning.headline}
-          </h1>
-          <p className="max-w-2xl text-sm leading-relaxed text-swagger-muted md:text-base">
-            {profile.positioning.subheadline}
-          </p>
-        </div>
-
-        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          {profile.metrics.map((metric) => (
-            <a
-              key={metric.id}
-              href={targetHash(metric.target)}
-              onClick={(event) => {
-                event.preventDefault();
-                scrollToTarget(metric.target);
-              }}
-              className="group rounded-lg border border-swagger-border/80 bg-swagger-bg/50 px-4 py-3 transition-colors duration-200 hover:border-swagger-get/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-swagger-get"
-            >
-              <p className="font-mono text-2xl font-semibold text-swagger-get">{metric.value}</p>
-              <p className="mt-1 text-sm text-swagger-text">{metric.label}</p>
-              <p className="mt-0.5 font-mono text-[10px] uppercase tracking-wide text-swagger-muted group-hover:text-swagger-text">
-                {metric.context}
-              </p>
-            </a>
-          ))}
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
+          {info.profileImage && (
+            <img
+              src={info.profileImage}
+              alt={`${info.contact.name} profile photo`}
+              width={96}
+              height={96}
+              className="h-24 w-24 shrink-0 rounded-full border-2 border-swagger-border object-cover shadow-sm"
+              loading="eager"
+              decoding="async"
+            />
+          )}
+          <div className="min-w-0 space-y-2">
+            <p className="font-mono text-xs uppercase tracking-wide text-swagger-muted">Portfolio</p>
+            <h1 className="text-2xl font-semibold leading-tight text-swagger-text md:text-3xl">
+              {info.contact.name}
+            </h1>
+            <p className="max-w-2xl text-sm leading-relaxed text-swagger-muted md:text-base">
+              {positioning.headline}
+            </p>
+            <p className="max-w-2xl text-sm leading-relaxed text-swagger-muted">
+              {positioning.subheadline}
+            </p>
+          </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
@@ -74,6 +72,13 @@ export function HeroStrip({ onContact }: Props) {
           <a href="/trellis#showcase" className="api-execute-btn bg-swagger-get">
             Trellis showcase
           </a>
+          <button
+            type="button"
+            onClick={() => scrollToTarget("projects")}
+            className="rounded border border-swagger-border bg-swagger-bg/60 px-4 py-2 text-sm font-medium text-swagger-text transition-colors duration-200 hover:border-swagger-get/50 hover:text-swagger-get"
+          >
+            See all projects
+          </button>
           {onContact ? (
             <button type="button" onClick={onContact} className="api-execute-btn bg-swagger-post">
               Contact
@@ -84,6 +89,45 @@ export function HeroStrip({ onContact }: Props) {
             </a>
           )}
           <SocialLinks />
+        </div>
+
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {profile.metrics.map((metric) => {
+            const content = (
+              <>
+                <p className="font-mono text-2xl font-semibold text-swagger-get">{metric.value}</p>
+                <p className="mt-1 text-sm text-swagger-text">{metric.label}</p>
+                <p className="mt-0.5 font-mono text-[10px] uppercase tracking-wide text-swagger-muted group-hover:text-swagger-text">
+                  {metric.context}
+                </p>
+              </>
+            );
+
+            if (!("target" in metric)) {
+              return (
+                <div
+                  key={metric.id}
+                  className="rounded-lg border border-swagger-border/80 bg-swagger-bg/50 px-4 py-3"
+                >
+                  {content}
+                </div>
+              );
+            }
+
+            return (
+              <a
+                key={metric.id}
+                href={targetHash(metric.target)}
+                onClick={(event) => {
+                  event.preventDefault();
+                  scrollToTarget(metric.target);
+                }}
+                className="group rounded-lg border border-swagger-border/80 bg-swagger-bg/50 px-4 py-3 transition-colors duration-200 hover:border-swagger-get/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-swagger-get"
+              >
+                {content}
+              </a>
+            );
+          })}
         </div>
 
         <div className="border-t border-swagger-border/60 pt-4">

@@ -9,7 +9,7 @@ import {
   getSystemById,
 } from "../browserDb";
 import type { DeveloperData } from "../../components/react/developerResponse";
-import type { profile } from "../../data/profile";
+import { profile } from "../../data/profile";
 
 const schemaMeta = {
   languages: { type: "string[]", description: "Primary programming languages" },
@@ -30,7 +30,7 @@ export async function fetchDeveloperResponse(
   const info = await getDeveloperInfo();
 
   const base = {
-    title: info.title,
+    title: info.apiDocsTitle,
     version: info.version,
     description: info.description,
     profileImage: info.profileImage,
@@ -175,6 +175,16 @@ export async function fetchContributionsResponse(values: Record<string, string>)
   }
 
   return { data: shapeContributionRecord(item, values) };
+}
+
+export async function fetchResumeResponse() {
+  return {
+    data: {
+      filePath: profile.resume.filePath,
+      updatedAt: profile.resume.updatedAt,
+      title: `${profile.info.contact.name} — Resume`,
+    },
+  };
 }
 
 export async function fetchProjectResponse(projectId: string, values: Record<string, string>) {

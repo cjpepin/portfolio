@@ -4,6 +4,6 @@ import { PortfolioShell } from "../components/react/PortfolioShell";
 import { profile } from "../data/profile";
 ---
 
-<SinglePageLayout title={`${profile.info.title} — Portfolio`}>
+<SinglePageLayout title={`${profile.info.title} — ${profile.info.subtitle}`}>
   <PortfolioShell client:load />
 </SinglePageLayout>

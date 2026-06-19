@@ -10,7 +10,6 @@ export const profile = {
       value: "86%",
       label: "deployment lead-time reduction",
       context: "Mastercard CD platform",
-      target: { section: "systems", itemId: "mastercard-cd" },
     },
     {
       id: "caralyst-deal",
@@ -35,7 +34,8 @@ export const profile = {
     },
   ],
   info: {
-    title: "Connor Pepin API Docs",
+    title: "Connor Pepin",
+    apiDocsTitle: "Connor Pepin API",
     version: "1.2.0",
     description:
       "Full-stack engineer owning the stack end to end — Spring Boot APIs and CD platform at Mastercard, greenfield React/Node products, and shipped mobile apps with Supabase backends.",
@@ -129,6 +129,10 @@ export const profile = {
       stack: ["PGLite", "PostgreSQL", "Express", "Webhooks", "TypeScript"],
     },
   ],
+  resume: {
+    filePath: "/resume.pdf",
+    updatedAt: "June 2025",
+  },
   systems: [
     {
       id: "repo-magik",
@@ -279,7 +283,7 @@ export const profile = {
     { id: "overview", label: "Overview", tag: "info" },
     { id: "experience", label: "Experience", tag: "paths" },
     { id: "projects", label: "Projects", tag: "gallery" },
-    { id: "systems", label: "Contributions", tag: "operations" },
+    { id: "resume", label: "Resume", tag: "document" },
     { id: "contact", label: "Contact", tag: "post" },
   ],
 } as const;

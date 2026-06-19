@@ -117,7 +117,7 @@ function ReadableOverview() {
     <div className="stagger-children space-y-6">
       <HeroStrip />
       {data ? (
-        <DeveloperProfilePreview data={data} />
+        <DeveloperProfilePreview data={data} hideHeader />
       ) : (
         <div className="swagger-panel p-6 text-sm text-swagger-muted">Loading profile…</div>
       )}

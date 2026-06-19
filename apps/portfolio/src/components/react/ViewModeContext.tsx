@@ -8,11 +8,11 @@ const STORAGE_KEY = "portfolio-view-mode";
 function resolveViewMode(stored: string | null): ViewMode {
   if (matchesMediaQuery(MOBILE_VIEWPORT_QUERY)) return "readable";
   if (stored === "readable" || stored === "interactive") return stored;
-  return "interactive";
+  return "readable";
 }
 
 function readStoredMode(): ViewMode {
-  if (typeof window === "undefined") return "interactive";
+  if (typeof window === "undefined") return "readable";
   return resolveViewMode(window.localStorage.getItem(STORAGE_KEY));
 }
 

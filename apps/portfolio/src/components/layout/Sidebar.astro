@@ -8,7 +8,7 @@ interface Props {
 const { currentSection = "overview" } = Astro.props;
 ---
 
-<aside class="relative z-[9999] hidden w-11 shrink-0 overflow-visible border-r border-swagger-border md:block">
+<aside class="relative z-20 hidden w-11 shrink-0 self-stretch border-r border-swagger-border bg-swagger-bg/95 md:block">
   <nav class="sticky top-14 flex max-h-[calc(100vh-3.5rem)] flex-col items-center gap-1 overflow-visible py-4" aria-label="Documentation sections">
     <ul class="flex flex-col items-center gap-1">
       {
@@ -19,10 +19,10 @@ const { currentSection = "overview" } = Astro.props;
               ? "inf"
               : item.tag === "paths"
                 ? "pth"
-                : item.tag === "operations"
-                  ? "ops"
-                  : item.tag === "gallery"
-                    ? "gal"
+                : item.tag === "gallery"
+                  ? "gal"
+                  : item.tag === "document"
+                    ? "doc"
                     : "pst";
           return (
             <li class="group relative">
@@ -44,11 +44,10 @@ const { currentSection = "overview" } = Astro.props;
               </a>
               <div
                 role="tooltip"
-                class="pointer-events-none absolute left-[calc(100%+0.5rem)] top-1/2 z-[9999] -translate-y-1/2 translate-x-1 opacity-0 transition-all duration-200 ease-out group-hover:translate-x-0 group-hover:opacity-100 group-focus-within:translate-x-0 group-focus-within:opacity-100"
+                class="pointer-events-none absolute left-[calc(100%+0.5rem)] top-1/2 z-30 -translate-y-1/2 translate-x-1 opacity-0 transition-all duration-200 ease-out group-hover:translate-x-0 group-hover:opacity-100 group-focus-within:translate-x-0 group-focus-within:opacity-100"
               >
-                <div class="flex items-center gap-2 whitespace-nowrap rounded border border-swagger-border bg-swagger-panel px-2.5 py-1.5 text-sm shadow-lg">
-                  <span class="font-mono text-[10px] uppercase text-swagger-muted">{item.tag}</span>
-                  <span class="font-medium text-swagger-text">{item.label}</span>
+                <div class="whitespace-nowrap rounded border border-swagger-border bg-swagger-panel px-2.5 py-1.5 text-sm font-medium text-swagger-text shadow-lg">
+                  {item.label}
                 </div>
               </div>
             </li>

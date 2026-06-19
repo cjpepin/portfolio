@@ -83,12 +83,19 @@ const skillLabels: Record<string, string> = {
   other: "Other",
 };
 
-export function DeveloperProfilePreview({ data }: { data: DeveloperData }) {
+export function DeveloperProfilePreview({
+  data,
+  hideHeader = false,
+}: {
+  data: DeveloperData;
+  hideHeader?: boolean;
+}) {
   const contact = data.contact;
   const fullContact = contact && hasFullContact(contact) ? contact : null;
 
   return (
     <div className="animate-fade-in space-y-5 p-4">
+      {!hideHeader && (
       <header className="rounded-lg border border-swagger-border bg-gradient-to-br from-swagger-get/10 to-swagger-post/5 p-5">
         <div className="flex items-start gap-4">
           {data.profileImage && (
@@ -110,6 +117,7 @@ export function DeveloperProfilePreview({ data }: { data: DeveloperData }) {
           </div>
         </div>
       </header>
+      )}
 
       {contact && (
         <section>

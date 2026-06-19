@@ -220,3 +220,5 @@ functions/
 ## Content updates
 
 Edit `src/data/profile.ts` — no layout changes needed for resume updates.
+
+Place your PDF at `public/resume.pdf` (path configured in `profile.resume.filePath`).

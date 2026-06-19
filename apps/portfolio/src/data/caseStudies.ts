@@ -105,7 +105,7 @@ export const caseStudies: readonly CaseStudy[] = [
     ],
     stack: ["TypeScript", "Express", "PGLite", "PostgreSQL", "Webhooks", "Node.js"],
     links: {
-      portfolio: "/#systems",
+      portfolio: "/#resume",
     },
     relatedExperienceId: "crosswalk",
     relatedSystemId: "crosswalk-sync",
