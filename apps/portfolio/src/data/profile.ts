@@ -35,6 +35,7 @@ export const profile = {
   ],
   info: {
     title: "Connor Pepin",
+    subtitle: "Portfolio",
     apiDocsTitle: "Connor Pepin API",
     version: "1.2.0",
     description:
