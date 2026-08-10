@@ -5,6 +5,7 @@ import { fetchProjectDefaults, fetchProjectResponse } from "../../../lib/api/han
 import { ApiTryItPanel } from "../ApiTryItPanel";
 import { ProjectPreview } from "../ProjectPreview";
 import { extractProjectData } from "../projectResponse";
+import { ForFunProjectsBlock } from "../ForFunProjectsBlock";
 import { SectionHeader } from "../SectionHeader";
 import { useViewMode } from "../ViewModeContext";
 import type { ProjectData } from "../projectResponse";
@@ -90,6 +91,8 @@ export function ProjectsSection() {
         />
         </div>
       ))}
+
+      <ForFunProjectsBlock />
     </div>
   );
 }
@@ -121,6 +124,8 @@ function ReadableProjects() {
       ) : (
         <div className="swagger-panel p-6 text-sm text-swagger-muted">Loading projects…</div>
       )}
+
+      <ForFunProjectsBlock />
     </div>
   );
 }

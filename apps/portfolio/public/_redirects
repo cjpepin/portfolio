@@ -10,3 +10,8 @@
 
 # Trellis portfolio demo (desktop preview workspace in browser)
 /trellis/demo/embed/*  /trellis/demo/embed/index.html  200
+
+# Global//Debt — redirect legacy landing path to the app (opens without login)
+/global-debt /global-debt/app/ 308
+/global-debt/ /global-debt/app/ 308
+/global-debt/app /global-debt/app/ 308

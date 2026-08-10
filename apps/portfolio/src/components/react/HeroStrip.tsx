@@ -83,7 +83,7 @@ export function HeroStrip({ onContact }: Props) {
             <button type="button" onClick={onContact} className="api-execute-btn bg-swagger-post">
               Contact
             </button>
-          ) : (
+          ) : ( 
             <a href="#contact" className="api-execute-btn bg-swagger-post">
               Contact
             </a>

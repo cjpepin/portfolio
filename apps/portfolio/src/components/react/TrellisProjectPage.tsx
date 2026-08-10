@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { profile } from "../../data/profile";
 import { TrellisDemoEmbed } from "./TrellisDemoEmbed";
 import { TrellisShowcase } from "./TrellisShowcase";
@@ -10,24 +9,7 @@ type Props = {
 
 const trellis = profile.projects.find((project) => project.id === "trellis");
 
-function scrollToHashTarget() {
-  const hash = window.location.hash;
-  if (hash === "#showcase" || hash.startsWith("#showcase")) {
-    document.getElementById("showcase")?.scrollIntoView({ behavior: "smooth" });
-    return;
-  }
-  if (hash === "#try-demo" || hash.startsWith("#try-demo")) {
-    document.getElementById("try-demo")?.scrollIntoView({ behavior: "smooth" });
-  }
-}
-
 export function TrellisProjectPage({ demoBuilt }: Props) {
-  useEffect(() => {
-    scrollToHashTarget();
-    window.addEventListener("hashchange", scrollToHashTarget);
-    return () => window.removeEventListener("hashchange", scrollToHashTarget);
-  }, []);
-
   if (!trellis) {
     return null;
   }
@@ -89,7 +71,7 @@ export function TrellisProjectPage({ demoBuilt }: Props) {
       <TrellisShowcase />
       <TrellisShowcaseStoryTabs />
 
-      <section id="try-demo" className="scroll-mt-8 border-t border-swagger-border pt-12">
+      <section id="try-demo" className="scroll-mt-14 border-t border-swagger-border pt-12">
         <div className="mb-6 space-y-2 text-center">
           <h2 className="text-xl font-semibold md:text-2xl">Desktop app preview</h2>
           <p className="mx-auto max-w-2xl text-sm text-swagger-muted">

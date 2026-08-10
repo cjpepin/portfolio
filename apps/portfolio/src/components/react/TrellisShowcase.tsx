@@ -18,7 +18,7 @@ const engineeringCards = [
 
 export function TrellisShowcase() {
   return (
-    <section id="showcase" className="scroll-mt-8 border-t border-swagger-border pt-12">
+    <section id="showcase" className="scroll-mt-14 border-t border-swagger-border pt-12">
       <div className="space-y-10">
         <div className="space-y-3 text-center">
           <h2 className="text-2xl font-semibold tracking-tight text-swagger-text md:text-3xl">

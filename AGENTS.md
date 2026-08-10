@@ -1,6 +1,6 @@
 # AGENTS.md — Portfolio Monorepo
 
-This repository is the **Portfolio** monorepo: a personal showcase site plus embedded subprojects (`projects/lingoleaf`, `projects/lingoleaf-web`, `projects/trellis`).
+This repository is the **Portfolio** monorepo: a personal showcase site plus embedded subprojects (`projects/lingoleaf`, `projects/lingoleaf-web`, `projects/trellis`, `projects/global-debt`).
 
 ## Read First
 
@@ -37,6 +37,7 @@ Handoff templates: [`docs/agents/handoffs.md`](docs/agents/handoffs.md)
 | `projects/lingoleaf` | React Native (Expo) iOS app | Own Supabase project |
 | `projects/lingoleaf-web` | Vite marketing/forum site at `/lingoleaf` | Shared Supabase, `lingoleaf` schema |
 | `projects/trellis` | Electron + web AI knowledge app | Separate Supabase project |
+| `projects/global-debt` | vinext debt atlas at `/global-debt/app/` (for-fun tier; static sync, no auth) | None |
 
 **Target state:** Root portfolio Supabase project owns identity for the portfolio site. Subprojects migrate to shared auth/session contracts under `packages/auth` (or equivalent) without breaking app-specific RLS schemas.
 

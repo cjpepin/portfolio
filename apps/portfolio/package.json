@@ -4,12 +4,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "astro dev",
+    "dev": "./scripts/dev.sh",
     "dev:all": "./scripts/dev-with-demos.sh",
     "dev:proxy": "./scripts/dev-with-lingoleaf-web.sh",
     "sync:all-demos": "./scripts/sync-all-demos.sh",
     "build": "astro check && astro build",
-    "build:pages": "npm run sync:lingoleaf-web && npm run sync:lingoleaf-demo && npm run sync:trellis-demo && npm run build",
+    "build:pages": "npm run sync:lingoleaf-web && npm run sync:lingoleaf-demo && npm run sync:trellis-demo && npm run sync:global-debt && npm run build",
     "deploy": "node ../../scripts/cloudflare-pages-deploy.mjs",
     "preview": "astro preview",
     "check": "astro check",
@@ -17,7 +17,8 @@
     "sync:lingoleaf-export": "./scripts/sync-lingoleaf-export.sh",
     "sync:lingoleaf-web": "./scripts/sync-lingoleaf-web.sh",
     "sync:trellis-demo": "./scripts/sync-trellis-demo.sh",
-    "sync:trellis-export": "./scripts/sync-trellis-export.sh"
+    "sync:trellis-export": "./scripts/sync-trellis-export.sh",
+    "sync:global-debt": "./scripts/sync-global-debt.sh"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
